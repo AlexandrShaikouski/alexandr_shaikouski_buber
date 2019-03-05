@@ -1,15 +1,20 @@
 package com.alexshay.buber.controller.filter;
 
 import com.alexshay.buber.domain.User;
+import com.alexshay.buber.util.CookieFinder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthenticationFilter")
+@WebFilter(filterName = "AuthenticationFilter",dispatcherTypes = {
+        DispatcherType.REQUEST,
+        DispatcherType.FORWARD,
+        DispatcherType.INCLUDE
+        }, urlPatterns = "/WEB-INF/jsp/main.jsp")
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -21,19 +26,16 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest)request;
         HttpServletResponse httpServletResponse = (HttpServletResponse)response;
 
-        HttpSession session = httpServletRequest.getSession();
-        User user = (User)session.getAttribute("user");
-        switch (user.getRole()){
-            case ADMIN:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(request,response);
-                break;
-            case CLIENT:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/client/driver.jsp").forward(request,response);
-                break;
-            case DRIVER:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/driver/driver.jsp").forward(request,response);
-                break;
+        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+        String login = CookieFinder.getValueByName("name",cookies).orElse("");
+        String password = CookieFinder.getValueByName("claps",cookies).orElse("");
+        if(!login.equals("") && !password.equals("")){
+            httpServletRequest.setAttribute("login", login);
+            httpServletRequest.setAttribute("passwordUser", password);
+            httpServletRequest.getRequestDispatcher("/buber?command=sign_in&login=" + login + "&passwordUser=" + password)
+                    .forward(httpServletRequest,httpServletResponse);
         }
+
 
         chain.doFilter(request, response);
     }

@@ -7,6 +7,7 @@ import com.alexshay.buber.dto.ResponseContent;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,12 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = CommandProvider.getInstance().takeCommand(request.getParameter("command"));
         ResponseContent responseContent = command.execute(request);
+
+        if(responseContent.getCookies() != null){
+            for(Cookie cookie : responseContent.getCookies()){
+                response.addCookie(cookie);
+            }
+        }
 
         if (responseContent.getRouter().getType().equals(Router.Type.FORWARD)) {
             request.getRequestDispatcher(responseContent.getRouter().getRoute()).forward(request, response);

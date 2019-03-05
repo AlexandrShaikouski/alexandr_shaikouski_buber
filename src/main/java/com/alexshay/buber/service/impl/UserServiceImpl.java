@@ -60,7 +60,9 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
             String login = user.getLogin();
             String password = user.getPassword();
-            user.setPassword(encryptPassword(password+login));
+            if(password.length() != 64){
+                user.setPassword(encryptPassword(password+login));
+            }
             authenticationValidator.validate(user);
             User userValid = userDao.getByLogin(login);
 

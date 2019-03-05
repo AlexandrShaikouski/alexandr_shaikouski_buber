@@ -6,6 +6,7 @@ import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.exception.ServiceException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +17,7 @@ public class CommandSignInUser implements Command {
         UserService userService = ServiceFactory.getInstance().getUserService();
         String login = request.getParameter("login");
         String password = request.getParameter("passwordUser");
+        String addCookie = request.getParameter("add_cookie");
         User user = User.builder().
                 login(login).
                 password(password).
@@ -26,6 +28,14 @@ public class CommandSignInUser implements Command {
             HttpSession session = request.getSession();
             session.setAttribute("user",user);
 
+
+            if(addCookie.equals("yes")){
+                Cookie[] cookies = new Cookie[]{
+                        new Cookie("name", user.getLogin()),
+                        new Cookie("claps", user.getPassword())
+                };
+                responseContent.setCookies(cookies);
+            }
         } catch (ServiceException e) {
             request.setAttribute("message", e.getMessage());
         }finally {
