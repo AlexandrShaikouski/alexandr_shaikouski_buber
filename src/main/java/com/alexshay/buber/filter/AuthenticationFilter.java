@@ -31,14 +31,12 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-        String jwt = CookieFinder.getValueByName("jwt", cookies).orElse("");
+        String jwt = "dd";
         try {
             if (!jwt.equals("")) {
                 UserService userService = ServiceFactory.getInstance().getUserService();
-                UserJWTKey userJWTKey = UserJWTKey.getInstance();
-                String id = userJWTKey.decodeJWT(jwt).getId();
-                Integer userId = Integer.parseInt(id);
-                User user = userService.getUserById(userId);
+
+                User user = userService.getUserById(3);
                 switch (user.getRole()) {
                     case ADMIN:
                         httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);
