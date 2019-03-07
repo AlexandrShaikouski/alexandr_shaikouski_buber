@@ -18,7 +18,7 @@ import java.io.IOException;
         DispatcherType.REQUEST,
         DispatcherType.FORWARD,
         DispatcherType.INCLUDE
-}, urlPatterns = "/WEB-INF/jsp/main.jsp")
+}, urlPatterns = "")
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -31,12 +31,14 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-        String jwt = "dd";
+        String jwt = CookieFinder.getValueByName("jwt", cookies).orElse("");
         try {
             if (!jwt.equals("")) {
                 UserService userService = ServiceFactory.getInstance().getUserService();
-
-                User user = userService.getUserById(3);
+                UserJWTKey userJWTKey = UserJWTKey.getInstance();
+                String id = userJWTKey.decodeJWT(jwt).getId();
+                Integer userId = Integer.parseInt(id);
+                User user = userService.getUserById(userId);
                 switch (user.getRole()) {
                     case ADMIN:
                         httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);
