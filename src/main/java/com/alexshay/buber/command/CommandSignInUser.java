@@ -32,7 +32,7 @@ public class CommandSignInUser implements Command {
 
 
             Cookie[] cookies = new Cookie[]{
-                    new Cookie("jwt", userJWTKey.createJWT(user))};
+                    new Cookie("keyjwt", userJWTKey.createJWT(user))};
             responseContent.setCookies(cookies);
             responseContent.setRouter(new Router(servletPath + "?command=main_page", Router.Type.REDIRECT));
             return responseContent;

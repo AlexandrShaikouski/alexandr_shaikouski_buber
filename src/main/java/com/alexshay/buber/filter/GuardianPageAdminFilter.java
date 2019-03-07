@@ -32,7 +32,7 @@ public class GuardianPageAdminFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         Cookie [] cookies = httpServletRequest.getCookies();
-        String jwt = CookieFinder.getValueByName("jwt", cookies).orElse("");
+        String jwt = CookieFinder.getValueByName("keyjwt", cookies).orElse("");
         if(!jwt.equals("")){
             UserJWTKey userJWTKey = UserJWTKey.getInstance();
             String role = userJWTKey.decodeJWT(jwt).getIssuer();
