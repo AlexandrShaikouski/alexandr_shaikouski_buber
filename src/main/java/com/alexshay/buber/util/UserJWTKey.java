@@ -40,8 +40,7 @@ public class UserJWTKey {
         String issuer = user.getRole().value();
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
+        Date now = new Date();
 
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
@@ -50,7 +49,7 @@ public class UserJWTKey {
                 .setIssuedAt(now)
                 .setSubject(subject)
                 .setIssuer(issuer)
-                .signWith(signatureAlgorithm, signingKey);
+                .signWith(signingKey);
 
         String jwt = builder.compact();
         return jwt;
