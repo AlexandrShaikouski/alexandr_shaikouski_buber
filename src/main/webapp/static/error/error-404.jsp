@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,18 +29,18 @@
                             <h1 class="display-1 mb-0">404</h1>
                         </div>
                         <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
-                            <h2>SORRY!</h2>
-                            <h3 class="font-weight-light">The page you’re looking for was not found.</h3>
+                            <h2><fmt:message key="error.page.sorry" bundle="${lang}"/></h2>
+                            <h3 class="font-weight-light"><fmt:message key="error.page.message404" bundle="${lang}"/></h3>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-12 text-center mt-xl-2">
-                            <a class="text-white font-weight-medium" href="${pageContext.servletContext.contextPath}">Back to home</a>
+                            <a class="text-white font-weight-medium" href="${pageContext.servletContext.contextPath}"><fmt:message key="error.page.back" bundle="${lang}"/></a>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-12 mt-xl-2">
-                            <p class="text-white font-weight-medium text-center">Copyright &copy; 2018  All rights reserved.</p>
+                            <p class="text-white font-weight-medium text-center"><fmt:message key="all.footer.copyright" bundle="${lang}"/></p>
                         </div>
                     </div>
                 </div>
