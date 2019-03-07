@@ -38,23 +38,24 @@ public class UserJWTKey {
         return instance;
     }
     public String createJWT(User user) {
+        LOGGER.info("get parameters");
         String id = user.getId().toString();
         String subject = user.getLogin();
         String issuer = user.getRole().value();
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
+        LOGGER.info("get aLGORITHM");
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
+        LOGGER.info("get DATE");
         Date now = new Date();
-        LOGGER.info("get byte");
+
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
-        LOGGER.info("get key");
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-        LOGGER.info("build jwt");
+
         JwtBuilder builder = Jwts.builder().setId(id)
                 .setIssuedAt(now)
                 .setSubject(subject)
                 .setIssuer(issuer)
                 .signWith(signingKey);
-        LOGGER.info("compact jwt");
+
         String jwt = builder.compact();
         return jwt;
     }
