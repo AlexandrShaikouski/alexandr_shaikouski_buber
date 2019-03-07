@@ -31,9 +31,7 @@ public class CommandSignInUser implements Command {
             session.setAttribute("user", user);
 
 
-            Cookie[] cookies = new Cookie[]{
-                    new Cookie("jwt", userJWTKey.createJWT(user))};
-            responseContent.setCookies(cookies);
+            
             responseContent.setRouter(new Router(servletPath + "?command=main_page", Router.Type.REDIRECT));
             return responseContent;
         } catch (ServiceException e) {

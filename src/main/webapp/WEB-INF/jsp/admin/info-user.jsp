@@ -162,7 +162,6 @@
 
         </c:when>
         <c:otherwise>
-            <h4 class="display1"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
             <h1 class="display1"><fmt:message key="admin.page.noresults" bundle="${lang}"/></h1>
         </c:otherwise>
     </c:choose>
