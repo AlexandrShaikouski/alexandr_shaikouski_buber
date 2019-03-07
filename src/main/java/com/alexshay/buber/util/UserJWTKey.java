@@ -38,7 +38,7 @@ public class UserJWTKey {
         String id = user.getId().toString();
         String subject = user.getLogin();
         String issuer = user.getRole().value();
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.PS256;
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
