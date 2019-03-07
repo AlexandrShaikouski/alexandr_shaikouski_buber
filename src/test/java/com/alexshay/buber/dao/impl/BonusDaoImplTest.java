@@ -2,9 +2,7 @@ package com.alexshay.buber.dao.impl;
 
 import com.alexshay.buber.dao.AbstractJdbcDao;
 import com.alexshay.buber.dao.GenericDao;
-import com.alexshay.buber.dao.exception.ConnectionPoolException;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import com.alexshay.buber.domain.Bonus;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +18,7 @@ public class BonusDaoImplTest {
 
 
     @Before
-    public void init() throws DaoException, ConnectionPoolException, PersistException {
+    public void init() throws DaoException{
         bonus = Bonus.builder().
                 name("Lucky").
                 factor(0.3f).
@@ -31,7 +29,7 @@ public class BonusDaoImplTest {
     }
 
     @Test
-    public void AbstractJdbcDaoForBonusTest() throws DaoException, PersistException {
+    public void AbstractJdbcDaoForBonusTest() throws DaoException {
         Bonus bonus1 = null;
         try {
             bonus1 = genericDao.persist(bonus);
@@ -50,7 +48,7 @@ public class BonusDaoImplTest {
 
     }
     @After
-    public void destroy() throws PersistException {
+    public void destroy(){
         daoEntity = null;
         genericDao = null;
         bonus = null;

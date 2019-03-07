@@ -14,79 +14,81 @@ function valid(form) {
     if (!login_regex.test(login)) {
         $('#login').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#login').removeClass('alert-danger');
     }
 
-    if(password != repassword){
+    if (password != repassword) {
         $('#repasswordUser').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#repasswordUser').removeClass('alert-danger');
     }
-    if(!password_regex.test(password)){
+    if (!password_regex.test(password)) {
         $('#passwordUser').addClass('alert-danger');
         $('#repasswordUser').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#passwordUser').removeClass('alert-danger');
     }
 
     if (!email_regex.test(email)) {
         $('#email').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#email').removeClass('alert-danger');
     }
 
     if (!phone_regex.test(phone)) {
         $('#phone').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#phone').removeClass('alert-danger');
     }
-    if(!first_name_regex.test(firstName)){
+    if (!first_name_regex.test(firstName)) {
         $('#first_name').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#first_name').removeClass('alert-danger');
     }
 
 
-    if(counter > 0){
+    if (counter > 0) {
         return false;
-    }else {
+    } else {
         form.submit();
     }
 
 }
+
 function validrepassword(form) {
     var password_regex = /^[a-zA-Z0-9!@#$%^&*]{6,45}$/;
     var password = form.passwordUser.value;
     var repassword = form.repasswordUser.value;
     var counter = 0;
 
-    if(password != repassword){
+    if (password != repassword) {
         $('#repasswordUser').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#repasswordUser').removeClass('alert-danger');
     }
-    if(!password_regex.test(password)){
+    if (!password_regex.test(password)) {
         $('#passwordUser').addClass('alert-danger');
         $('#repasswordUser').addClass('alert-danger');
         counter = counter + 1;
-    }else{
+    } else {
         $('#passwordUser').removeClass('alert-danger');
     }
 
-    if(counter > 0){
+    if (counter > 0) {
         return false;
-    }else {
+    } else {
         form.submit();
     }
 }
-function confirmDelete(form,command) {
+
+function confirmDelete(form, command) {
 
     form.command.value = command;
     if (confirm("Confirm delete?")) {
@@ -94,24 +96,9 @@ function confirmDelete(form,command) {
     }
 }
 
+function localeChange(form) {
 
-ymaps.ready(function () {
-    var myMap = new ymaps.Map('map', {
-        center: [53.8975,27.6908],
-        zoom: 9,
-        controls: ['routeButtonControl', 'smallMapDefaultSet']
-    }, {
-        restrictMapArea: [
-            [53.806,27.3454],
-            [53.9838,27.772]
-        ]
-    });
-    var control = myMap.controls.get('routeButtonControl');
+    form.localePage.value = 'ru';
+    form.submit();
+}
 
-    // Зададим координаты пункта отправления с помощью геолокации.
-    control.routePanel.geolocate('from');
-
-    // Откроем панель для построения маршрутов.
-    control.state.set('expanded', true);
-
-});

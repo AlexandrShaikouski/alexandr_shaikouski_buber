@@ -4,7 +4,6 @@ import com.alexshay.buber.dao.AbstractJdbcDao;
 import com.alexshay.buber.dao.GenericDao;
 import com.alexshay.buber.dao.exception.ConnectionPoolException;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import com.alexshay.buber.domain.*;
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +30,7 @@ public class TripOrderDaoImplTest {
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     @Before
-    public void init() throws DaoException, ConnectionPoolException, PersistException {
+    public void init() throws DaoException{
 
         user  = User.builder().
                 login("A").
@@ -62,7 +61,7 @@ public class TripOrderDaoImplTest {
     }
 
     @Test
-    public void AbstractJdbcDaoForTripOrderTest() throws DaoException, PersistException {
+    public void AbstractJdbcDaoForTripOrderTest() throws DaoException{
         TripOrder tripOrder1 = null;
         try {
             tripOrder1 = genericDao.persist(tripOrder);
@@ -82,7 +81,7 @@ public class TripOrderDaoImplTest {
     }
     @Test
     public void getSelectQuery() {
-        assertEquals(SELECT_QUERY,daoTripOrder.getSelectQuery());
+        assertEquals(SELECT_QUERY,daoTripOrder.getSelectQueryAll());
     }
 
     @Test
@@ -101,7 +100,7 @@ public class TripOrderDaoImplTest {
     }
 
     @After
-    public void destroy() throws PersistException {
+    public void destroy() throws DaoException {
         daoUser.delete(user);
         daoTripOrder = null;
         tripOrder = null;

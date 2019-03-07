@@ -4,8 +4,8 @@ import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.TripOrder;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TripOrderDao extends GenericDao<TripOrder, Integer> {
-    List<TripOrder> getByParameters(Map<String, String> parameters) throws DaoException;
+    List<TripOrder> getByClientId(Integer clientId) throws DaoException;
+    List<TripOrder> getByDriverId(Integer driverId) throws DaoException;
 }

@@ -1,7 +1,6 @@
 package com.alexshay.buber.dao;
 
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,9 +15,9 @@ public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
      * Save identified entity in DB
      * @param object identified entity
      * @return identified entity in DB
-     * @throws PersistException should be clarify
+     * @throws DaoException should be clarify
      */
-    T persist(T object) throws PersistException;
+    T persist(T object) throws DaoException;
 
     /**
      * Get identified entity by PK
@@ -31,16 +30,16 @@ public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
     /**
      * Update identified entity
      * @param object identified entity
-     * @throws PersistException should be clarify
+     * @throws DaoException should be clarify
      */
-    void update(T object) throws PersistException;
+    void update(T object) throws DaoException;
 
     /**
      * Delete identified entity
      * @param object identified entity
-     * @throws PersistException should be clarify
+     * @throws DaoException should be clarify
      */
-    void delete(T object) throws PersistException;
+    void delete(T object) throws DaoException;
 
     /**
      * Get all identified entity

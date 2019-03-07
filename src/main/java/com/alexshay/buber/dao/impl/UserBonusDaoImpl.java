@@ -2,7 +2,6 @@ package com.alexshay.buber.dao.impl;
 
 import com.alexshay.buber.dao.AbstractJdbcDao;
 import com.alexshay.buber.dao.AutoConnection;
-import com.alexshay.buber.dao.GenericDao;
 import com.alexshay.buber.dao.UserBonusDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.UserBonus;
@@ -20,7 +19,9 @@ public class UserBonusDaoImpl extends AbstractJdbcDao<UserBonus, Integer> implem
     private static final String UPDATE_QUERY = "UPDATE user_bonus " +
             "SET bonus_id = ?, user_id = ?" +
             "WHERE id = ?";
-    private static final String SELECT_QUERY = "SELECT * FROM user_bonus";
+    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM user_bonus" +
+            "WHER id = ?";
+    private static final String SELECT_QUERY_ALL = "SELECT * FROM user_bonus";
     private static final String CREATE_QUERY = "INSERT INTO user_bonus " +
             "(bonus_id, user_id) " +
             "VALUES (?, ?)";
@@ -55,8 +56,13 @@ public class UserBonusDaoImpl extends AbstractJdbcDao<UserBonus, Integer> implem
     }
 
     @Override
-    public String getSelectQuery() {
-        return SELECT_QUERY;
+    public String getSelectQueryById() {
+        return SELECT_QUERY_BY_ID;
+    }
+
+    @Override
+    public String getSelectQueryAll() {
+        return SELECT_QUERY_ALL;
     }
 
     @Override
@@ -77,7 +83,7 @@ public class UserBonusDaoImpl extends AbstractJdbcDao<UserBonus, Integer> implem
     @Override
     @AutoConnection
     public List<UserBonus> getByParameter(Map<String, String> parameters) throws DaoException {
-        String sql = getSelectQuery() + " WHERE ";
+        String sql = getSelectQueryAll() + " WHERE ";
         Iterator it = parameters.entrySet().iterator();
         while (it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();

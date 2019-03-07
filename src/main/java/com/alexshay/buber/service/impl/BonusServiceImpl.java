@@ -5,7 +5,6 @@ import com.alexshay.buber.dao.DaoFactoryType;
 import com.alexshay.buber.dao.FactoryProducer;
 import com.alexshay.buber.dao.GenericDao;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import com.alexshay.buber.domain.Bonus;
 import com.alexshay.buber.service.BonusService;
 import com.alexshay.buber.service.exception.ServiceException;
@@ -45,8 +44,6 @@ public class BonusServiceImpl implements BonusService {
             bonusDao.persist(bonus);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get bonus DAO. ", e);
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to save bonus. ", e);
         }
     }
 
@@ -58,9 +55,6 @@ public class BonusServiceImpl implements BonusService {
 
         } catch (DaoException e) {
             throw new ServiceException("Failed to get bonus DAO. ", e);
-
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to save bonus. ", e);
         }
     }
 }

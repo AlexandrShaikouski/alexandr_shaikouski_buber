@@ -2,7 +2,6 @@ package com.alexshay.buber.service.impl;
 
 import com.alexshay.buber.dao.*;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import com.alexshay.buber.domain.Bonus;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.User;
@@ -10,6 +9,7 @@ import com.alexshay.buber.domain.UserBonus;
 import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.email.MailGenerator;
 import com.alexshay.buber.service.exception.ServiceException;
+import com.alexshay.buber.validation.ValidationFactory;
 import com.alexshay.buber.validation.Validator;
 import com.alexshay.buber.validation.impl.AuthenticationValidator;
 import com.alexshay.buber.validation.impl.EmailValidatorImpl;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signUp(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator validator = new UserValidatorImpl();
+        Validator validator = ValidationFactory.getInstance().getUserValidator();
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             String password = encryptPassword(user.getPassword() + user.getLogin());
@@ -44,9 +44,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to save user. ", e);
-        } catch (NoSuchAlgorithmException e) {
+        }  catch (NoSuchAlgorithmException e) {
             throw new ServiceException("Failed to encrypt password. ", e);
         }
     }
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signIn(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator authenticationValidator = new AuthenticationValidator();
+        Validator authenticationValidator = ValidationFactory.getInstance().getAuthenticationValidator();
 
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
@@ -78,17 +76,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllClient() throws ServiceException {
-        return getUsers("3");
+        return getUsers("client");
     }
 
     @Override
     public List<User> getAllDriver() throws ServiceException {
-        return getUsers("2");
+        return getUsers("driver");
     }
 
     @Override
     public List<User> getAllAdmin() throws ServiceException {
-        return getUsers("1");
+        return getUsers("admin");
     }
 
 
@@ -97,9 +95,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
-            Map<String, String> parameter = new HashMap<>(1, 1);
-            parameter.put("role_id", role);
-            return userDao.getByParameter(parameter);
+            return userDao.getByRole(role);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         }
@@ -114,8 +110,6 @@ public class UserServiceImpl implements UserService {
             userDao.delete(user);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to delete user. ", e);
         }
     }
 
@@ -187,8 +181,6 @@ public class UserServiceImpl implements UserService {
             userDao.update(user);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to update user. ", e);
         }
     }
 
@@ -209,13 +201,11 @@ public class UserServiceImpl implements UserService {
 
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
-        } catch (PersistException e) {
-            throw new ServiceException("Failed to update user. ", e);
         }
     }
     @Override
     public void sendResetPasswordKey(User user) throws ServiceException {
-        Validator validator = new EmailValidatorImpl();
+        Validator validator = ValidationFactory.getInstance().getEmailValidator();
         validator.validate(user);
         MailGenerator mailGenerator = new MailGenerator();
         String repasswordKey = generateRandomString();
@@ -223,15 +213,12 @@ public class UserServiceImpl implements UserService {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
-            Map<String,String> parameter = new HashMap<>();
-            parameter.put("email", user.getEmail());
-            List<User> userList = userDao.getByParameter(parameter);
-            user = userList.get(0);
+            user = userDao.getByEmail(user.getEmail());
             user.setRepasswordKey(encryptPassword(repasswordKey));
             userDao.update(user);
             mailGenerator.sendMessage("Reset password", message, Arrays.asList(user.getEmail()));
 
-        } catch (DaoException | PersistException e) {
+        } catch (DaoException  e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         } catch (NoSuchAlgorithmException e) {
             throw new ServiceException("Failed to use Algorithm for password", e);
@@ -240,20 +227,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkRepasswordKey(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator validatorRepassword = new RepasswordKeyValidator();
+        Validator validatorRepassword = ValidationFactory.getInstance().getRepasswordKeyValidator();
         try {
             user.setRepasswordKey(encryptPassword(user.getRepasswordKey()));
             validatorRepassword.validate(user);
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
             Map<String,String> parameter = new HashMap<>();
-            parameter.put("email",user.getEmail());
-            List<User> userList;
-            userList = userDao.getByParameter(parameter);
-            user = userList.get(0);
+            user = userDao.getByEmail(user.getEmail());
             user.setRepasswordKey(null);
             userDao.update(user);
 
-        } catch (DaoException | PersistException e) {
+        } catch (DaoException  e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         } catch (NoSuchAlgorithmException e) {
             throw new ServiceException("Failed to use Algorithm for password", e);
@@ -264,16 +248,16 @@ public class UserServiceImpl implements UserService {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
-            Map<String,String> parameter = new HashMap<>();
-            parameter.put("email",user.getEmail());
-            List<User> userList = userDao.getByParameter(parameter);
-            User userValid = userList.get(0);
+            User userValid = userDao.getByEmail(user.getEmail());
             userValid.setPassword(encryptPassword(user.getPassword() + userValid.getLogin()));
             userDao.update(userValid);
-        } catch (DaoException | PersistException e) {
+        } catch (DaoException  e) {
             throw new ServiceException("Failed to get user DAO. ", e);
         } catch (NoSuchAlgorithmException e) {
             throw new ServiceException("Failed to use Algorithm for password", e);
         }
     }
+
+
+
 }

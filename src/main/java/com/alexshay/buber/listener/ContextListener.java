@@ -1,4 +1,4 @@
-package com.alexshay.buber.controller.listener;
+package com.alexshay.buber.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

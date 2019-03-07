@@ -3,7 +3,6 @@ package com.alexshay.buber.dao.impl;
 import com.alexshay.buber.dao.AbstractJdbcDao;
 import com.alexshay.buber.dao.GenericDao;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.User;
 import com.alexshay.buber.domain.UserStatus;
@@ -25,7 +24,19 @@ public class UserDaoImplTest {
             "email = ?, phone = ?, registration_date = ?, location = ?, " +
             "status_ban = ?, role_id = ?, repassword_key = ?, status = ? " +
             "WHERE id = ?";
-    private static final String SELECT_QUERY = "SELECT * FROM user_account";
+    private static final String SELECT_QUERY_ALL = "SELECT user_account.id, user_account.login, user_account.password, " +
+            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.location, user_account.status_ban, " +
+            "role.name AS role, user_account.repassword_key, user_account.status " +
+            "FROM user_account " +
+            "INNER JOIN role ON user_account.role_id = role.id ";
+    private static final String SELECT_QUERY_BY_ID = "SELECT user_account.id, user_account.login, user_account.password, " +
+            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.location, user_account.status_ban, " +
+            "role.name AS role, user_account.repassword_key, user_account.status " +
+            "FROM user_account " +
+            "INNER JOIN role ON user_account.role_id = role.id " +
+            "WHERE user_account.id = ?";
     private static final String CREATE_QUERY = "INSERT INTO user_account " +
             "(login, password, first_name, last_name, email, phone, registration_date, location, status_ban, " +
             "role_id, repassword_key, status) " +
@@ -52,7 +63,7 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void AbstractJdbcDaoForUserTest() throws PersistException, DaoException {
+    public void AbstractJdbcDaoForUserTest() throws DaoException {
         User user1 = null;
         try {
             user1 = genericDao.persist(user);
@@ -70,8 +81,13 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void getSelectQuery() {
-        assertEquals(SELECT_QUERY,daoUser.getSelectQuery());
+    public void getSelectQueryAll() {
+        assertEquals(SELECT_QUERY_ALL,daoUser.getSelectQueryAll());
+    }
+
+    @Test
+    public void getSelectQueryById() {
+        assertEquals(SELECT_QUERY_BY_ID,daoUser.getSelectQueryById());
     }
 
     @Test

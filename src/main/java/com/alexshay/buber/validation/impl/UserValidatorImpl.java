@@ -48,23 +48,17 @@ public class UserValidatorImpl implements Validator {
             if (!validString.equals("")) {
                 validString += ": uncorrect data. ";
             }
-            Map<String, String> parameter = new HashMap<>(1, 1);
-            parameter.put("login", user.getLogin());
-            if (user.getLogin() != null && !userDao.getByParameter(parameter).isEmpty()) {
+            if (user.getLogin() != null && userDao.getByLogin(user.getLogin()) != null) {
                 validString += validString.equals("") || counter == 0?
                         "Login" : ", login";
                 counter++;
             }
-            parameter.clear();
-            parameter.put("email", user.getEmail());
-            if (user.getEmail() != null && !userDao.getByParameter(parameter).isEmpty()) {
+            if (user.getEmail() != null && userDao.getByEmail(user.getEmail()) != null) {
                 validString += validString.equals("") || counter == 0 ?
                         "Email" : ", email";
                 counter++;
             }
-            parameter.clear();
-            parameter.put("phone", user.getPhone());
-            if (user.getPhone() != null && !userDao.getByParameter(parameter).isEmpty()) {
+            if (user.getPhone() != null && userDao.getByPhone(user.getPhone()) != null) {
                 validString += validString.equals("") || counter == 0 ?
                         "Phone" : ", phone";
                 counter++;

@@ -17,6 +17,8 @@
         <error-code>500</error-code>
         <location>/static/error/error-500.jsp</location>
     </error-page>
+
+
 <!--
     <login-config>
         <auth-method>FORM</auth-method>

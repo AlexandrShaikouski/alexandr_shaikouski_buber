@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:requestEncoding value="utf-8"/>
+<fmt:setBundle basename="locale"  var="lang" scope="application"/>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -48,52 +54,52 @@
                         <div class="brand-logo">
                             <img src="${pageContext.servletContext.contextPath}/static/images/logo.png">
                         </div>
-                        <h4>New here?</h4>
-                        <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
+                        <h4><fmt:message key="all.register.newhear" bundle="${lang}"/></h4>
+                        <h6 class="font-weight-light"><h4><fmt:message key="all.register.welcom" bundle="${lang}"/></h4></h6>
                         <form method="POST" class="forms-sample" action="${pageContext.servletContext.contextPath}/buber"
                               id="form_register">
 
                             <input type="hidden" name="command" value="create_user">
-                            <input type="hidden" name="role" value="3">
+                            <input type="hidden" name="role" value="client">
                             <input type="hidden" name="flag" value="client">
                             <div class="form-group">
-                                <label for="login">Login</label>
-                                <input name="login"  title="Login must consist of Latin characters and numbers" type="text" class="form-control" id="login" placeholder="User name">
+                                <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
+                                <input name="login"  title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <label for="passwordUser">Password</label>
+                                <label for="passwordUser"><fmt:message key="all.page.password" bundle="${lang}"/></label>
                                 <input name="passwordUser" type="password" class="form-control" id="passwordUser"
-                                       placeholder="Password">
+                                       placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <label for="repasswordUser">Re Password</label>
+                                <label for="repasswordUser"><fmt:message key="all.page.repeatpas" bundle="${lang}"/></label>
                                 <input name="repasswordUser" type="password" class="form-control" id="repasswordUser"
-                                       placeholder="Password">
+                                       placeholder="<fmt:message key="all.page.repeatpas" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input name="email" type="text" class="form-control" id="email" placeholder="Email">
+                                <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
+                                <input name="email" type="text" class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <label for="phone">Number phone</label>
+                                <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
                                 <input name="phone" type="text" class="form-control" id="phone" value="+375"
                                        placeholder="+375XXXXXXXXX">
                             </div>
                             <div class="form-group">
-                                <label for="first_name">First name</label>
+                                <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
                                 <input name="first_name" type="text" class="form-control" id="first_name"
-                                       placeholder="First name">
+                                       placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>">
                             </div>
                             <div class="mt-3">
                                 <button name="button_register" type="button"
                                         onclick="valid(document.getElementById('form_register'))"
                                         class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">
-                                    SIGN UP
+                                    <fmt:message key="all.register.signup" bundle="${lang}"/>
                                 </button>
                             </div>
                             <div class="text-center mt-4 font-weight-light">
-                                Already have an account? <a href="${pageContext.servletContext.contextPath}"
-                                                            class="text-primary">Login</a>
+                                <fmt:message key="all.register.footermessage" bundle="${lang}"/> <a href="${pageContext.servletContext.contextPath}"
+                                                            class="text-primary"><fmt:message key="all.register.login" bundle="${lang}"/></a>
                             </div>
                         </form>
                     </div>

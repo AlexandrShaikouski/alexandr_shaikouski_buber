@@ -1,9 +1,9 @@
 package com.alexshay.buber.domain;
 
 public enum Role {
-    ADMIN("1"),
-    DRIVER("2"),
-    CLIENT("3");
+    ADMIN("admin"),
+    DRIVER("driver"),
+    CLIENT("client");
 
     private final String value;
 

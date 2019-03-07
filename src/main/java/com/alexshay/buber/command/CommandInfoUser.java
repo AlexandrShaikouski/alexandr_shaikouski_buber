@@ -11,9 +11,8 @@ import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class CommandInfoUser implements Command {
     @Override
@@ -24,19 +23,20 @@ public class CommandInfoUser implements Command {
         TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
         String role = request.getParameter("role");
         int id = Integer.parseInt(request.getParameter("id"));
-        Map<String, String> parameter = new HashMap<>();
         request.setAttribute("role",role);
 
         try {
+            List<TripOrder> tripOrders = Arrays.asList();
             User user = userService.getUserById(id);
             if (role.equals("client")) {
-                parameter.put("client_id", user.getId().toString());
                 List<Bonus> bonuses = bonusService.getAll();
+                tripOrders = tripOrderService.getByClientId(user.getId());
                 request.setAttribute("listBonuses", bonuses);
-            } else {
-                parameter.put("driver_id", user.getId().toString());
+            } else if(role.equals("driver")){
+                tripOrders = tripOrderService.getByDriverId(user.getId());
             }
-            List<TripOrder> tripOrders = tripOrderService.getByParameter(parameter);
+
+
             request.setAttribute("user", user);
             request.setAttribute("listOrders", tripOrders);
             responseContent.setRouter(new Router("/WEB-INF/jsp/admin/info-user.jsp", Router.Type.FORWARD));

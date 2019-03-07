@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:requestEncoding value="utf-8"/>
+<fmt:setBundle basename="locale"  var="lang" scope="application"/>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -27,56 +32,56 @@
                         <input type="hidden" style="background: none">
                         <c:choose>
                         <c:when test="${reset == null}">
-                            <h4>Enter your email</h4>
+                            <h4><fmt:message key="all.resetpass.message" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                                 <input type="hidden" name="command" value="reset_password">
                                 <input type="hidden" name="reset" value="1">
                                 <div class="form-group">
-                                    <input name="email" type="text" class="form-control" id="email" placeholder="Email">
+                                    <input name="email" type="text" class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Enter
+                                            type="submit"><fmt:message key="all.resetpass.enter" bundle="${lang}"/>
                                     </button>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    Don't have an account? <a
+                                    <fmt:message key="all.signin.create.message" bundle="${lang}"/> <a
                                         href="${pageContext.servletContext.contextPath}/buber?command=register_page"
-                                        class="text-primary">Create</a>
+                                        class="text-primary"><fmt:message key="all.signin.create" bundle="${lang}"/></a>
                                 </div>
                             </form>
                         </c:when>
                         <c:when test="${reset == '1'}">
-                            <h4>Enter key</h4>
+                            <h4><fmt:message key="all.resetpass.enterkey" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                                 <input type="hidden" name="command" value="reset_password">
                                 <input type="hidden" name="reset" value="2">
                                 <input type="hidden" name="role" value="${role}">
                                 <input type="hidden" name="email" value="${email}">
                                 <div class="form-group">
-                                    <input name="key" type="text" class="form-control" id="key" placeholder="Key">
+                                    <input name="key" type="text" class="form-control" id="key" placeholder="<fmt:message key="all.resetpass.key" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Enter</button>
+                                            type="submit"><fmt:message key="all.resetpass.enter" bundle="${lang}"/></button>
                                 </div>
                             </form>
                         </c:when>
                         <c:when test="${reset == '2'}">
-                            <h4>New password</h4>
+                            <h4><fmt:message key="all.resetpass.newpass" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber" id="reset_password">
                                 <input type="hidden" name="command" value="reset_password">
                                 <input type="hidden" name="role" value="${role}">
                                 <input type="hidden" name="email" value="${email}">
                                 <input type="hidden" name="reset" value="3">
                                 <div class="form-group">
-                                    <input name="passwordUser" type="password" class="form-control" id="passwordUser" placeholder="Password">
+                                    <input name="passwordUser" type="password" class="form-control" id="passwordUser" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                                 </div>
                                 <div class="form-group">
-                                    <input name="repasswordUser" type="password" class="form-control" id="repasswordUser" placeholder="Repeat password">
+                                    <input name="repasswordUser" type="password" class="form-control" id="repasswordUser" placeholder="<fmt:message key="all.page.repeatpas" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
-                                    <button name="button_reset_password" type="button" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" onclick="validrepassword(document.getElementById('reset_password'))">Enter</button>
+                                    <button name="button_reset_password" type="button" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" onclick="validrepassword(document.getElementById('reset_password'))"><fmt:message key="all.resetpass.enter" bundle="${lang}"/></button>
                                 </div>
                             </form>
                         </c:when>

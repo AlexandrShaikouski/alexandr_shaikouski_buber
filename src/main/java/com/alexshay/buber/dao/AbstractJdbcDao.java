@@ -1,7 +1,6 @@
 package com.alexshay.buber.dao;
 
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.dao.exception.PersistException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +22,9 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws SQLException;
 
-    public abstract String getSelectQuery();
+    public abstract String getSelectQueryById();
+
+    public abstract String getSelectQueryAll();
 
     public abstract String getCreateQuery();
 
@@ -34,8 +35,9 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     @Override
     @AutoConnection
     public T getByPK(PK key) throws DaoException {
-        String sql = getSelectQuery() + " WHERE id=" + key;
+        String sql = getSelectQueryById();
         try (PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1,(Integer) key);
             ResultSet resultSet = statement.executeQuery();
             List<T> parseRes = parseResultSet(resultSet);
             return parseRes.get(0);
@@ -51,7 +53,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
     public List<T> getAll() throws DaoException {
 
         try (Statement statement = connection.createStatement()){
-            statement.execute(getSelectQuery());
+            statement.execute(getSelectQueryAll());
             ResultSet resultSet = statement.getResultSet();
             return parseResultSet(resultSet);
         } catch (SQLException e) {
@@ -62,7 +64,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
 
     @Override
     @AutoConnection
-    public T persist(T object) throws PersistException {
+    public T persist(T object) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(getCreateQuery(), Statement.RETURN_GENERATED_KEYS)) {
             prepareStatementForInsert(statement, object);
@@ -77,32 +79,33 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
             }
         } catch (SQLException e) {
             LOGGER.error(e);
-            throw new PersistException("Failed to insert", e);
+            throw new DaoException("Failed to insert", e);
         }
     }
 
     @Override
     @AutoConnection
-    public void update(T object) throws PersistException{
+    public void update(T object) throws DaoException{
         try(PreparedStatement statement = connection.prepareStatement(getUpdateQuery())){
             prepareStatementForUpdate(statement, object);
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e);
-            throw new PersistException("Failed to update", e);
+            throw new DaoException("Failed to update", e);
         }
     }
 
     @Override
     @AutoConnection
-    public void delete(T object) throws PersistException {
+    public void delete(T object) throws DaoException {
 
         try(PreparedStatement statement = connection.prepareStatement(getDeleteQuery())){
             statement.setInt(1, object.getId().intValue());
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e);
-            throw new PersistException("Failed to delete", e);
+            throw new DaoException("Failed to delete", e);
         }
     }
+
 }

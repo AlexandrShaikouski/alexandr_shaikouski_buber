@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserDao extends GenericDao<User, Integer>{
-    List<User> getByParameter(Map<String, String> parameters) throws DaoException;
     User getByLogin(String login) throws DaoException;
+    User getByEmail(String email) throws DaoException;
+    User getByPhone(String phone) throws DaoException;
+    List<User> getByRole(String role) throws DaoException;
 }

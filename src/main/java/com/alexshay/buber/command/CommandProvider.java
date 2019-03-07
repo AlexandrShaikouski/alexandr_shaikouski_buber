@@ -32,6 +32,7 @@ public class CommandProvider {
         commandMap.put("reset_password", new CommandResetPassword());
         commandMap.put("sign_out", new CommandSignOut());
         commandMap.put("main_page", new CommandShowMainPage());
+        commandMap.put("locale", new CommandChangeLocale());
     }
 
     /**

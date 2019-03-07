@@ -2,7 +2,6 @@ package com.alexshay.buber.dao.impl;
 
 import com.alexshay.buber.dao.AbstractJdbcDao;
 import com.alexshay.buber.dao.AutoConnection;
-import com.alexshay.buber.dao.GenericDao;
 import com.alexshay.buber.dao.TripOrderDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.OrderStatus;
@@ -12,9 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implements TripOrderDao {
     private static final String DELETE_QUERY = "DELETE FROM trip_order WHERE id = ?";
@@ -22,7 +19,9 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
             "SET from_x = ?, to_y = ?, status_order = ?, price = ?, " +
             "client_id = ?, driver_id = ?, bonus_id = ? " +
             "WHERE id = ?";
-    private static final String SELECT_QUERY = "SELECT * FROM trip_order";
+    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM trip_order " +
+            "WHERE id=?";
+    private static final String SELECT_QUERY_ALL = "SELECT * FROM trip_order";
     private static final String CREATE_QUERY = "INSERT INTO trip_order " +
             "(from_x, to_y, status_order, price, client_id, driver_id, bonus_id) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -71,9 +70,15 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
         prepareStatementForInsert(statement, object);
         statement.setInt(8, object.getId());
     }
+
     @Override
-    public String getSelectQuery() {
-        return SELECT_QUERY;
+    public String getSelectQueryById() {
+        return SELECT_QUERY_BY_ID;
+    }
+
+    @Override
+    public String getSelectQueryAll() {
+        return SELECT_QUERY_ALL;
     }
 
     @Override
@@ -91,24 +96,28 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
         return DELETE_QUERY;
     }
 
+    @Override
+    @AutoConnection
+    public List<TripOrder> getByClientId(Integer clientId) throws DaoException {
+        String sql = getSelectQueryAll() + " WHERE client_id=?";
+        return getTripOrders(clientId, sql);
+    }
 
     @Override
     @AutoConnection
-    public List<TripOrder> getByParameters(Map<String, String> parameters) throws DaoException {
-        String sql = getSelectQuery() + " WHERE ";
-        Iterator it = parameters.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
-            sql +=  pair.getKey() + "=\'" + pair.getValue() +"\'";
-            if(it.hasNext()){
-                sql += " AND ";
-            }
-        }
+    public List<TripOrder> getByDriverId(Integer driverId) throws DaoException {
+        String sql = getSelectQueryAll() + " WHERE driver_id=?";
+        return getTripOrders(driverId, sql);
+    }
+
+    private List<TripOrder> getTripOrders(Integer driverId, String sql) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1,driverId.toString());
             ResultSet resultSet = statement.executeQuery();
-            return parseResultSet(resultSet);
+            List<TripOrder> parseRes = parseResultSet(resultSet);
+            return parseRes;
         } catch (SQLException e) {
-            throw new DaoException("Not getting info by PK from DB", e);
+            throw new DaoException("Not getting info by email from DB", e);
         }
     }
 }

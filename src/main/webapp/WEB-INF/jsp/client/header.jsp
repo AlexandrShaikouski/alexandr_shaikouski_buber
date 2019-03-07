@@ -1,19 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<fmt:requestEncoding value="utf-8"/>
+<fmt:setBundle basename="locale"  var="lang" scope="application"/>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Buber</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU" type="text/javascript">
-    </script>
     <link rel="stylesheet"
           href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
-
 </head>
 <body>
 
@@ -31,7 +33,7 @@
                 <li class="nav-item nav-profile dropdown">
 
                     <div class="nav-profile-text">
-                        <p class="mb-1 text-black">Hello, ${sessionScope.user.firstName}</p>
+                        <p class="mb-1 text-black"><fmt:message key="all.page.hello" bundle="${lang}"/>, ${sessionScope.user.firstName}</p>
                     </div>
 
 
@@ -41,8 +43,19 @@
                         <input type="hidden" name="command" value="sign_out">
                         <button type="submit" class="btn dropdown-item">
                             <i class="mdi mdi-logout mr-2 text-primary"></i>
-                            Signout
+                            <fmt:message key="all.page.signout" bundle="${lang}"/>
                         </button>
+                    </form>
+                </li>
+                <li>
+                    <form id="localeForm" action="${pageContext.servletContext.contextPath}/buber">
+                        <input type="hidden" name="command" value="locale">
+                        <div  class="btn-group" role="group" aria-label="Basic example">
+                            <input type="hidden" name="localePage" value="en">
+                            <button id="locale_ru" value="ru" type="button" onclick="localeChange(document.getElementById('localeForm'))" class="btn btn-sm btn-link">RU</button>
+                            |
+                            <button id="locale_en"  value="en" type="submit" class="btn btn-sm btn-link">EN</button>
+                        </div>
                     </form>
                 </li>
             </ul>
@@ -53,7 +66,8 @@
         </div>
     </nav>
 
-    <div  class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper">
+
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item active">
@@ -65,7 +79,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
                        aria-controls="ui-basic">
-                        <span class="menu-title">CRUD</span>
+                        <span class="menu-title"><fmt:message key="all.page.menu" bundle="${lang}"/></span>
                         <i class="menu-arrow"></i>
                         <i class="mdi mdi-crosshairs-gps menu-icon"></i>
                     </a>
@@ -74,31 +88,31 @@
                             <li class="nav-item">
                                 <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
                                     <input type="hidden" name="command" value="list_clients">
-                                    <button class="btn btn-link btn-sm" type="submit">List clients</button>
+                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message key="admin.header.lclient" bundle="${lang}"/></button>
                                 </form>
                             </li>
                             <li class="nav-item">
                                 <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
                                     <input type="hidden" name="command" value="list_drivers">
-                                    <button class="btn btn-link btn-sm" type="submit">List drivers</button>
+                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message key="admin.header.ldriver" bundle="${lang}"/></button>
                                 </form>
                             </li>
                             <li class="nav-item">
                                 <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
                                     <input type="hidden" name="command" value="list_admin">
-                                    <button class="btn btn-link btn-sm" type="submit">List admin</button>
+                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message key="admin.header.ladmin" bundle="${lang}"/></button>
                                 </form>
                             </li>
                             <li class="nav-item">
                                 <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
                                     <input type="hidden" name="command" value="list_orders">
-                                    <button class="btn btn-link btn-sm" type="submit">List orders</button>
+                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message key="admin.header.lorders" bundle="${lang}"/></button>
                                 </form>
                             </li>
                             <li class="nav-item">
                                 <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
                                     <input type="hidden" name="command" value="create_page">
-                                    <button class="btn btn-link btn-sm" type="submit">Create user</button>
+                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message key="admin.header.createuser" bundle="${lang}"/></button>
                                 </form>
                             </li>
                         </ul>
@@ -106,5 +120,5 @@
                 </li>
             </ul>
         </nav>
-        <div  class="main-panel">
+        <div class="main-panel">
             <div id="map" class="content-wrapper">

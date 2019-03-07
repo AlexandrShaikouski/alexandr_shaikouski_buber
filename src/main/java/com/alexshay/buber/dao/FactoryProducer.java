@@ -28,7 +28,7 @@ public class FactoryProducer {
         return instance;
     }
 
-    public static DaoFactory getDaoFactory(DaoFactoryType type) {
+    public static JdbcDaoFactory getDaoFactory(DaoFactoryType type) {
 
         switch(type) {
             case JDBC:
@@ -38,4 +38,5 @@ public class FactoryProducer {
                 throw new EnumConstantNotPresentException(DaoFactoryType.class, "No such DaoFactory " + type.name());
         }
     }
+
 }

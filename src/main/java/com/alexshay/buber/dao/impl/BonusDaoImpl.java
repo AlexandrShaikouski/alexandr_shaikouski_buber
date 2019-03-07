@@ -15,7 +15,8 @@ public class BonusDaoImpl extends AbstractJdbcDao<Bonus, Integer> implements Gen
     private static final String UPDATE_QUERY = "UPDATE bonus " +
             "SET name = ?, factor = ?" +
             "WHERE id = ?";
-    private static final String SELECT_QUERY = "SELECT * FROM bonus";
+    private static final String SELECT_QUERY_ALL = "SELECT * FROM bonus";
+    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM bonus WHERE id=?";
     private static final String CREATE_QUERY = "INSERT INTO bonus " +
             "(name, factor) " +
             "VALUES (?, ?)";
@@ -50,8 +51,12 @@ public class BonusDaoImpl extends AbstractJdbcDao<Bonus, Integer> implements Gen
 
 
     @Override
-    public String getSelectQuery() {
-        return SELECT_QUERY;
+    public String getSelectQueryAll() {
+        return SELECT_QUERY_ALL;
+    }
+    @Override
+    public String getSelectQueryById() {
+        return SELECT_QUERY_BY_ID;
     }
 
     @Override

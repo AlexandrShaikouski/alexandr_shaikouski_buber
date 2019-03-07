@@ -36,7 +36,7 @@ public class CommandCreateUser implements Command {
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         try {
-            user = userService.signUp(user);
+            userService.signUp(user);
             if(flag.equals("client")){
                 responseContent.setRouter(new Router(servletPath + "?command=main_page", Router.Type.REDIRECT));
             }else{
@@ -46,13 +46,12 @@ public class CommandCreateUser implements Command {
             request.setAttribute("message", e.getMessage());
             if(flag.equals("client")){
                 responseContent.setRouter(new Router("/buber?command=register_page", Router.Type.FORWARD));
-            }else{
+            }else if(flag.equals("admin")){
                 responseContent.setRouter(new Router("/buber?command=create_page", Router.Type.FORWARD));
             }
-
-        }finally {
-            return responseContent;
         }
+        return responseContent;
+
 
     }
 }

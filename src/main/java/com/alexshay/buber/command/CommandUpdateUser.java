@@ -72,7 +72,7 @@ public class CommandUpdateUser implements Command {
                     return date == null ? DateUtils.addHours(new Date(), countTimeBan) : DateUtils.addMonths(date, countTimeBan);
                 case "day":
                     return date == null ? DateUtils.addDays(new Date(), countTimeBan) : DateUtils.addDays(date, countTimeBan);
-                case "week":
+                case "admin.infouser.ban.week":
                     return date == null ? DateUtils.addWeeks(new Date(), countTimeBan) : DateUtils.addWeeks(date, countTimeBan);
                 case "month":
                     return date == null ? DateUtils.addMonths(new Date(), countTimeBan) : DateUtils.addMonths(date, countTimeBan);
