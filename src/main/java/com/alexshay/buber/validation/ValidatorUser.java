@@ -5,6 +5,6 @@ import com.alexshay.buber.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface Validator {
+public interface ValidatorUser {
     void validate(User user) throws ServiceException;
 }

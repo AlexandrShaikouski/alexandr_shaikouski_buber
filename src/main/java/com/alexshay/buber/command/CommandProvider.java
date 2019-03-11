@@ -33,6 +33,10 @@ public class CommandProvider {
         commandMap.put("sign_out", new CommandSignOut());
         commandMap.put("main_page", new CommandShowMainPage());
         commandMap.put("locale", new CommandChangeLocale());
+        commandMap.put("order", new CommandCreateOrder());
+        commandMap.put("check_order_driver", new CommandCheckOrderDriver());
+        commandMap.put("check_order_client", new CommandCheckOrderClient());
+        commandMap.put("accept_order", new CommandAcceptOrder());
     }
 
     /**

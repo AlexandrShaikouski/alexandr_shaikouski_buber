@@ -2,28 +2,18 @@ package com.alexshay.buber.service.impl;
 
 import com.alexshay.buber.dao.*;
 import com.alexshay.buber.dao.exception.DaoException;
-import com.alexshay.buber.domain.Bonus;
-import com.alexshay.buber.domain.Role;
-import com.alexshay.buber.domain.User;
-import com.alexshay.buber.domain.UserBonus;
+import com.alexshay.buber.domain.*;
 import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.email.MailGenerator;
 import com.alexshay.buber.service.exception.ServiceException;
 import com.alexshay.buber.validation.ValidationFactory;
-import com.alexshay.buber.validation.Validator;
-import com.alexshay.buber.validation.impl.AuthenticationValidator;
-import com.alexshay.buber.validation.impl.EmailValidatorImpl;
-import com.alexshay.buber.validation.impl.RepasswordKeyValidator;
+import com.alexshay.buber.validation.ValidatorUser;
 import com.alexshay.buber.validation.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Example of user service implementation
@@ -34,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signUp(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator validator = ValidationFactory.getInstance().getUserValidator();
+        ValidatorUser validator = ValidationFactory.getInstance().getUserValidator();
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             String password = encryptPassword(user.getPassword() + user.getLogin());
@@ -52,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signIn(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator authenticationValidator = ValidationFactory.getInstance().getAuthenticationValidator();
+        ValidatorUser authenticationValidator = ValidationFactory.getInstance().getAuthenticationValidator();
 
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
@@ -63,7 +53,8 @@ public class UserServiceImpl implements UserService {
             }
             authenticationValidator.validate(user);
             User userValid = userDao.getByLogin(login);
-
+            userValid.setStatus(UserStatus.ONLINE);
+            userDao.update(userValid);
             return userValid;
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);
@@ -126,14 +117,10 @@ public class UserServiceImpl implements UserService {
                 parameter.put("user_id", user.getId().toString());
                 List<UserBonus> userBonuses = userBonusDao.getByParameter(parameter);
                 if (userBonuses != null) {
-                    List<Bonus> bonuses = userBonuses.stream().map(s -> {
-                        try {
-                            return bonusDao.getByPK(s.getBonusId());
-                        } catch (DaoException e) {
-                            LOGGER.error(e);
-                        }
-                        return null;
-                    }).collect(Collectors.toList());
+                    List<Bonus> bonuses = new ArrayList<>();
+                    for(UserBonus userBonus : userBonuses){
+                        bonuses.add(bonusDao.getByPK(userBonus.getBonusId()));
+                    }
                     user.setBonuses(bonuses);
                 }
             }
@@ -164,7 +151,7 @@ public class UserServiceImpl implements UserService {
                 checkUser.setFirstName(user.getFirstName());
             }
             if(!checkUser.equals(User.builder().build())){
-                Validator validator = new UserValidatorImpl();
+                ValidatorUser validator = new UserValidatorImpl();
                 validator.validate(checkUser);
             }
             if(!user.getBonuses().isEmpty()){
@@ -205,7 +192,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void sendResetPasswordKey(User user) throws ServiceException {
-        Validator validator = ValidationFactory.getInstance().getEmailValidator();
+        ValidatorUser validator = ValidationFactory.getInstance().getEmailValidator();
         validator.validate(user);
         MailGenerator mailGenerator = new MailGenerator();
         String repasswordKey = generateRandomString();
@@ -227,7 +214,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkRepasswordKey(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
-        Validator validatorRepassword = ValidationFactory.getInstance().getRepasswordKeyValidator();
+        ValidatorUser validatorRepassword = ValidationFactory.getInstance().getRepasswordKeyValidator();
         try {
             user.setRepasswordKey(encryptPassword(user.getRepasswordKey()));
             validatorRepassword.validate(user);

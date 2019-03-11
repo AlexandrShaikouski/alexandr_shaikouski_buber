@@ -1,10 +1,7 @@
 package com.alexshay.buber.validation;
 
 
-import com.alexshay.buber.validation.impl.AuthenticationValidator;
-import com.alexshay.buber.validation.impl.EmailValidatorImpl;
-import com.alexshay.buber.validation.impl.RepasswordKeyValidator;
-import com.alexshay.buber.validation.impl.UserValidatorImpl;
+import com.alexshay.buber.validation.impl.*;
 
 public class ValidationFactory {
     private static ValidationFactory instance = new ValidationFactory();
@@ -13,16 +10,19 @@ public class ValidationFactory {
         return instance;
     }
 
-    public Validator getAuthenticationValidator(){
+    public ValidatorUser getAuthenticationValidator(){
         return new AuthenticationValidator();
     }
-    public Validator getEmailValidator(){
+    public ValidatorUser getEmailValidator(){
         return new EmailValidatorImpl();
     }
-    public Validator getRepasswordKeyValidator(){
+    public ValidatorUser getRepasswordKeyValidator(){
         return new RepasswordKeyValidator();
     }
-    public Validator getUserValidator(){
+    public ValidatorUser getUserValidator(){
         return new UserValidatorImpl();
+    }
+    public ValidatorTripOrder getTripOrderValidator(){
+        return new TripOrderValidator();
     }
 }

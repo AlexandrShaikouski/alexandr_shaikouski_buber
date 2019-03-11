@@ -5,10 +5,27 @@ import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.exception.ServiceException;
+import com.alexshay.buber.validation.ValidationFactory;
+import com.alexshay.buber.validation.ValidatorTripOrder;
+
+import javax.xml.validation.Validator;
 import java.util.List;
 
 public class TripOrderServiceImpl implements TripOrderService {
 
+
+    @Override
+    public TripOrder getById(TripOrder tripOrder) throws ServiceException {
+        ValidatorTripOrder validator = ValidationFactory.getInstance().getTripOrderValidator();
+        validator.validate(tripOrder);
+        DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
+        try {
+            GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);
+            return tripOrderDao.getByPK(tripOrder.getId());
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to get user DAO. ", e);
+        }
+    }
 
     @Override
     public List<TripOrder> getAll() throws ServiceException {
@@ -25,6 +42,8 @@ public class TripOrderServiceImpl implements TripOrderService {
 
     @Override
     public TripOrder createTripOrder(TripOrder tripOrder) throws ServiceException {
+        ValidatorTripOrder validator = ValidationFactory.getInstance().getTripOrderValidator();
+        validator.validate(tripOrder);
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);
@@ -49,6 +68,8 @@ public class TripOrderServiceImpl implements TripOrderService {
 
     @Override
     public void updateTripOrder(TripOrder tripOrder) throws ServiceException {
+        ValidatorTripOrder validator = ValidationFactory.getInstance().getTripOrderValidator();
+        validator.validate(tripOrder);
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);
@@ -78,6 +99,18 @@ public class TripOrderServiceImpl implements TripOrderService {
         try {
             TripOrderDao tripOrderDao = (TripOrderDao) daoFactory.getDao(TripOrder.class);
             return tripOrderDao.getByDriverId(driverId);
+
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to get user DAO. ", e);
+        }
+    }
+
+    @Override
+    public List<TripOrder> getByStausWaiting() throws ServiceException {
+        DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
+        try {
+            TripOrderDao tripOrderDao = (TripOrderDao) daoFactory.getDao(TripOrder.class);
+            return tripOrderDao.getByStatus("waiting");
 
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);

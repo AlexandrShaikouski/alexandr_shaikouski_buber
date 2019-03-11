@@ -7,9 +7,9 @@ import com.alexshay.buber.dao.UserDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.User;
 import com.alexshay.buber.service.exception.ServiceException;
-import com.alexshay.buber.validation.Validator;
+import com.alexshay.buber.validation.ValidatorUser;
 
-public class RepasswordKeyValidator implements Validator {
+public class RepasswordKeyValidator implements ValidatorUser {
     @Override
     public void validate(User user) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);

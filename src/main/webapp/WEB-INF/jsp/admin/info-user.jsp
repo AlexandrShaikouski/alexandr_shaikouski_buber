@@ -124,7 +124,7 @@
                                 <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
                                 <th><fmt:message key="admin.infouser.order.price" bundle="${lang}"/></th>
                                 <c:choose>
-                                    <c:when test="${role eq 'user'}">
+                                    <c:when test="${role eq 'client'}">
                                         <th><fmt:message key="admin.infouser.order.driverid" bundle="${lang}"/></th>
                                     </c:when>
                                     <c:otherwise>
@@ -142,7 +142,7 @@
                                     <td>${order.to}</td>
                                     <td>${order.price}</td>
                                     <c:choose>
-                                        <c:when test="${role eq 'user'}">
+                                        <c:when test="${role eq 'client'}">
                                             <td>${order.driverId}</td>
                                         </c:when>
                                         <c:otherwise>

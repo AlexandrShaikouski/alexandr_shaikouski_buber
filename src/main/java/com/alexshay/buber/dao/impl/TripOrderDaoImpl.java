@@ -110,9 +110,16 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
         return getTripOrders(driverId, sql);
     }
 
-    private List<TripOrder> getTripOrders(Integer driverId, String sql) throws DaoException {
+    @Override
+    @AutoConnection
+    public List<TripOrder> getByStatus(String status) throws DaoException {
+        String sql = getSelectQueryAll() + " WHERE status_order=?";
+        return getTripOrders(status, sql);
+    }
+
+    private List<TripOrder> getTripOrders(Object parameter, String sql) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(sql)){
-            statement.setString(1,driverId.toString());
+            statement.setString(1,parameter.toString());
             ResultSet resultSet = statement.executeQuery();
             List<TripOrder> parseRes = parseResultSet(resultSet);
             return parseRes;

@@ -30,7 +30,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+        Cookie[] cookies = httpServletRequest.getCookies();
         String jwt = CookieFinder.getValueByName("keyjwt", cookies).orElse("");
         try {
             if (!jwt.equals("")) {
@@ -39,6 +39,7 @@ public class AuthenticationFilter implements Filter {
                 String id = userJWTKey.decodeJWT(jwt).getId();
                 Integer userId = Integer.parseInt(id);
                 User user = userService.getUserById(userId);
+                ((HttpServletRequest) request).getSession().setAttribute("user", user);
                 switch (user.getRole()) {
                     case ADMIN:
                         httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);

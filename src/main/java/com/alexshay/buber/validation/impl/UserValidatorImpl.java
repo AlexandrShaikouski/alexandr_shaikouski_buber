@@ -4,12 +4,9 @@ import com.alexshay.buber.dao.*;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.User;
 import com.alexshay.buber.service.exception.ServiceException;
-import com.alexshay.buber.validation.Validator;
+import com.alexshay.buber.validation.ValidatorUser;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserValidatorImpl implements Validator {
+public class UserValidatorImpl implements ValidatorUser {
     private static final String LOGIN_REGEX = "^[a-zA-Z0-9]{2,45}$";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9!@#$%^&*]{6,45}$";
     private static final String EMAIL_REGEX = "^[-a-z0-9!#$%&'*+=?^_`{|}~]+(?:\\.[-a-z0-9!#$%&'*+=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$";
