@@ -1,6 +1,7 @@
 package com.alexshay.buber.filter;
 
 import com.alexshay.buber.domain.Role;
+import com.alexshay.buber.domain.User;
 import com.alexshay.buber.util.CookieFinder;
 import com.alexshay.buber.util.UserJWTKey;
 
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(dispatcherTypes = {
@@ -31,7 +33,7 @@ public class GuardianPageAdminFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-        Cookie [] cookies = httpServletRequest.getCookies();
+       /* Cookie [] cookies = httpServletRequest.getCookies();
         String jwt = CookieFinder.getValueByName("keyjwt", cookies).orElse("");
         if(!jwt.equals("")){
             UserJWTKey userJWTKey = UserJWTKey.getInstance();
@@ -39,6 +41,12 @@ public class GuardianPageAdminFilter implements Filter {
             if (!role.equals(Role.ADMIN.value())) {
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
             }
+        }*/
+
+        HttpSession session = httpServletRequest.getSession();
+        User user = (User) session.getAttribute("user");
+        if (!user.getRole().equals(Role.ADMIN)) {
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
         }
 
 

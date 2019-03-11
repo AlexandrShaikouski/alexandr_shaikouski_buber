@@ -56,19 +56,19 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
-        ((HttpServletRequest) request).getSession().setAttribute("user", user);
-        switch (user.getRole()) {
-            case ADMIN:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);
-                break;
-            case DRIVER:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/driver/driver.jsp").forward(httpServletRequest, httpServletResponse);
-                break;
-            case CLIENT:
-                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/client/client.jsp").forward(httpServletRequest, httpServletResponse);
-                break;
+        if (user != null) {
+            switch (user.getRole()) {
+                case ADMIN:
+                    httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);
+                    break;
+                case DRIVER:
+                    httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/driver/driver.jsp").forward(httpServletRequest, httpServletResponse);
+                    break;
+                case CLIENT:
+                    httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/client/client.jsp").forward(httpServletRequest, httpServletResponse);
+                    break;
+            }
         }
-        
         chain.doFilter(request, response);
 
     }
