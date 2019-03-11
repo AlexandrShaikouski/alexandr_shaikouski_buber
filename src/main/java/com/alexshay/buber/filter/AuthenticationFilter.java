@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(filterName = "AuthenticationFilter", dispatcherTypes = {
@@ -30,7 +31,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        Cookie[] cookies = httpServletRequest.getCookies();
+        /*Cookie[] cookies = httpServletRequest.getCookies();
         String jwt = CookieFinder.getValueByName("keyjwt", cookies).orElse("");
         try {
             if (!jwt.equals("")) {
@@ -51,11 +52,23 @@ public class AuthenticationFilter implements Filter {
                         httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/client/client.jsp").forward(httpServletRequest, httpServletResponse);
                         break;
                 }
-            }
-        } catch (ServiceException e) {
-            request.setAttribute("message", e.getMessage());
-            httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(httpServletRequest, httpServletResponse);
+            }*/
+
+        HttpSession session = httpServletRequest.getSession();
+        User user = (User) session.getAttribute("user");
+        ((HttpServletRequest) request).getSession().setAttribute("user", user);
+        switch (user.getRole()) {
+            case ADMIN:
+                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(httpServletRequest, httpServletResponse);
+                break;
+            case DRIVER:
+                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/driver/driver.jsp").forward(httpServletRequest, httpServletResponse);
+                break;
+            case CLIENT:
+                httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/client/client.jsp").forward(httpServletRequest, httpServletResponse);
+                break;
         }
+        
         chain.doFilter(request, response);
 
     }
