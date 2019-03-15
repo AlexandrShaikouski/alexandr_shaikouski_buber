@@ -3,7 +3,8 @@ package com.alexshay.buber.command;
 import com.alexshay.buber.domain.OrderStatus;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.LocaleBundle;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.exception.ServiceException;
@@ -12,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class CommandCreateOrder implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
+        ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
         ResponseContent responseContent = new ResponseContent();
         TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
         String from = request.getParameter("from");
@@ -42,7 +45,7 @@ public class CommandCreateOrder implements Command {
 
             session.setAttribute("tripOrder",tripOrder);
 
-            responseParameters.put("messageInfo","Order was successful");
+            responseParameters.put("messageInfo",resourceBundle.getString("client.info.successorder"));
         } catch (ServiceException e) {
             responseParameters.put("message",e.getMessage());
         }

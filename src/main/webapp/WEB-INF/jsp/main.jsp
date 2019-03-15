@@ -1,7 +1,3 @@
-<p>Login data</p>
-<a>admin = admin1</a></br>
-<a>client = client</a></br>
-<a>driver = driver</a></<br>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -84,9 +80,9 @@
             <div class="modal-content">
                 <div class="modal-header"><button class="close" type="button" data-dismiss="modal">x</button>
                 </div>
-                <h3 class="modal-title text-center">Message</h3>
+                <h3 class="modal-title text-center"><fmt:message key="all.footer.message" bundle="${lang}"/></h3>
                 <div class="modal-body text-center">${message}</div>
-                <div class="modal-footer"><button class="btn btn-default" type="button" data-dismiss="modal">Close</button></div>
+                <div class="modal-footer"><button class="btn btn-default" type="button" data-dismiss="modal"><fmt:message key="all.footer.close" bundle="${lang}"/></button></div>
             </div>
         </div>
     </div>

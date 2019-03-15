@@ -24,7 +24,7 @@
 
 <div class="container-scroller">
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <div class="text-center navbar-brand-wrapper d-none d-sm-block align-items-center justify-content-center">
             <a class="navbar-brand brand-logo" href="${pageContext.servletContext.contextPath}"><img
                     src="${pageContext.servletContext.contextPath}/static/images/logo.png" alt="logo"/></a>
             <a class="navbar-brand brand-logo-mini" href="${pageContext.servletContext.contextPath}"><img
@@ -175,7 +175,7 @@
 <div id="modalOrder" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <h3 class="modal-title text-center"><fmt:message key="client,footer.confirmorder" bundle="${lang}"/></h3>
+            <h3 class="modal-title text-center"><fmt:message key="client.footer.confirmorder" bundle="${lang}"/></h3>
             <div class="modal-body"><fmt:message key="admin.infouser.order.from" bundle="${lang}"/>:<p id="from"></p>
             </div>
             <div class="modal-body"><fmt:message key="admin.infouser.order.to" bundle="${lang}"/>:<p id="to"></p></div>

@@ -1,13 +1,11 @@
 package com.alexshay.buber.command;
 
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.dto.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.exception.ServiceException;
-import com.alexshay.buber.util.UserJWTKey;
+import com.alexshay.buber.util.ResponseContent;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +14,6 @@ public class CommandSignInUser implements Command {
     public ResponseContent execute(HttpServletRequest request) {
         ResponseContent responseContent = new ResponseContent();
         String servletPath = request.getRequestURL().toString();
-        UserJWTKey userJWTKey = UserJWTKey.getInstance();
         UserService userService = ServiceFactory.getInstance().getUserService();
         String login = request.getParameter("login");
         String password = request.getParameter("passwordUser");
@@ -30,10 +27,6 @@ public class CommandSignInUser implements Command {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-
-            /*Cookie[] cookies = new Cookie[]{
-                    new Cookie("keyjwt", userJWTKey.createJWT(user))};
-            responseContent.setCookies(cookies);*/
             responseContent.setRouter(new Router(servletPath + "?command=main_page", Router.Type.REDIRECT));
             return responseContent;
         } catch (ServiceException e) {

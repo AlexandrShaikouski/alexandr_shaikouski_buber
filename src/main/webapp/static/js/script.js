@@ -13,6 +13,7 @@
         var counter = 0;
         if (!login_regex.test(login)) {
             $('#login').addClass('alert-danger');
+            $('#login');
             counter = counter + 1;
         } else {
             $('#login').removeClass('alert-danger');

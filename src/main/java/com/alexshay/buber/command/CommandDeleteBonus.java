@@ -1,6 +1,6 @@
 package com.alexshay.buber.command;
 
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.exception.ServiceException;

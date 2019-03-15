@@ -2,7 +2,7 @@ package com.alexshay.buber.controller;
 
 import com.alexshay.buber.command.Command;
 import com.alexshay.buber.command.CommandProvider;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;

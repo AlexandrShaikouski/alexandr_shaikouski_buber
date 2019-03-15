@@ -26,16 +26,16 @@
                 <div class="col-lg-7 mx-auto text-white">
                     <div class="row align-items-center d-flex flex-row">
                         <div class="col-lg-9 text-lg-right pr-lg-4">
-                            <h1 class="display-1 mb-0">404</h1>
+                            <h1 class="display-1 mb-0">BAN</h1>
                         </div>
                         <div class="col-lg-12 error-page-divider text-lg-left pl-lg-4">
                             <h2><fmt:message key="error.page.sorry" bundle="${lang}"/></h2>
-                            <h3 class="font-weight-light"><fmt:message key="error.page.message404" bundle="${lang}"/></h3>
+                            <h3 class="font-weight-light"><fmt:message key="error.page.ban" bundle="${lang}"/> <fmt:formatDate value="${sessionScope.user.statusBan}" pattern="HH:mm dd-MM-yyyy" /></h3>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-12 text-center mt-xl-2">
-                            <a class="text-white font-weight-medium" href="${pageContext.servletContext.contextPath}"><fmt:message key="error.page.back" bundle="${lang}"/></a>
+                            <a class="text-white font-weight-medium" href="${pageContext.servletContext.contextPath}/buber?command=sign_out"><fmt:message key="error.page.back" bundle="${lang}"/></a>
                         </div>
                     </div>
                     <div class="row mt-5">

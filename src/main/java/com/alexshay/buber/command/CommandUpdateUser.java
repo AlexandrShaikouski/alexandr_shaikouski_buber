@@ -1,7 +1,7 @@
 package com.alexshay.buber.command;
 
 import com.alexshay.buber.domain.*;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.BonusService;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.UserService;
@@ -30,7 +30,7 @@ public class CommandUpdateUser implements Command {
         User user = User.builder().build();
         try {
             if(role.equals("client")){
-                int bonusId = bonusId = Integer.parseInt(bonusIdStr);
+                int bonusId = Integer.parseInt(bonusIdStr);
                 if (bonusId != -1) {
                     BonusService bonusService = ServiceFactory.getInstance().getBonusService();
                     Bonus bonus = bonusService.getById(bonusId);
@@ -50,9 +50,9 @@ public class CommandUpdateUser implements Command {
             request.setAttribute("user", user);
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("WEB-INF/jsp/admin/info-user.jsp", Router.Type.FORWARD));
-        } finally {
-            return responseContent;
         }
+        return responseContent;
+
 
 
     }

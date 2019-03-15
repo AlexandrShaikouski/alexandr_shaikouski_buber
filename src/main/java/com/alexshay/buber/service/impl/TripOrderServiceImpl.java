@@ -8,7 +8,6 @@ import com.alexshay.buber.service.exception.ServiceException;
 import com.alexshay.buber.validation.ValidationFactory;
 import com.alexshay.buber.validation.ValidatorTripOrder;
 
-import javax.xml.validation.Validator;
 import java.util.List;
 
 public class TripOrderServiceImpl implements TripOrderService {
@@ -68,7 +67,8 @@ public class TripOrderServiceImpl implements TripOrderService {
 
     @Override
     public void updateTripOrder(TripOrder tripOrder) throws ServiceException {
-        ValidatorTripOrder validator = ValidationFactory.getInstance().getTripOrderValidator();
+        ValidatorTripOrder validator;
+        validator = ValidationFactory.getInstance().getTripOrderValidator();
         validator.validate(tripOrder);
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {

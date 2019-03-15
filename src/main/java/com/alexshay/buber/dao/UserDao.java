@@ -4,7 +4,6 @@ import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserDao extends GenericDao<User, Integer>{
     User getByLogin(String login) throws DaoException;

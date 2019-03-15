@@ -1,12 +1,12 @@
 package com.alexshay.buber.command;
 
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-public class CommandSignOut implements Command {
+public class CommandLogOut implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
         ResponseContent responseContent = new ResponseContent();

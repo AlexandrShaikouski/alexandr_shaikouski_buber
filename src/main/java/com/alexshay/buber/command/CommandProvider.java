@@ -30,7 +30,7 @@ public class CommandProvider {
         commandMap.put("list_orders", new CommandShowAllOrder());
         commandMap.put("register_page", new CommandShowRegisterPage());
         commandMap.put("reset_password", new CommandResetPassword());
-        commandMap.put("sign_out", new CommandSignOut());
+        commandMap.put("sign_out", new CommandLogOut());
         commandMap.put("main_page", new CommandShowMainPage());
         commandMap.put("locale", new CommandChangeLocale());
         commandMap.put("order", new CommandCreateOrder());

@@ -1,4 +1,4 @@
-package com.alexshay.buber.dto;
+package com.alexshay.buber.util;
 
 import com.alexshay.buber.command.Router;
 

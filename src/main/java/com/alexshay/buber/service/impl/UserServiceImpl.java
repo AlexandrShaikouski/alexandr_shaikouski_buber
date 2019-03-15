@@ -137,19 +137,9 @@ public class UserServiceImpl implements UserService {
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             User userValid = userDao.getByPK(user.getId());
-            User checkUser = User.builder().build();
-            if(!userValid.getLogin().equals(user.getLogin())){
-                checkUser.setLogin(user.getLogin());
-            }
-            if(!userValid.getEmail().equals(user.getEmail())){
-                checkUser.setEmail(user.getEmail());
-            }
-            if(!userValid.getPhone().equals(user.getPhone())){
-                checkUser.setPhone(user.getPhone());
-            }
-            if(!userValid.getFirstName().equals(user.getFirstName())){
-                checkUser.setFirstName(user.getFirstName());
-            }
+
+            User checkUser = getCheckUser(user, userValid);
+
             if(!checkUser.equals(User.builder().build())){
                 ValidatorUser validator = new UserValidatorImpl();
                 validator.validate(checkUser);
@@ -219,7 +209,6 @@ public class UserServiceImpl implements UserService {
             user.setRepasswordKey(encryptPassword(user.getRepasswordKey()));
             validatorRepassword.validate(user);
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
-            Map<String,String> parameter = new HashMap<>();
             user = userDao.getByEmail(user.getEmail());
             user.setRepasswordKey(null);
             userDao.update(user);
@@ -245,6 +234,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private User getCheckUser(User user, User userValid) {
+        User checkUser = User.builder().build();
 
+        if(!userValid.getLogin().equals(user.getLogin())){
+            checkUser.setLogin(user.getLogin());
+        }
+        if(!userValid.getEmail().equals(user.getEmail())){
+            checkUser.setEmail(user.getEmail());
+        }
+        if(!userValid.getPhone().equals(user.getPhone())){
+            checkUser.setPhone(user.getPhone());
+        }
+        if(!userValid.getFirstName().equals(user.getFirstName())){
+            checkUser.setFirstName(user.getFirstName());
+        }
+        return checkUser;
+    }
 
 }

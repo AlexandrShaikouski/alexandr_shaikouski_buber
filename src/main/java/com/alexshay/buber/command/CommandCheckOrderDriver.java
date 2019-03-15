@@ -4,7 +4,7 @@ import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.domain.User;
 import com.alexshay.buber.domain.UserStatus;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.exception.ServiceException;

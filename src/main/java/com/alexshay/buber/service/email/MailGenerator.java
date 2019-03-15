@@ -1,6 +1,7 @@
 package com.alexshay.buber.service.email;
 
 import com.alexshay.buber.service.exception.ServiceException;
+import com.alexshay.buber.util.LocaleBundle;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,15 +14,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class MailGenerator {
     public void sendMessage(String subject, String message, List<String> email ) throws ServiceException {
+        ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
         final Properties properties = new Properties();
         try {
             String path = File.separator + "email.properties";
             ClassLoader classLoader =  MailGenerator.class.getClassLoader();
             InputStream in = classLoader.getResourceAsStream(path);
             properties.load(in);
+            assert in != null;
             in.close();
             Session mailSession = Session.getDefaultInstance(properties);
             MimeMessage mimeMessage = new MimeMessage(mailSession);
@@ -38,7 +42,7 @@ public class MailGenerator {
             transport.close();
 
         } catch (IOException | MessagingException e) {
-            throw new ServiceException("Failed send mail",e);
+            throw new ServiceException(resourceBundle.getString("all.error.failsendmail"),e);
         }
     }
 }

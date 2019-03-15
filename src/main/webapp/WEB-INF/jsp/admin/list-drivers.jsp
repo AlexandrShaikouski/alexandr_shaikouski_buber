@@ -13,7 +13,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-dark text-center">
+                        <table class="table table-bordered table-dark text-center">
                             <thead>
                             <tr>
                                 <th>ID</th>

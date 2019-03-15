@@ -3,7 +3,8 @@ package com.alexshay.buber.command;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.LocaleBundle;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.exception.ServiceException;
@@ -12,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class CommandCheckOrderClient implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
+        ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
         ResponseContent responseContent = new ResponseContent();
         Map<String, Object> responseParameters = new HashMap<>();
         HttpSession session = request.getSession();
@@ -31,7 +34,7 @@ public class CommandCheckOrderClient implements Command {
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
                 tripOrder = tripOrderService.getById(tripOrder);
                 if(tripOrder.getDriverId() != 0){
-                    responseParameters.put("messageInfo", "Your order was accepted");
+                    responseParameters.put("messageInfo", resourceBundle.getString("client.info.acceptorder"));
                     responseParameters.put("driverId", tripOrder.getDriverId());
                 }
             }

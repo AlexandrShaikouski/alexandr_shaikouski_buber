@@ -5,9 +5,9 @@
 
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
-<fmt:setBundle basename="locale"  var="lang" scope="application"/>
+<fmt:setBundle basename="locale" var="lang" scope="application"/>
 <div class="row">
-    <form id="form" method="post" action="${pageContext.servletContext.contextPath}/buber">
+    <form id="form" class="col-md-12" method="post" action="${pageContext.servletContext.contextPath}/buber">
         <input type="hidden" name="command" value="update_user">
         <input type="hidden" name="id" value="${user.id}">
         <input type="hidden" name="role" value="${role}">
@@ -51,13 +51,17 @@
                 <c:otherwise>
 
                     <div class="modal-header">
-                        <h3 class="text-black"><fmt:message key="admin.infouser.ban.until" bundle="${lang}"/> ${user.statusBan}</h3>
-                        <button class="close" type="button" onclick="confirmDelete(document.getElementById('form'),'delete_ban')"><fmt:message key="all.page.delete" bundle="${lang}"/></button>
+                        <h3 class="text-black"><fmt:message key="admin.infouser.ban.until"
+                                                            bundle="${lang}"/> <fmt:formatDate value="${user.statusBan}" pattern="HH:mm dd-MM-yyyy" /></h3>
+                        <button class="close" type="button"
+                                onclick="confirmDelete(document.getElementById('form'),'delete_ban')"><fmt:message
+                                key="all.page.delete" bundle="${lang}"/></button>
                     </div>
                 </c:otherwise>
             </c:choose>
         </div>
-        <div class="col-md-12"><h4 class="text-primary"><fmt:message key="admin.infouser.ban.disable" bundle="${lang}"/></h4></div>
+        <div class="col-md-12"><h4 class="text-primary"><fmt:message key="admin.infouser.ban.disable"
+                                                                     bundle="${lang}"/></h4></div>
         <div class="col-md-12">
             <div class="form-group">
                 <label for="ban-time"><fmt:message key="admin.infouser.ban.addban" bundle="${lang}"/>n</label>
@@ -86,15 +90,20 @@
                         <c:forEach items="${user.bonuses}" var="bonus" varStatus="status">
                             <div class="modal-header">
                                 <input type="hidden" name="bonus_id_delete" value="${bonus.id}">
-                                <h4 class="text-black">${bonus.name} <fmt:message key="admin.infouser.bonus.withsale" bundle="${lang}"/> %${bonus.factor}</h4>
-                                <button class="close" type="button" onclick="confirmDelete(document.getElementById('form'),'delete_bonus')"><fmt:message key="all.page.delete" bundle="${lang}"/></button>
+                                <h4 class="text-black">${bonus.name} <fmt:message key="admin.infouser.bonus.withsale"
+                                                                                  bundle="${lang}"/>
+                                    %${bonus.factor}</h4>
+                                <button class="close" type="button"
+                                        onclick="confirmDelete(document.getElementById('form'),'delete_bonus')">
+                                    <fmt:message key="all.page.delete" bundle="${lang}"/></button>
                             </div>
 
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
                 <div class="form-group">
-                    <label for="create-bonus"><fmt:message key="admin.infouser.bonus.addbonus" bundle="${lang}"/></label>
+                    <label for="create-bonus"><fmt:message key="admin.infouser.bonus.addbonus"
+                                                           bundle="${lang}"/></label>
                     <select id="create-bonus" class="form-control" name="bonus_id">
                         <option value="-1"><fmt:message key="admin.infouser.ban.none" bundle="${lang}"/></option>
                         <c:forEach items="${listBonuses}" var="bonus" varStatus="status">
@@ -107,7 +116,8 @@
         </c:if>
 
         <div class="col-md-12">
-            <button class="btn btn-gradient-primary" type="submit" ><fmt:message key="all.page.save" bundle="${lang}"/></button>
+            <button class="btn btn-gradient-primary" type="submit"><fmt:message key="all.page.save"
+                                                                                bundle="${lang}"/></button>
             <button class="btn btn-light" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
         </div>
     </form>
@@ -117,7 +127,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                        <table class="table table-dark text-center">
+                        <table class="table table-bordered table-dark text-center">
                             <thead>
                             <tr>
                                 <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
@@ -162,7 +172,13 @@
 
         </c:when>
         <c:otherwise>
-            <h1 class="display1"><fmt:message key="admin.page.noresults" bundle="${lang}"/></h1>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                    </div>
+                </div>
+            </div>
         </c:otherwise>
     </c:choose>
 </div>

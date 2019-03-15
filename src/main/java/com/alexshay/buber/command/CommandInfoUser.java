@@ -3,7 +3,7 @@ package com.alexshay.buber.command;
 import com.alexshay.buber.domain.Bonus;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.BonusService;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
@@ -44,8 +44,8 @@ public class CommandInfoUser implements Command {
         } catch (ServiceException e) {
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("/", Router.Type.FORWARD));
-        } finally {
-            return responseContent;
         }
+        return responseContent;
+
     }
 }

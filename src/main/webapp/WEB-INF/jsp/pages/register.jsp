@@ -64,7 +64,7 @@
                             <input type="hidden" name="flag" value="client">
                             <div class="form-group">
                                 <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
-                                <input name="login"  title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
+                                <input name="login" title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
                                 <label for="passwordUser"><fmt:message key="all.page.password" bundle="${lang}"/></label>

@@ -33,23 +33,11 @@ public class GuardianPageAdminFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-       /* Cookie [] cookies = httpServletRequest.getCookies();
-        String jwt = CookieFinder.getValueByName("keyjwt", cookies).orElse("");
-        if(!jwt.equals("")){
-            UserJWTKey userJWTKey = UserJWTKey.getInstance();
-            String role = userJWTKey.decodeJWT(jwt).getIssuer();
-            if (!role.equals(Role.ADMIN.value())) {
-                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
-            }
-        }*/
-
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
         if (!user.getRole().equals(Role.ADMIN)) {
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
         }
-
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

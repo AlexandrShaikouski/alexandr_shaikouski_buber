@@ -1,6 +1,6 @@
 package com.alexshay.buber.command;
 
-import com.alexshay.buber.dto.ResponseContent;
+import com.alexshay.buber.util.ResponseContent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

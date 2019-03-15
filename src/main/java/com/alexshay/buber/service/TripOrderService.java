@@ -4,7 +4,6 @@ import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.service.exception.ServiceException;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TripOrderService {
     TripOrder getById(TripOrder tripOrder) throws ServiceException;
