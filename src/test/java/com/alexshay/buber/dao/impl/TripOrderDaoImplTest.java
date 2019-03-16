@@ -22,20 +22,20 @@ public class TripOrderDaoImplTest {
     private static final String DELETE_QUERY = "DELETE FROM trip_order WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE trip_order " +
             "SET from_x = ?, to_y = ?, status_order = ?, price = ?, " +
-            "client_id = ?, driver_id = ?, bonus_id = ? " +
+            "client_id = ?, driver_id = ?, bonus_id = ?, date_create = ? " +
             "WHERE id = ?";
     private static final String SELECT_QUERY = "SELECT * FROM trip_order";
     private static final String CREATE_QUERY = "INSERT INTO trip_order " +
-            "(from_x, to_y, status_order, price, client_id, driver_id, bonus_id) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "(from_x, to_y, status_order, price, client_id, driver_id, bonus_id, date_create) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Before
     public void init() throws DaoException{
 
         user  = User.builder().
-                login("A").
+                login("T").
                 password("871FF76E24362EFA16E7F39D65EE380ADE9129D969E895CE34E5DB54252604FB").
-                firstName("A").
+                firstName("T").
                 lastName("Shaikouski").
                 email("sash_shay@mail.ruff").
                 phone("+373356182421").
@@ -52,6 +52,7 @@ public class TripOrderDaoImplTest {
                 to("53.8853376,27.5546112,13").
                 statusOrder(OrderStatus.WAITING).
                 price(3.4f).
+                dateCreate(new Date()).
                 clientId(user.getId()).
                 build();
 

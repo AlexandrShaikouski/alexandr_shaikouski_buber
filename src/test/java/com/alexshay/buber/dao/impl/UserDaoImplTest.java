@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -55,6 +56,7 @@ public class UserDaoImplTest {
                 registrationTime(new Date()).
                 role(Role.ADMIN).
                 status(UserStatus.OFF_LINE).
+                bonuses(Collections.emptyList()).
                 build();
 
 

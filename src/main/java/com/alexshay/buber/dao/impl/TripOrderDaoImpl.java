@@ -18,7 +18,7 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
     private static final String DELETE_QUERY = "DELETE FROM trip_order WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE trip_order " +
             "SET from_x = ?, to_y = ?, status_order = ?, price = ?, " +
-            "client_id = ?, driver_id = ?, bonus_id = ?, date_create = ?" +
+            "client_id = ?, driver_id = ?, bonus_id = ?, date_create = ? " +
             "WHERE id = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM trip_order " +
             "WHERE id=?";
@@ -71,7 +71,7 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, TripOrder object) throws SQLException {
         prepareStatementForInsert(statement, object);
-        statement.setInt(8, object.getId());
+        statement.setInt(9, object.getId());
     }
 
     @Override
