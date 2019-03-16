@@ -2,6 +2,7 @@ package com.alexshay.buber.domain;
 
 public enum OrderStatus {
     WAITING("waiting"),
+    PENDING("pending"),
     IN_PROGRESS("in-progress"),
     COMPLETE("complete");
 

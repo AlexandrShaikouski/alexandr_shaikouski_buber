@@ -36,7 +36,7 @@ public class CommandAcceptOrder implements Command {
                 tripOrder = tripOrderService.getById(tripOrder);
                 if(tripOrder.getDriverId() == 0){
                     tripOrder.setDriverId(user.getId());
-                    tripOrder.setStatusOrder(OrderStatus.IN_PROGRESS);
+                    tripOrder.setStatusOrder(OrderStatus.PENDING);
                     session.setAttribute("tripOrder", tripOrder);
                     tripOrderService.updateTripOrder(tripOrder);
                     responseParameters.put("tripOrder", tripOrder);

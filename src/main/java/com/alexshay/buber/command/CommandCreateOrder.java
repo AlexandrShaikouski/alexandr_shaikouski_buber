@@ -11,6 +11,7 @@ import com.alexshay.buber.service.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -33,6 +34,7 @@ public class CommandCreateOrder implements Command {
         TripOrder tripOrder = TripOrder.builder().
                 from(from).
                 to(to).
+                dateCreate(new Date()).
                 price(price).
                 clientId(clientId).
                 statusOrder(OrderStatus.WAITING).

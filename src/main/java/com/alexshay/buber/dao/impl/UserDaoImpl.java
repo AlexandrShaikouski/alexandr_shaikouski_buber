@@ -10,6 +10,7 @@ import com.alexshay.buber.domain.UserStatus;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,6 +65,7 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
                     role(Role.fromValue(rs.getString("role"))).
                     repasswordKey(rs.getString("repassword_key")).
                     status(UserStatus.fromValue(rs.getString("status"))).
+                    bonuses(Collections.emptyList()).
                     build();
             userList.add(user);
         }

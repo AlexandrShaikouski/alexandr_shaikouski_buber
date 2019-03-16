@@ -75,7 +75,7 @@
                 </select>
             </div>
             <label for="count-time-ban"><fmt:message key="admin.infouser.ban.count" bundle="${lang}"/></label>
-            <input id="count-time-ban" type="number" name="count_time_ban">
+            <input id="count-time-ban" type="number" max="999" name="count_time_ban">
         </div>
         <br>
         <c:if test="${role == 'client'}">

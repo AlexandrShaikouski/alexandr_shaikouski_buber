@@ -11,20 +11,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implements TripOrderDao {
     private static final String DELETE_QUERY = "DELETE FROM trip_order WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE trip_order " +
             "SET from_x = ?, to_y = ?, status_order = ?, price = ?, " +
-            "client_id = ?, driver_id = ?, bonus_id = ? " +
+            "client_id = ?, driver_id = ?, bonus_id = ?, date_create = ?" +
             "WHERE id = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT * FROM trip_order " +
             "WHERE id=?";
     private static final String SELECT_QUERY_ALL = "SELECT * FROM trip_order";
     private static final String CREATE_QUERY = "INSERT INTO trip_order " +
-            "(from_x, to_y, status_order, price, client_id, driver_id, bonus_id) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "(from_x, to_y, status_order, price, client_id, driver_id, bonus_id, date_create) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     @Override
     protected List<TripOrder> parseResultSet(ResultSet rs) throws SQLException {
         List<TripOrder> tripOrders = new ArrayList<>();
@@ -34,6 +35,7 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
                     from(rs.getString("from_x")).
                     to(rs.getString("to_y")).
                     statusOrder(OrderStatus.fromValue(rs.getString("status_order"))).
+                    dateCreate(new Date(rs.getLong("date_create")) ).
                     price(rs.getFloat("price")).
                     clientId(rs.getInt("client_id")).
                     driverId(rs.getInt("driver_id")).
@@ -63,6 +65,7 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
         }else{
             statement.setNull(++counter, object.getBonusId());
         }
+        statement.setLong(++counter,object.getDateCreate().getTime());
     }
 
     @Override

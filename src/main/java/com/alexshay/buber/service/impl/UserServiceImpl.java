@@ -249,6 +249,9 @@ public class UserServiceImpl implements UserService {
         if(!userValid.getFirstName().equals(user.getFirstName())){
             checkUser.setFirstName(user.getFirstName());
         }
+        if(!userValid.getStatus().equals(user.getStatus())){
+            checkUser.setStatus(user.getStatus());
+        }
         return checkUser;
     }
 
