@@ -16,8 +16,8 @@ public class EmailValidatorImpl implements ValidatorUser {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
-            if(userDao.getByEmail(user.getEmail()) != null){
-                throw new ServiceException(resourceBundle.getString("all.error.mailexist"));
+            if(userDao.getByEmail(user.getEmail()) == null){
+                throw new ServiceException(resourceBundle.getString("all.error.mailnotexist"));
             }
         }catch (DaoException e){
             throw new ServiceException(resourceBundle.getString("all.error.failgetdao"), e);

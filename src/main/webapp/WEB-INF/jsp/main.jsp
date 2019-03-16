@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="bub" uri="bubertags" %>
 
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
@@ -75,18 +76,8 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/misc.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <c:if test="${message != null}">
-    <div id="myModal"  class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" data-dismiss="modal">x</button>
-                </div>
-                <h3 class="modal-title text-center"><fmt:message key="all.footer.message" bundle="${lang}"/></h3>
-                <div class="modal-body text-center">${message}</div>
-                <div class="modal-footer"><button class="btn btn-default" type="button" data-dismiss="modal"><fmt:message key="all.footer.close" bundle="${lang}"/></button></div>
-            </div>
-        </div>
-    </div>
-    <button id="error-gid" style="display: none" type="button" data-toggle="modal" data-target="#myModal"/>
+    <bub:infoMessage message="${message}"/>
+    <button id="error-gid" style="display: none" type="button" data-toggle="modal" data-target="#modalInfoMessage"/>
     <script>$('#error-gid').trigger('click');</script>
 </c:if>
 

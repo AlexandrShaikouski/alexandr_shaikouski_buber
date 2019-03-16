@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="header.jsp"></c:import>
+<c:import url="header.jsp"/>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-4"><h2 class="text-black">Id : #${user.id}</h2></div>
             <div class="col-md-4"></div>
-            <div class="col-md-4"><h4 class="text-secondary">Registration date : ${user.registrationTime}</h4></div>
+            <div class="col-md-4"><h4 class="text-secondary"><fmt:message key="admin.infouser.regdate" bundle="${lang}"/> : ${user.registrationTime}</h4></div>
         </div>
         <div class="col-md-12">
             <div class="card">
@@ -64,7 +64,7 @@
                                                                      bundle="${lang}"/></h4></div>
         <div class="col-md-12">
             <div class="form-group">
-                <label for="ban-time"><fmt:message key="admin.infouser.ban.addban" bundle="${lang}"/>n</label>
+                <label for="ban-time"><fmt:message key="admin.infouser.ban.addban" bundle="${lang}"/></label>
                 <select id="ban-time" class="form-control" name="ban_time">
                     <option value="none"><fmt:message key="admin.infouser.ban.none" bundle="${lang}"/></option>
                     <option value="hour"><fmt:message key="admin.infouser.ban.hour" bundle="${lang}"/></option>
