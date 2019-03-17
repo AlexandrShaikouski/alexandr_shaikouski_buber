@@ -153,7 +153,7 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
-<script src="${pageContext.servletContext.contextPath}/static/js/geocoder-client.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/client.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 
 <bub:infoMessage/>
@@ -173,9 +173,9 @@
                     <div class="modal-body">
                         <label for="use-bonus"><fmt:message key="client.footer.usebonus" bundle="${lang}"/></label>
                         <select id="use-bonus" class="form-control" name="bonus_id">
-                            <option value="0"><fmt:message key="admin.infouser.ban.none" bundle="${lang}"/></option>
+                            <option id="factor0" value="0"><fmt:message key="admin.infouser.ban.none" bundle="${lang}"/></option>
                             <c:forEach items="${sessionScope.user.bonuses}" var="bonus" varStatus="status">
-                                <option value="${bonus.id}">${bonus.name}(${bonus.factor})</option>
+                                <option id="factor${bonus.id}" value="${bonus.id}">${bonus.name}(${bonus.factor})</option>
                             </c:forEach>
                         </select>
                     </div>

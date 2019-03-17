@@ -1,14 +1,18 @@
 package com.alexshay.buber.dao.impl;
 
-import com.alexshay.buber.dao.AbstractJdbcDao;
-import com.alexshay.buber.dao.AutoConnection;
-import com.alexshay.buber.dao.UserDao;
+import com.alexshay.buber.dao.*;
 import com.alexshay.buber.dao.exception.DaoException;
+import com.alexshay.buber.domain.Bonus;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.User;
 import com.alexshay.buber.domain.UserStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
  * Example User DAO implementation
  */
 public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserDao {
+    private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
     private static final String DELETE_QUERY = "DELETE FROM user_account WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE user_account " +
             "SET login = ?, password = ?, first_name = ?, last_name = ?, " +
@@ -65,13 +70,15 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
                     role(Role.fromValue(rs.getString("role"))).
                     repasswordKey(rs.getString("repassword_key")).
                     status(UserStatus.fromValue(rs.getString("status"))).
-                    bonuses(Collections.emptyList()).
+                    bonuses(getBonusesById(rs.getInt("id"))).
                     build();
             userList.add(user);
         }
 
         return userList;
     }
+
+
 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, User object) throws SQLException {
@@ -194,9 +201,20 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
             resultSet.next();
-            Integer roleId = resultSet.getInt("id");
-            return roleId;
+            return resultSet.getInt("id");
         }
     }
 
+    private List<Bonus> getBonusesById(int id) {
+        DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
+        BonusDao bonusDao;
+        List<Bonus> bonuses = Collections.emptyList();
+        try {
+            bonusDao = (BonusDao) daoFactory.getDao(Bonus.class);
+            bonuses = bonusDao.getByClientId(id);
+        } catch (DaoException e) {
+            LOGGER.error(e);
+        }
+        return bonuses;
+    }
 }

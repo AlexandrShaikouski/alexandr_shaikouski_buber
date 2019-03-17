@@ -18,17 +18,17 @@ public class CommandResetPassword implements Command {
         }
         try {
             switch (reset) {
-                case "1":
+                case "send_key":
                     return resetPassword.getPageEnterKey(request);
-                case "2":
+                case "check_key":
                     return resetPassword.getPageEnterPassword(request);
-                case "3":
+                case "enter_new_pass":
                     return resetPassword.getNewPassword(request);
             }
 
         } catch (ServiceException e) {
             request.setAttribute("email",email);
-            request.setAttribute("reset", reset.equals("1")?null:Integer.parseInt(reset) - 1);
+            request.setAttribute("reset", reset.equals("send_key")?null:reset.equals("check_key")?"send_key":reset);
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("/WEB-INF/jsp/pages/reset-password.jsp", Router.Type.FORWARD));
             return responseContent;

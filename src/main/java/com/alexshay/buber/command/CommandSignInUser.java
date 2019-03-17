@@ -23,7 +23,6 @@ public class CommandSignInUser implements Command {
                 build();
         try {
             user = userService.signIn(user);
-            user = userService.getUserById(user.getId());
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 

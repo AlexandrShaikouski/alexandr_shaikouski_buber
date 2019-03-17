@@ -37,10 +37,10 @@
                         <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                             <input type="hidden" name="command" value="sign_in">
                             <div class="form-group">
-                                <input type="text" name="login" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="<fmt:message key="all.page.login" bundle="${lang}"/>">
+                                <input type="text" name="login" class="form-control form-control-lg" required id="exampleInputEmail1" placeholder="<fmt:message key="all.page.login" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="passwordUser" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
+                                <input type="password" name="passwordUser" required class="form-control form-control-lg" id="exampleInputPassword1" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                             </div>
                             <div class="mt-3">
                                 <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit"><fmt:message key="all.signin.signin" bundle="${lang}"/></button>

@@ -1,5 +1,6 @@
 var driverId = null,
-    myMap;
+    myMap,
+    price = null;
 ymaps.ready(init);
 $(document).ready(function () {
     var interval = 5000;
@@ -25,6 +26,24 @@ $(document).ready(function () {
     }
 
     setInterval(doAjax, interval);
+
+    $("#use-bonus").change(function () {
+        if(price == null){
+            price = parseFloat($("#price").html());
+        }
+
+
+        var selectVal = $("#use-bonus").val(),
+            textTagFactor = $("#factor" + selectVal).html(),
+            factor = 0.0;
+        if (textTagFactor.indexOf('(') > -1) {
+            factor = parseFloat(textTagFactor.split("(")[1].split(")")[0]);
+        }
+
+        var newprice = (price*(1.0-factor)).toFixed(2);
+        $('input[name=price]').val(newprice);
+        $("#price").html(newprice);
+    });
 });
 
 function init() {
@@ -148,3 +167,4 @@ function errorMessage(message) {
     $('#infoMessage').html(message);
     $('#modalInfoMessage').modal('show');
 }
+

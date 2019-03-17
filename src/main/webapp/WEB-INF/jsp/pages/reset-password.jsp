@@ -36,9 +36,9 @@
                             <h4><fmt:message key="all.resetpass.message" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                                 <input type="hidden" name="command" value="reset_password">
-                                <input type="hidden" name="reset" value="1">
+                                <input type="hidden" name="reset" value="send_key">
                                 <div class="form-group">
-                                    <input name="email" type="text" class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
+                                    <input name="email" type="text" required class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
@@ -52,15 +52,15 @@
                                 </div>
                             </form>
                         </c:when>
-                        <c:when test="${reset == '1'}">
+                        <c:when test="${reset == 'send_key'}">
                             <h4><fmt:message key="all.resetpass.enterkey" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                                 <input type="hidden" name="command" value="reset_password">
-                                <input type="hidden" name="reset" value="2">
+                                <input type="hidden" name="reset" value="check_key">
                                 <input type="hidden" name="role" value="${role}">
                                 <input type="hidden" name="email" value="${email}">
                                 <div class="form-group">
-                                    <input name="key" type="text" class="form-control" id="key" placeholder="<fmt:message key="all.resetpass.key" bundle="${lang}"/>">
+                                    <input name="key" type="text" required class="form-control" id="key" placeholder="<fmt:message key="all.resetpass.key" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
@@ -68,18 +68,18 @@
                                 </div>
                             </form>
                         </c:when>
-                        <c:when test="${reset == '2'}">
+                        <c:when test="${reset == 'check_key'}">
                             <h4><fmt:message key="all.resetpass.newpass" bundle="${lang}"/></h4>
                             <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber" id="reset_password">
                                 <input type="hidden" name="command" value="reset_password">
                                 <input type="hidden" name="role" value="${role}">
                                 <input type="hidden" name="email" value="${email}">
-                                <input type="hidden" name="reset" value="3">
+                                <input type="hidden" name="reset" value="enter_new_pass">
                                 <div class="form-group">
-                                    <input name="passwordUser" type="password" class="form-control" id="passwordUser" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
+                                    <input name="passwordUser" type="password" required class="form-control" id="passwordUser" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                                 </div>
                                 <div class="form-group">
-                                    <input name="repasswordUser" type="password" class="form-control" id="repasswordUser" placeholder="<fmt:message key="all.page.repeatpas" bundle="${lang}"/>">
+                                    <input name="repasswordUser" type="password" required class="form-control" id="repasswordUser" placeholder="<fmt:message key="all.page.repeatpas" bundle="${lang}"/>">
                                 </div>
                                 <div class="mt-3">
                                     <button name="button_reset_password" type="button" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" onclick="validrepassword(document.getElementById('reset_password'))"><fmt:message key="all.resetpass.enter" bundle="${lang}"/></button>

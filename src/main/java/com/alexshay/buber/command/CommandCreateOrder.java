@@ -30,6 +30,8 @@ public class CommandCreateOrder implements Command {
         User client = (User) session.getAttribute("user");
         int clientId = client.getId();
 
+
+
         Map<String,Object> responseParameters = new HashMap<>();
         TripOrder tripOrder = TripOrder.builder().
                 from(from).

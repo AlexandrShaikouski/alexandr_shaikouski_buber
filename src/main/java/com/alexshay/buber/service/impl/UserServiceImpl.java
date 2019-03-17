@@ -1,6 +1,7 @@
 package com.alexshay.buber.service.impl;
 
 import com.alexshay.buber.dao.*;
+import com.alexshay.buber.dao.UserBonusDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.*;
 import com.alexshay.buber.service.UserService;
@@ -110,20 +111,6 @@ public class UserServiceImpl implements UserService {
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             User user = userDao.getByPK(id);
-            if (user.getRole().equals(Role.CLIENT)) {
-                UserBonusDao userBonusDao = (UserBonusDao) daoFactory.getDao(UserBonus.class);
-                GenericDao<Bonus, Integer> bonusDao = daoFactory.getDao(Bonus.class);
-                Map<String,String> parameter = new HashMap<>(1,1);
-                parameter.put("user_id", user.getId().toString());
-                List<UserBonus> userBonuses = userBonusDao.getByParameter(parameter);
-                if (userBonuses != null) {
-                    List<Bonus> bonuses = new ArrayList<>();
-                    for(UserBonus userBonus : userBonuses){
-                        bonuses.add(bonusDao.getByPK(userBonus.getBonusId()));
-                    }
-                    user.setBonuses(bonuses);
-                }
-            }
 
             return user;
         } catch (DaoException e) {
@@ -144,7 +131,7 @@ public class UserServiceImpl implements UserService {
                 ValidatorUser validator = new UserValidatorImpl();
                 validator.validate(checkUser);
             }
-            if(!user.getBonuses().isEmpty()){
+            if(!user.getBonuses().equals(userValid.getBonuses())){
                 GenericDao<UserBonus,Integer> userBonusDao = daoFactory.getDao(UserBonus.class);
                 UserBonus userBonus = UserBonus.builder().
                         userId(user.getId()).
