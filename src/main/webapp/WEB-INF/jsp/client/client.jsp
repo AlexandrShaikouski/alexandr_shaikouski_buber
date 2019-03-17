@@ -20,6 +20,15 @@
     <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
             type="text/javascript">
     </script>
+    <style type="text/css">
+        @media only screen and (max-width: 600px) {
+            .content-wrapper {
+                padding: 0;
+            }
+            footer{
+                display: none;
+            }
+        }</style>
 </head>
 <body>
 

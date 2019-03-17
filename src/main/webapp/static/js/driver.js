@@ -28,17 +28,15 @@ $(document).ready(function () {
 });
 
 function showAcceptOrderPage(order) {
-    ymaps.ready(init(order));
+    ymaps.ready(init(order.from, order.to, order.price));
 
     $('input[name=trip_order_id]').val(order.id);
     $('input[name=client_id]').val(order.clientId);
     $('#buttons_accept').css('display', 'block');
-
-
 }
 
-function init(order) {
-    var splitCoordinat = order.from.split(',');
+function init(from, to, price) {
+    var splitCoordinat;
     /**
      * Создаем мультимаршрут.
      * Первым аргументом передаем модель либо объект описания модели.
@@ -46,21 +44,28 @@ function init(order) {
      * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRoute.xml
      * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRouteModel.xml
      */
+    if (from == null) {
+        ymaps.geolocation.get({
+            provider: 'yandex',
+            mapStateAutoApply: true
+        }).then(function (result) {
+            from = result.geoObjects.get(0).properties.get('request');
+        });
+    } else {
+        splitCoordinat = from.split(',');
+    }
     var multiRoute = new ymaps.multiRouter.MultiRoute({
-        // Описание опорных точек мультимаршрута.
         referencePoints: [
-            [order.from],
-            [order.to]
+            [from],
+            [to]
         ],
-        // Параметры маршрутизации.
         params: {
-            // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
             results: 1
         }
     }, {
-        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
         boundsAutoApply: true
     });
+
 
     myMap = new ymaps.Map('map', {
             center: [53.888, 27.555],
@@ -78,9 +83,10 @@ function init(order) {
             searchControlProvider: 'yandex#search'
         });
     myMap.geoObjects.add(multiRoute);
-    myMap.balloon.open([splitCoordinat[0], splitCoordinat[1]], '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + order.price + ' р.</span>'), {
-        // Опция: не показываем кнопку закрытия.
-        closeButton: false
+    if (price) {
+        myMap.balloon.open([splitCoordinat[0], splitCoordinat[1]], '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>'), {
+            closeButton: false
+        }
     }
 }
 
@@ -96,6 +102,7 @@ function acceptOrder() {
                 $('#modalInfoMessage').modal('show');
                 $('#buttons_accept').css('display', 'none');
                 myMap.destroy();
+                ymaps.ready(init(null, data.tripOrder.from, null));
             } else {
                 errorMessage(data.message);
             }

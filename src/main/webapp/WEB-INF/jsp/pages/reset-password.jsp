@@ -17,15 +17,23 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png">
-
+    <style type="text/css">
+        @media only screen and (max-width: 600px) {
+            .content-wrapper {
+                padding: 0;
+            }
+            .screen-full{
+                padding: 0;
+            }
+        }</style>
 </head>
 
 <body>
 <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper d-flex align-items-center auth">
-            <div class="row w-100">
-                <div class="col-lg-4 mx-auto">
+            <div class="w-100">
+                <div class="screen-full col-lg-4 mx-auto">
                     <div class="auth-form-light text-left p-5">
                         <div class="brand-logo">
                             <img src="${pageContext.servletContext.contextPath}/static/images/logo.png">

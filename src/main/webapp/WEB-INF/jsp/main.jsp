@@ -5,29 +5,39 @@
 
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
-<fmt:setBundle basename="locale"  var="lang" scope="application"/>
+<fmt:setBundle basename="locale" var="lang" scope="application"/>
 
 
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Buber</title>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png">
     <style type="text/css">
-        @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style></head>
+        @media only screen and (max-width: 600px) {
+            .content-wrapper {
+                padding: 0;
+            }
+            .screen-full{
+                padding: 0;
+            }
+        }</style>
+</head>
 
 <body>
 
 <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper d-flex align-items-center auth">
-            <div class="row w-100">
-                <div class="col-lg-4 mx-auto">
+            <div class="w-100">
+                <div class="screen-full col-lg-4 mx-auto">
                     <div class="auth-form-light text-left p-5">
                         <div class="brand-logo">
                             <img src="${pageContext.servletContext.contextPath}/static/images/logo.png">
@@ -37,30 +47,43 @@
                         <form method="POST" class="pt-3" action="${pageContext.servletContext.contextPath}/buber">
                             <input type="hidden" name="command" value="sign_in">
                             <div class="form-group">
-                                <input type="text" name="login" class="form-control form-control-lg" required id="exampleInputEmail1" placeholder="<fmt:message key="all.page.login" bundle="${lang}"/>">
+                                <input type="text" name="login" class="form-control form-control-lg" required
+                                       id="exampleInputEmail1"
+                                       placeholder="<fmt:message key="all.page.login" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="passwordUser" required class="form-control form-control-lg" id="exampleInputPassword1" placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
+                                <input type="password" name="passwordUser" required class="form-control form-control-lg"
+                                       id="exampleInputPassword1"
+                                       placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                             </div>
                             <div class="mt-3">
-                                <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit"><fmt:message key="all.signin.signin" bundle="${lang}"/></button>
+                                <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                                        type="submit"><fmt:message key="all.signin.signin" bundle="${lang}"/></button>
                             </div>
                             <div class="my-2 d-flex justify-content-between align-items-center">
-                                <a href="${pageContext.servletContext.contextPath}/buber?command=reset_password" class="auth-link text-black"><fmt:message key="all.signin.repassword" bundle="${lang}"/></a>
+                                <a href="${pageContext.servletContext.contextPath}/buber?command=reset_password"
+                                   class="auth-link text-black"><fmt:message key="all.signin.repassword"
+                                                                             bundle="${lang}"/></a>
 
                             </div>
                             <div class="text-center mt-4 font-weight-light">
-                                <fmt:message key="all.signin.create.message" bundle="${lang}"/> <a href="${pageContext.servletContext.contextPath}/buber?command=register_page" class="text-primary"><fmt:message key="all.signin.create" bundle="${lang}"/></a>
+                                <fmt:message key="all.signin.create.message" bundle="${lang}"/> <a
+                                    href="${pageContext.servletContext.contextPath}/buber?command=register_page"
+                                    class="text-primary"><fmt:message key="all.signin.create" bundle="${lang}"/></a>
                             </div>
                         </form>
                         <div class="text-center">
                             <form id="localeForm" action="${pageContext.servletContext.contextPath}/buber">
                                 <input type="hidden" name="command" value="locale">
-                                <div  class="btn-group" role="group" aria-label="Basic example">
+                                <div class="btn-group" role="group" aria-label="Basic example">
                                     <input type="hidden" name="localePage" value="en">
-                                    <button id="locale_ru" value="ru" type="button" onclick="localeChange(document.getElementById('localeForm'))" class="btn btn-sm btn-link">RU</button>
+                                    <button id="locale_ru" value="ru" type="button"
+                                            onclick="localeChange(document.getElementById('localeForm'))"
+                                            class="btn btn-sm btn-link">RU
+                                    </button>
                                     |
-                                    <button id="locale_en"  value="en" type="submit" class="btn btn-sm btn-link">EN</button>
+                                    <button id="locale_en" value="en" type="submit" class="btn btn-sm btn-link">EN
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -81,4 +104,5 @@
     <script>$('#error-gid').trigger('click');</script>
 </c:if>
 
-</body></html>
+</body>
+</html>
