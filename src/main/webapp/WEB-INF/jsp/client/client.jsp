@@ -25,10 +25,12 @@
             .content-wrapper {
                 padding: 0;
             }
-            footer{
+
+            footer {
                 display: none;
             }
         }</style>
+
 </head>
 <body>
 
@@ -94,59 +96,49 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                       aria-controls="ui-basic">
-                        <span class="menu-title"><fmt:message key="all.page.menu" bundle="${lang}"/></span>
-                        <i class="menu-arrow"></i>
-                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                    </a>
-                    <div class="collapse" id="ui-basic">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_clients">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.lclient" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_drivers">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.ldriver" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_admin">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.ladmin" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_orders">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.lorders" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="create_page">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.createuser" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
+                                <input type="hidden" name="command" value="list_clients">
+                                <button class="btn btn-link btn-sm" type="submit"><fmt:message
+                                        key="admin.header.lclient" bundle="${lang}"/></button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
+                                <input type="hidden" name="command" value="list_drivers">
+                                <button class="btn btn-link btn-sm" type="submit"><fmt:message
+                                        key="admin.header.ldriver" bundle="${lang}"/></button>
+                            </form>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
         <div class="main-panel">
+            <c:choose>
+                <c:when test="${sessionScope.tripOrder == null}">
 
-            <div id="<c:if test="${sessionScope.tripOrder == null}">map</c:if>" class="content-wrapper">
+                    <div id="map" class="content-wrapper">
 
-            </div>
+                    </div>
+                    <script>$(document).ready(function () {
+                        ymaps.ready(init);
+                    })</script>
+                </c:when>
+                <c:otherwise>
+                    <div class="content-wrapper">
+                        <h4><fmt:message key="client.page.orderstatus" bundle="${lang}"/> ${sessionScope.tripOrder.id} </h4>
+                        <h4 id="status_order">${sessionScope.statusOrder}</h4>
+                        <button id="button_cancel_complete" onclick="cancelCompleteOrder()"
+                                class="btn btn-lg btn-gradient-light btn-fw"
+                                type="button"
+                        ><fmt:message key="all.page.cancel"
+                                      bundle="${lang}"/></button>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
             <footer class="footer">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -164,7 +156,6 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/client.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
-
 <bub:infoMessage/>
 
 
@@ -182,9 +173,11 @@
                     <div class="modal-body">
                         <label for="use-bonus"><fmt:message key="client.footer.usebonus" bundle="${lang}"/></label>
                         <select id="use-bonus" class="form-control" name="bonus_id">
-                            <option id="factor0" value="0"><fmt:message key="admin.infouser.ban.none" bundle="${lang}"/></option>
+                            <option id="factor0" value="0"><fmt:message key="admin.infouser.ban.none"
+                                                                        bundle="${lang}"/></option>
                             <c:forEach items="${sessionScope.user.bonuses}" var="bonus" varStatus="status">
-                                <option id="factor${bonus.id}" value="${bonus.id}">${bonus.name}(${bonus.factor})</option>
+                                <option id="factor${bonus.id}" value="${bonus.id}">${bonus.name}(${bonus.factor})
+                                </option>
                             </c:forEach>
                         </select>
                     </div>

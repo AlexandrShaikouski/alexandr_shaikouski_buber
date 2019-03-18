@@ -24,9 +24,9 @@ public class CommandAcceptOrder implements Command {
         String clientIdStr = request.getParameter("client_id");
         HttpSession session = request.getSession();
         Map<String, Object> responseParameters = new HashMap<>();
-        User user = (User) session.getAttribute("user");
+        User driver = (User) session.getAttribute("user");
         try {
-            if (user != null && tripOrderIdStr != null && clientIdStr != null) {
+            if (driver != null && tripOrderIdStr != null && clientIdStr != null) {
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
                 TripOrder tripOrder = TripOrder.builder().
                         id(Integer.parseInt(tripOrderIdStr)).
@@ -34,14 +34,16 @@ public class CommandAcceptOrder implements Command {
                         clientId(Integer.parseInt(clientIdStr)).
                         build();
                 tripOrder = tripOrderService.getById(tripOrder);
-                if(tripOrder.getDriverId() == 0){
-                    tripOrder.setDriverId(user.getId());
+                if(tripOrder != null && tripOrder.getDriverId() == 0){
+                    tripOrder.setDriverId(driver.getId());
                     tripOrder.setStatusOrder(OrderStatus.PENDING);
                     session.setAttribute("tripOrder", tripOrder);
                     tripOrderService.updateTripOrder(tripOrder);
                     responseParameters.put("tripOrder", tripOrder);
                     responseParameters.put("messageInfo", resourceBundle.getString("all.info.acceptorder"));
-                }else{
+                }else if(tripOrder == null){
+                    throw new ServiceException(resourceBundle.getString("all.error.ordercancel"));
+                }else {
                     throw new ServiceException(resourceBundle.getString("all.error.acceptorder"));
                 }
 

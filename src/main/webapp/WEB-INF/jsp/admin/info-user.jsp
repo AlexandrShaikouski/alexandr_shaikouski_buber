@@ -115,10 +115,10 @@
             </div>
         </c:if>
 
-        <div class="col-md-12">
-            <button class="btn btn-gradient-primary" type="submit"><fmt:message key="all.page.save"
+        <div class="template-demo">
+            <button class="btn btn-gradient-primary btn-fw" type="submit"><fmt:message key="all.page.save"
                                                                                 bundle="${lang}"/></button>
-            <button class="btn btn-light" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
+            <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
         </div>
     </form>
     <c:choose>

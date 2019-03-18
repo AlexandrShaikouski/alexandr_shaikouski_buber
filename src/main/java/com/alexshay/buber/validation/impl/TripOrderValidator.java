@@ -33,6 +33,8 @@ public class TripOrderValidator implements ValidatorTripOrder {
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             GenericDao<Bonus, Integer> bonusDao = daoFactory.getDao(Bonus.class);
+            GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);
+
             if (from != null && !from.matches(REGEX_POINT_GEO)) {
                 throw new ServiceException(resourceBundle.getString("all.error.wrongorder"));
             }

@@ -35,37 +35,9 @@ function showAcceptOrderPage(order) {
     $('#buttons_accept').css('display', 'block');
 }
 
-function init(from, to, price) {
-    var splitCoordinat;
-    /**
-     * Создаем мультимаршрут.
-     * Первым аргументом передаем модель либо объект описания модели.
-     * Вторым аргументом передаем опции отображения мультимаршрута.
-     * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRoute.xml
-     * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRouteModel.xml
-     */
-    if (from == null) {
-        ymaps.geolocation.get({
-            provider: 'yandex',
-            mapStateAutoApply: true
-        }).then(function (result) {
-            from = result.geoObjects.get(0).properties.get('request');
-        });
-    } else {
-        splitCoordinat = from.split(',');
-    }
-    var multiRoute = new ymaps.multiRouter.MultiRoute({
-        referencePoints: [
-            [from],
-            [to]
-        ],
-        params: {
-            results: 1
-        }
-    }, {
-        boundsAutoApply: true
-    });
-
+function init(fromx, to, price) {
+    var splitCoordinat,
+        from = fromx;
 
     myMap = new ymaps.Map('map', {
             center: [53.888, 27.555],
@@ -82,6 +54,27 @@ function init(from, to, price) {
         {
             searchControlProvider: 'yandex#search'
         });
+    if (from == null) {
+
+        ymaps.geolocation.get({
+            provider: 'yandex'
+        }).then(function (result) {
+            from = result.geoObjects.get(0).properties.get('boundedBy')[0].toString();
+        });
+    } else {
+        splitCoordinat = from.split(',');
+    }
+    var multiRoute = new ymaps.multiRouter.MultiRoute({
+        referencePoints: [
+            [from],
+            [to]
+        ],
+        params: {
+            results: 1
+        }
+    }, {
+        boundsAutoApply: true
+    });
     myMap.geoObjects.add(multiRoute);
     if (price) {
         myMap.balloon.open([splitCoordinat[0], splitCoordinat[1]], '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>'), {
@@ -103,6 +96,44 @@ function acceptOrder() {
                 $('#buttons_accept').css('display', 'none');
                 myMap.destroy();
                 ymaps.ready(init(null, data.tripOrder.from, null));
+                $('#buttons_pending').css('display', 'block');
+            } else {
+                errorMessage(data.message);
+            }
+        }
+    });
+}
+function pendingClient() {
+    $.ajax({
+        url: "ajax",
+        type: "POST",
+        dataType: "json",
+        data: $('#formPendingClient').serialize(),
+        success: function (data) {
+            if (data.message == null) {
+                $('#buttons_pending').css('display', 'none');
+                myMap.destroy();
+                ymaps.ready(init(data.tripOrder.from, data.tripOrder.to, data.tripOrder.price));
+                $('#buttons_complete').css('display', 'block');
+                $('#clientName').html(data.clientName);
+                $('#clientPhone').html(data.clientPhone);
+            } else {
+                errorMessage(data.message);
+            }
+        }
+    });
+}
+function completeTrip() {
+    $.ajax({
+        url: "ajax",
+        type: "POST",
+        dataType: "json",
+        data: $('#formCompleteTrip').serialize(),
+        success: function (data) {
+            if (data.message == null) {
+                $('#buttons_complete').css('display', 'none');
+                myMap.destroy();
+                listOrders = null;
             } else {
                 errorMessage(data.message);
             }
@@ -120,6 +151,27 @@ function cancelOrder() {
     myMap.destroy();
     listOrders = null;
 }
+function cancelCompleteOrder() {
+    $('#buttons_complete').css('display', 'none');
+    myMap.destroy();
+    listOrders = null;
+    $.ajax({
+        url: "ajax",
+        type: "POST",
+        dataType: "json",
+        data: {command: "cancel_complete"},
+        success: function (data) {
+            if (data.message == null) {
+                $('#buttons_complete').css('display', 'none');
+                myMap.destroy();
+                listOrders = null;
+            } else {
+                errorMessage(data.message);
+            }
+        }
+    });
+}
+
 
 function changeLocale(locale) {
     // Получим ссылки на элементы с тегом 'head' и id 'language'.

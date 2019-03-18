@@ -1,11 +1,11 @@
 var driverId = null,
     myMap,
     price = null;
-ymaps.ready(init);
-$(document).ready(function () {
-    var interval = 5000;
 
-    function doAjax() {
+$(document).ready(function () {
+    var interval = 4000;
+
+    function doCheckDriver() {
         if (driverId == null) {
             $.ajax({
                 url: "ajax",
@@ -14,10 +14,30 @@ $(document).ready(function () {
                 data: {command: 'check_order_client'},
                 success: function (data) {
                     driverId = data.driverId;
-                    if (data.messageInfo) {
+                    if (driverId) {
                         $('#infoMessage').html(data.messageInfo);
                         $('#modalInfoMessage').modal('show');
+                        $("#status_order").html(data.statusOrder);
+                        $('#button_cancel_complete').css('display', 'none');
                     } else if (data.message) {
+                        location.reload();
+                        errorMessage(data.message);
+                    }
+                }
+            });
+        }
+    }
+    function pendingDriver() {
+        if (driverId) {
+            $.ajax({
+                url: "ajax",
+                type: "POST",
+                dataType: "json",
+                data: {command: 'pending_driver'},
+                success: function (data) {
+                    if (data.status_order == "in-progress") {
+                        $("#status_order").html(data.statusOrder);
+                    } else if(data.message){
                         errorMessage(data.message);
                     }
                 }
@@ -25,7 +45,9 @@ $(document).ready(function () {
         }
     }
 
-    setInterval(doAjax, interval);
+    setInterval(doCheckDriver, interval);
+
+    setInterval(pendingDriver, interval);
 
     $("#use-bonus").change(function () {
         if(price == null){
@@ -47,14 +69,10 @@ $(document).ready(function () {
 });
 
 function init() {
-    // Стоимость за километр.
     var DELIVERY_TARIFF = 0.8,
-        // Минимальная стоимость.
         MINIMUM_COST = 6,
-        // Создадим панель маршрутизации.
         routePanelControl = new ymaps.control.RoutePanel({
             options: {
-                // Добавим заголовок панели.
                 showHeader: true,
                 title: 'Расчёт поездки'
             }
@@ -82,7 +100,6 @@ function init() {
                 [53.9838, 27.772]
             ]
         })
-    // Пользователь сможет построить только автомобильный маршрут.
     routePanelControl.routePanel.options.set({
         types: {auto: true}
     });
@@ -91,30 +108,22 @@ function init() {
 
     myMap.controls.add(routePanelControl).add(zoomControl);
 
-    // Получим ссылку на маршрут.
     routePanelControl.routePanel.getRouteAsync().then(function (route) {
 
-        // Зададим максимально допустимое число маршрутов, возвращаемых мультимаршрутизатором.
         route.model.setParams({results: 1}, true);
 
-        // Повесим обработчик на событие построения маршрута.
         route.model.events.add('requestsuccess', function () {
 
 
             var activeRoute = route.getActiveRoute();
             var points = route.getWayPoints();
             if (activeRoute) {
-                // Получим протяженность маршрута.
                 var length = activeRoute.properties.get("distance"),
-                    // Вычислим стоимость доставки.
                     price = calculate(Math.round(length.value / 1000)).toFixed(2),
-                    // Создадим макет содержимого балуна маршрута.
                     balloonContentLayout = ymaps.templateLayoutFactory.createClass(
                         '<span>Расстояние: ' + length.text + '.</span><br/>' +
                         '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>');
-                // Зададим этот макет для содержимого балуна.
                 route.options.set('routeBalloonContentLayout', balloonContentLayout);
-                // Откроем балун.
                 activeRoute.balloon.open();
                 sendToServer(points.get(1).properties.get("address"),
                     points.get(0).properties.get("address"),
@@ -126,7 +135,6 @@ function init() {
 
     });
 
-    // Функция, вычисляющая стоимость доставки.
     function calculate(routeLength) {
         return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);
     }
@@ -151,9 +159,8 @@ function ajaxOrder() {
         data: $('#formOrder').serialize(),
         success: function (data) {
             if (data.messageInfo) {
-                $("div#infoMessage").html(data.messageInfo);
-                $("#modalInfoMessage").modal("show");
                 myMap.destroy();
+                location.reload();
             }else if(data.message){
                 $("div#infoMessage").html(data.message);
                 $("#modalInfoMessage").modal("show");
@@ -168,3 +175,23 @@ function errorMessage(message) {
     $('#modalInfoMessage').modal('show');
 }
 
+function cancelCompleteOrder() {
+    listOrders = null;
+    $.ajax({
+        url: "ajax",
+        type: "POST",
+        dataType: "json",
+        data: {command: "cancel_complete"},
+        success: function (data) {
+            location.reload();
+            if(data.message){
+                errorMessage(data.message);
+            }
+        }
+    });
+}
+function setDriverId(driverId) {
+    if (driverId){
+        this.driverId = driverId;
+    }
+}

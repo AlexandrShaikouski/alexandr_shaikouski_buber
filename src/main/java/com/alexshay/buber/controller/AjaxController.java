@@ -38,7 +38,5 @@ public class AjaxController extends HttpServlet {
             PrintWriter writer = response.getWriter();
             writer.write(new Gson().toJson(parameters));
         }
-
-
     }
 }

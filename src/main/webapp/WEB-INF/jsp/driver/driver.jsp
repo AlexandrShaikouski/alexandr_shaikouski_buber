@@ -26,7 +26,8 @@
             .content-wrapper {
                 padding: 0;
             }
-            footer{
+
+            footer {
                 display: none;
             }
         }</style>
@@ -154,19 +155,51 @@
                 <input type="hidden" name="command" value="accept_order">
                 <input type="hidden" name="trip_order_id" value="">
                 <input type="hidden" name="client_id" value="">
-                <div id="buttons_accept" style="display: none" class="row">
-                    <div class="col-md-4">
-                        <button id="button_accept" onclick="acceptOrder()" class="btn btn-lg btn-gradient-primary"
-                                type="button"
-                        ><fmt:message key="all.page.acceptOrder"
-                                      bundle="${lang}"/></button>
+                <div id="buttons_accept" style="display: none" class="template-demo">
+
+                    <button id="button_accept" onclick="acceptOrder()" class="btn btn-lg btn-gradient-primary btn-fw"
+                            type="button"
+                    ><fmt:message key="all.page.acceptOrder"
+                                  bundle="${lang}"/></button>
+                    <button id="button_cancel_order" onclick="cancelOrder()"
+                            class="btn btn-lg btn-gradient-light btn-fw"
+                            type="button"
+                    ><fmt:message key="all.page.cancel"
+                                  bundle="${lang}"/></button>
+                </div>
+            </form>
+            <form id="formPendingClient" action="">
+                <input type="hidden" name="command" value="pending_client">
+                <div id="buttons_pending" style="display: none" class="template-demo">
+
+                    <button id="button_pending" onclick="pendingClient()" class="btn btn-lg btn-gradient-primary btn-fw"
+                            type="button"
+                    ><fmt:message key="all.page.droveup"
+                                  bundle="${lang}"/></button>
+                </div>
+            </form>
+            <form id="formCompleteTrip" action="">
+                <input type="hidden" name="command" value="complete_trip">
+                <div id="buttons_complete" style="display: none" class="template-demo">
+                    <div class="row">
+                        <div class="col-12">
+                            <span><fmt:message key="all.page.username"
+                                             bundle="${lang}"/> : </span><span id="clientName"></span>
+                        </div>
+                        <div class="col-12">
+                            <span><fmt:message key="all.page.numphone"
+                                             bundle="${lang}"/> : </span><span id="clientPhone"></span>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <button id="button_cancel_order" onclick="cancelOrder()" class="btn btn-lg btn-gradient-light"
-                                type="button"
-                        ><fmt:message key="all.page.cancel"
-                                      bundle="${lang}"/></button>
-                    </div>
+                    <button id="button_complete" onclick="completeTrip()" class="btn btn-lg btn-gradient-primary btn-fw"
+                            type="button"
+                    ><fmt:message key="all.page.complete"
+                                  bundle="${lang}"/></button>
+                    <button id="button_cancel_complete" onclick="cancelCompleteOrder()"
+                            class="btn btn-lg btn-gradient-light btn-fw"
+                            type="button"
+                    ><fmt:message key="all.page.cancel"
+                                  bundle="${lang}"/></button>
                 </div>
             </form>
 

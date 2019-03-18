@@ -40,7 +40,7 @@ public abstract class AbstractJdbcDao<T extends Identified<PK>, PK extends Numbe
             statement.setInt(1,(Integer) key);
             ResultSet resultSet = statement.executeQuery();
             List<T> parseRes = parseResultSet(resultSet);
-            return parseRes.get(0);
+            return parseRes.isEmpty()?null:parseRes.get(0);
         } catch (SQLException e) {
             LOGGER.error(e);
             throw new DaoException("Not getting info by PK from DB", e);
