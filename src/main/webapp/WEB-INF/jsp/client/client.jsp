@@ -22,7 +22,7 @@
     </script>
     <style type="text/css">
         @media only screen and (max-width: 600px) {
-            .content-wrapper {
+            #map {
                 padding: 0;
             }
 
@@ -108,6 +108,11 @@
                                href="${pageContext.servletContext.contextPath}/buber?command=personal_data"><fmt:message
                                     key="all.page.personaldata" bundle="${lang}"/></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="btn btn-link btn-sm"
+                               href="${pageContext.servletContext.contextPath}/buber?command=list_orders"><fmt:message
+                                    key="admin.header.lorders" bundle="${lang}"/></a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -124,7 +129,7 @@
                     })</script>
                 </c:when>
                 <c:otherwise>
-                    <div class="content-wrapper">
+                    <div class="content-wrapper text-center">
                         <h4><fmt:message key="client.page.orderstatus"
                                          bundle="${lang}"/> ${sessionScope.tripOrder.id} </h4>
                         <h4 id="status_order">${sessionScope.statusDriver}</h4>

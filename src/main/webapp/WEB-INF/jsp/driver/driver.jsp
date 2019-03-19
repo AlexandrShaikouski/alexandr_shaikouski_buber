@@ -6,6 +6,7 @@
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale" var="lang" scope="application"/>
+<c:set var="tripOrder" value="${sessionScope.tripOrder}"/>
 
 <html lang="en">
 <head>
@@ -96,53 +97,25 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                       aria-controls="ui-basic">
-                        <span class="menu-title"><fmt:message key="all.page.menu" bundle="${lang}"/></span>
-                        <i class="menu-arrow"></i>
-                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                    </a>
-                    <div class="collapse" id="ui-basic">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_clients">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.lclient" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_drivers">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.ldriver" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_admin">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.ladmin" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="list_orders">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.lorders" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                            <li class="nav-item">
-                                <form style="margin: 0" action="${pageContext.servletContext.contextPath}/buber">
-                                    <input type="hidden" name="command" value="create_page">
-                                    <button class="btn btn-link btn-sm" type="submit"><fmt:message
-                                            key="admin.header.createuser" bundle="${lang}"/></button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="btn btn-link btn-sm"
+                               href="${pageContext.servletContext.contextPath}/index.jsp"><fmt:message
+                                    key="all.page.mainpage" bundle="${lang}"/></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-link btn-sm"
+                               href="${pageContext.servletContext.contextPath}/buber?command=personal_data"><fmt:message
+                                    key="all.page.personaldata" bundle="${lang}"/></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-link btn-sm"
+                               href="${pageContext.servletContext.contextPath}/buber?command=list_orders"><fmt:message
+                                    key="admin.header.lorders" bundle="${lang}"/></a>
+                        </li>
+                    </ul>
             </ul>
+        </nav>
         </nav>
         <div class="main-panel">
 
@@ -153,11 +126,12 @@
 
             <form id="formAcceptOrder" action="">
                 <input type="hidden" name="command" value="accept_order">
-                <input type="hidden" name="trip_order_id" value="">
-                <input type="hidden" name="client_id" value="">
+                <input type="hidden" name="trip_order_id" value="${tripOrder.id}">
+                <input type="hidden" name="client_id" value="${tripOrder.clientId}">
                 <div id="buttons_accept" style="display: none" class="template-demo">
 
-                    <button id="button_accept" onclick="acceptOrder()" class="btn btn-lg btn-gradient-primary btn-fw"
+                    <button id="button_accept" onclick="acceptOrder()"
+                            class="btn btn-lg btn-gradient-primary btn-fw"
                             type="button"
                     ><fmt:message key="all.page.acceptOrder"
                                   bundle="${lang}"/></button>
@@ -168,30 +142,34 @@
                                   bundle="${lang}"/></button>
                 </div>
             </form>
+
             <form id="formPendingClient" action="">
                 <input type="hidden" name="command" value="pending_client">
                 <div id="buttons_pending" style="display: none" class="template-demo">
 
-                    <button id="button_pending" onclick="pendingClient()" class="btn btn-lg btn-gradient-primary btn-fw"
+                    <button id="button_pending" onclick="pendingClient()"
+                            class="btn btn-lg btn-gradient-primary btn-fw"
                             type="button"
                     ><fmt:message key="all.page.droveup"
                                   bundle="${lang}"/></button>
                 </div>
             </form>
+
             <form id="formCompleteTrip" action="">
                 <input type="hidden" name="command" value="complete_order_driver">
                 <div id="buttons_complete" style="display: none" class="template-demo">
                     <div class="row">
                         <div class="col-12">
                             <span><fmt:message key="all.page.username"
-                                             bundle="${lang}"/> : </span><span id="clientName"></span>
+                                               bundle="${lang}"/> : </span><span id="clientName"></span>
                         </div>
                         <div class="col-12">
                             <span><fmt:message key="all.page.numphone"
-                                             bundle="${lang}"/> : </span><span id="clientPhone"></span>
+                                               bundle="${lang}"/> : </span><span id="clientPhone"></span>
                         </div>
                     </div>
-                    <button id="button_complete" onclick="completeTrip()" class="btn btn-lg btn-gradient-primary btn-fw"
+                    <button id="button_complete" onclick="completeTrip()"
+                            class="btn btn-lg btn-gradient-primary btn-fw"
                             type="button"
                     ><fmt:message key="all.page.complete"
                                   bundle="${lang}"/></button>
@@ -219,7 +197,11 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/driver.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
-
+<script>
+    $(document).ready(function () {
+        setTripOrderStatus("${sessionScope.tripOrder.statusOrder}");
+    });
+</script>
 <bub:infoMessage/>
 
 </body>

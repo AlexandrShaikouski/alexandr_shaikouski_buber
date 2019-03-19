@@ -34,7 +34,7 @@ public class CommandAcceptOrder implements Command {
                         clientId(Integer.parseInt(clientIdStr)).
                         build();
                 tripOrder = tripOrderService.getById(tripOrder);
-                if(tripOrder != null && tripOrder.getDriverId() == 0){
+                if(driver.getId() == tripOrder.getDriverId()  || (tripOrder != null && tripOrder.getDriverId() == 0)){
                     tripOrder.setDriverId(driver.getId());
                     tripOrder.setStatusOrder(OrderStatus.PENDING);
                     session.setAttribute("tripOrder", tripOrder);

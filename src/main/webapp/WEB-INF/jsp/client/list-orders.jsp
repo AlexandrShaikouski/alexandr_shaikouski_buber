@@ -6,7 +6,6 @@
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale" var="lang" scope="application"/>
-<c:set var="user" value="${sessionScope.user}"></c:set>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -120,46 +119,53 @@
         </nav>
         <div class="main-panel">
             <div class="content-wrapper">
+                <c:choose>
+                    <c:when test="${not empty listOrders}">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
+                                    <table class="table table-bordered table-dark text-center">
+                                        <thead>
+                                        <tr>
+                                            <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.price" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.register" bundle="${lang}"/></th>
+                                        </tr>
+                                        </thead>
 
-                <c:if test="${user ne null}">
-                <form method="POST" class="forms-sample" action="${pageContext.servletContext.contextPath}/buber"
-                      id="form_update">
+                                        <tbody>
 
-                    <input type="hidden" name="command" value="update_user">
-                    <input type="hidden" name="id" value="${user.id}">
-                    <div class="form-group">
-                        <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
-                        <input name="login" readonly type="text" class="form-control" id="login"
-                               placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
-                    </div>
-                    <div class="form-group">
-                        <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
-                        <input name="email" required type="text" class="form-control" id="email"
-                               placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>"
-                                value="${user.email}">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
-                        <input name="phone" required type="text" class="form-control" id="phone"
-                               placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>" value="${user.phone}">
-                    </div>
-                    <div class="form-group">
-                        <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
-                        <input name="name" required type="text" class="form-control" id="first_name"
-                               placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>" value="${user.firstName}">
-                    </div>
-                    <div class="template-demo">
-                        <button name="button_register" type="button"
-                                onclick="valid(document.getElementById('form_update'))"
-                                class="btn btn-gradient-primary btn-lg btn-fw">
-                            <fmt:message key="all.page.save" bundle="${lang}"/>
-                        </button>
-                        <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
-                    </div>
+                                        <c:forEach items="${listOrders}" var="order" varStatus="status">
+                                            <tr>
+                                                <td>${order.from}</td>
+                                                <td>${order.to}</td>
+                                                <td>${order.price}</td>
+                                                <td><fmt:formatDate value="${order.dateCreate}" pattern="HH:mm dd.MM.yyyy" /></td>
 
+                                            </tr>
 
-                </form>
-                </c:if>
+                                        </c:forEach>
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <footer class="footer">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">

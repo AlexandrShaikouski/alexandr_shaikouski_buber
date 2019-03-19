@@ -1,9 +1,6 @@
 package com.alexshay.buber.command;
 
-import com.alexshay.buber.domain.Role;
-import com.alexshay.buber.domain.TripOrder;
-import com.alexshay.buber.domain.User;
-import com.alexshay.buber.domain.UserStatus;
+import com.alexshay.buber.domain.*;
 import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
@@ -29,7 +26,7 @@ public class CommandCheckOrderDriver implements Command {
         try {
             if (driver != null && driver.getRole().equals(Role.DRIVER) && driver.getStatus().equals(UserStatus.ONLINE)){
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
-                List<TripOrder> tripOrders = tripOrderService.getByStausWaiting();
+                List<TripOrder> tripOrders = tripOrderService.getByStaus(OrderStatus.WAITING.value());
                 if(!tripOrders.isEmpty()){
                     responseParameters.put("tripOrders", tripOrders);
                 }

@@ -25,7 +25,7 @@
         } else {
             $('#repasswordUser').removeClass('alert-danger');
         }
-        if (!password_regex.test(password)) {
+        if (repassword && !password_regex.test(password)) {
             $('#passwordUser').addClass('alert-danger');
             $('#repasswordUser').addClass('alert-danger');
             counter = counter + 1;

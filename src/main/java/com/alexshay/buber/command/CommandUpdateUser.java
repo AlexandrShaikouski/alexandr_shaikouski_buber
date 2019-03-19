@@ -9,6 +9,7 @@ import com.alexshay.buber.service.exception.ServiceException;
 import org.apache.commons.lang3.time.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,8 @@ public class CommandUpdateUser implements Command {
     public ResponseContent execute(HttpServletRequest request) {
         ResponseContent responseContent = new ResponseContent();
         UserService userService = ServiceFactory.getInstance().getUserService();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         String servletPath = request.getRequestURL().toString();
         String bonusIdStr = request.getParameter("bonus_id");
         String role = request.getParameter("role");
@@ -27,9 +30,9 @@ public class CommandUpdateUser implements Command {
 
 
         List<Bonus> bonuses = new ArrayList<>();
-        User user = User.builder().build();
+        User userError = User.builder().build();
         try {
-            if(role.equals("client")){
+            if("client".equals(role)){
                 int bonusId = Integer.parseInt(bonusIdStr);
                 if (bonusId != -1) {
                     BonusService bonusService = ServiceFactory.getInstance().getBonusService();
@@ -38,16 +41,19 @@ public class CommandUpdateUser implements Command {
                 }
             }
 
-            user = userService.getUserById(id);
+            userError = userService.getUserById(id);
             User userCheck = userService.getUserById(id);
             userCheck.setBonuses(bonuses);
             userCheck = addUpdateUserFields(userCheck, request);
 
 
             userService.updateUser(userCheck);
+            if(role == null){
+                session.setAttribute("user", userService.getUserById(user.getId()));
+            }
             responseContent.setRouter(new Router(servletPath + "?command=success_page", Router.Type.REDIRECT));
         } catch (ServiceException e) {
-            request.setAttribute("user", user);
+            request.setAttribute("user", userError);
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("WEB-INF/jsp/admin/info-user.jsp", Router.Type.FORWARD));
         }
@@ -57,13 +63,13 @@ public class CommandUpdateUser implements Command {
 
     }
 
-    private Date getStatusBan(User user, HttpServletRequest request) throws ServiceException {
+    private Date getStatusBanInner(User user, HttpServletRequest request) throws ServiceException {
         Date date = user.getStatusBan();
 
         String banTime = request.getParameter("ban_time");
         String countTimeBanStr = request.getParameter("count_time_ban");
         int countTimeBan = 0;
-        if (!countTimeBanStr.equals("")) {
+        if (!"".equals(countTimeBanStr)) {
             countTimeBan = Integer.parseInt(countTimeBanStr);
         }
         if (countTimeBan > 0) {
@@ -112,8 +118,8 @@ public class CommandUpdateUser implements Command {
         if (status != null) {
             user.setStatus(UserStatus.fromValue(status));
         }
-        if (!banTime.equals("none")) {
-            user.setStatusBan(getStatusBan(user, request));
+        if (banTime != null && !"none".equals(banTime)) {
+            user.setStatusBan(getStatusBanInner(user, request));
         }
 
 

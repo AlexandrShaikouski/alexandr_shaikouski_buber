@@ -6,7 +6,8 @@
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale" var="lang" scope="application"/>
-<c:set var="user" value="${sessionScope.user}"></c:set>
+<c:set var="tripOrder" value="${sessionScope.tripOrder}"/>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -31,7 +32,6 @@
                 display: none;
             }
         }</style>
-
 </head>
 <body>
 
@@ -97,7 +97,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
                             <a class="btn btn-link btn-sm"
@@ -115,52 +114,61 @@
                                     key="admin.header.lorders" bundle="${lang}"/></a>
                         </li>
                     </ul>
-                </li>
             </ul>
         </nav>
+        </nav>
         <div class="main-panel">
+
             <div class="content-wrapper">
+                <c:choose>
+                    <c:when test="${not empty listOrders}">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
+                                    <table class="table table-bordered table-dark text-center">
+                                        <thead>
+                                        <tr>
+                                            <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.price" bundle="${lang}"/></th>
+                                            <th><fmt:message key="admin.infouser.order.register" bundle="${lang}"/></th>
+                                        </tr>
+                                        </thead>
 
-                <c:if test="${user ne null}">
-                <form method="POST" class="forms-sample" action="${pageContext.servletContext.contextPath}/buber"
-                      id="form_update">
+                                        <tbody>
 
-                    <input type="hidden" name="command" value="update_user">
-                    <input type="hidden" name="id" value="${user.id}">
-                    <div class="form-group">
-                        <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
-                        <input name="login" readonly type="text" class="form-control" id="login"
-                               placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
-                    </div>
-                    <div class="form-group">
-                        <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
-                        <input name="email" required type="text" class="form-control" id="email"
-                               placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>"
-                                value="${user.email}">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
-                        <input name="phone" required type="text" class="form-control" id="phone"
-                               placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>" value="${user.phone}">
-                    </div>
-                    <div class="form-group">
-                        <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
-                        <input name="name" required type="text" class="form-control" id="first_name"
-                               placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>" value="${user.firstName}">
-                    </div>
-                    <div class="template-demo">
-                        <button name="button_register" type="button"
-                                onclick="valid(document.getElementById('form_update'))"
-                                class="btn btn-gradient-primary btn-lg btn-fw">
-                            <fmt:message key="all.page.save" bundle="${lang}"/>
-                        </button>
-                        <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
-                    </div>
+                                        <c:forEach items="${listOrders}" var="order" varStatus="status">
+                                            <tr>
+                                                <td>${order.from}</td>
+                                                <td>${order.to}</td>
+                                                <td>${order.price}</td>
+                                                <td><fmt:formatDate value="${order.dateCreate}" pattern="HH:mm dd.MM.yyyy" /></td>
 
+                                            </tr>
 
-                </form>
-                </c:if>
+                                        </c:forEach>
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
+
             <footer class="footer">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">
         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block"><fmt:message
@@ -175,56 +183,14 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
-<script src="${pageContext.servletContext.contextPath}/static/js/client.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/driver.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <script>
     $(document).ready(function () {
-        setStatusOrder("${sessionScope.tripOrder.statusOrder}");
+        setTripOrder("${sessionScope.tripOrder}");
     });
 </script>
 <bub:infoMessage/>
-
-
-<div id="modalOrder" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <h3 class="modal-title text-center"><fmt:message key="client.footer.confirmorder" bundle="${lang}"/></h3>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.from" bundle="${lang}"/>:<p id="from"></p>
-            </div>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.to" bundle="${lang}"/>:<p id="to"></p></div>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.price" bundle="${lang}"/>:<p id="price"></p>
-            </div>
-            <form id="formOrder" action="">
-                <c:if test="${not empty sessionScope.user.bonuses}">
-                    <div class="modal-body">
-                        <label for="use-bonus"><fmt:message key="client.footer.usebonus" bundle="${lang}"/></label>
-                        <select id="use-bonus" class="form-control" name="bonus_id">
-                            <option id="factor0" value="0"><fmt:message key="admin.infouser.ban.none"
-                                                                        bundle="${lang}"/></option>
-                            <c:forEach items="${sessionScope.user.bonuses}" var="bonus" varStatus="status">
-                                <option id="factor${bonus.id}" value="${bonus.id}">${bonus.name}(${bonus.factor})
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </c:if>
-                <div class="modal-footer">
-                    <input type="hidden" name="command" value="order">
-                    <input type="hidden" name="from" value="">
-                    <input type="hidden" name="to" value="">
-                    <input type="hidden" name="price" value="">
-                    <button class="btn btn-default" type="button" onclick="ajaxOrder()" data-dismiss="modal">
-                        <fmt:message
-                                key="all.page.confirm"
-                                bundle="${lang}"/></button>
-                    <button class="btn btn-default" type="button" data-dismiss="modal"><fmt:message
-                            key="all.page.cancel"
-                            bundle="${lang}"/></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

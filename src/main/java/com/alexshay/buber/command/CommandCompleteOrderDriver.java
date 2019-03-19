@@ -2,7 +2,6 @@ package com.alexshay.buber.command;
 
 import com.alexshay.buber.domain.OrderStatus;
 import com.alexshay.buber.domain.TripOrder;
-import com.alexshay.buber.domain.UserBonus;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.UserService;

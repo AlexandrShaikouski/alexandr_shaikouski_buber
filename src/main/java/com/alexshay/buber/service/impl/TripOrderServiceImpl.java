@@ -106,11 +106,11 @@ public class TripOrderServiceImpl implements TripOrderService {
     }
 
     @Override
-    public List<TripOrder> getByStausWaiting() throws ServiceException {
+    public List<TripOrder> getByStaus(String status) throws ServiceException {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             TripOrderDao tripOrderDao = (TripOrderDao) daoFactory.getDao(TripOrder.class);
-            return tripOrderDao.getByStatus("waiting");
+            return tripOrderDao.getByStatus(status);
 
         } catch (DaoException e) {
             throw new ServiceException("Failed to get user DAO. ", e);

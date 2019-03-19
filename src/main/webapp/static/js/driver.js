@@ -1,39 +1,32 @@
-var listOrders = null;
-var myMap;
+var tripOrder = null,
+    statusOrder,
+    INTERVAL = 5000,
+    myMap;
+function setTripOrderStatus(statusOrder) {
+    this.statusOrder = statusOrder;
+}
 $(document).ready(function () {
 
-    var interval = 5000;
-
-    function doAjax() {
-        if (listOrders == null) {
-            $.ajax({
-                url: "ajax",
-                type: "POST",
-                dataType: "json",
-                data: {command: 'check_order_driver'},
-                success: function (data) {
-                    listOrders = data.tripOrders;
-                    if (listOrders) {
-                        var order = listOrders[0];
-                        showAcceptOrderPage(order);
-                    } else if (data.message) {
-                        errorMessage(data.message);
-                    }
-                }
-            });
+    setTimeout(function () {
+        switch (statusOrder) {
+            case "PENDING":
+                acceptOrder();
+                break;
+            case "IN_PROGRESS":
+                pendingClient();
+                break;
+            default:
+                setInterval(checkOrder, INTERVAL);
         }
+    },100);
+
+
+    if(myMap){
+        myMap.destroy();
     }
 
-    setInterval(doAjax, interval);
 });
 
-function showAcceptOrderPage(order) {
-    ymaps.ready(init(order.from, order.to, order.price));
-
-    $('input[name=trip_order_id]').val(order.id);
-    $('input[name=client_id]').val(order.clientId);
-    $('#buttons_accept').css('display', 'block');
-}
 
 function init(fromx, to, price) {
     var splitCoordinat,
@@ -83,6 +76,34 @@ function init(fromx, to, price) {
     }
 }
 
+function checkOrder() {
+    if (statusOrder === "") {
+        $.ajax({
+            url: "ajax",
+            type: "POST",
+            dataType: "json",
+            data: {command: 'check_order_driver'},
+            success: function (data) {
+                var listOrders = data.tripOrders;
+                if (listOrders) {
+                    tripOrder = listOrders[0];
+                    statusOrder = tripOrder.statusOrder;
+                    showAcceptOrderPage(tripOrder);
+                } else if (data.message) {
+                    errorMessage(data.message);
+                }
+            }
+        });
+    }
+}
+
+function showAcceptOrderPage(order) {
+    ymaps.ready(init(order.from, order.to, order.price));
+    $('input[name=trip_order_id]').val(order.id);
+    $('input[name=client_id]').val(order.clientId);
+    $('#buttons_accept').css('display', 'block');
+}
+
 function acceptOrder() {
     $.ajax({
         url: "ajax",
@@ -94,8 +115,11 @@ function acceptOrder() {
                 $('#infoMessage').html(data.messageInfo);
                 $('#modalInfoMessage').modal('show');
                 $('#buttons_accept').css('display', 'none');
-                myMap.destroy();
-                ymaps.ready(init(null, data.tripOrder.from, null));
+                tripOrder = data.tripOrder;
+                if (myMap) {
+                    myMap.destroy();
+                }
+                ymaps.ready(init(null, tripOrder.from, null));
                 $('#buttons_pending').css('display', 'block');
             } else {
                 errorMessage(data.message);
@@ -103,6 +127,7 @@ function acceptOrder() {
         }
     });
 }
+
 function pendingClient() {
     $.ajax({
         url: "ajax",
@@ -111,9 +136,12 @@ function pendingClient() {
         data: $('#formPendingClient').serialize(),
         success: function (data) {
             if (data.message == null) {
+                tripOrder = data.tripOrder;
                 $('#buttons_pending').css('display', 'none');
-                myMap.destroy();
-                ymaps.ready(init(data.tripOrder.from, data.tripOrder.to, data.tripOrder.price));
+                if (myMap) {
+                    myMap.destroy();
+                }
+                ymaps.ready(init(tripOrder.from, tripOrder.to, tripOrder.price));
                 $('#buttons_complete').css('display', 'block');
                 $('#clientName').html(data.clientName);
                 $('#clientPhone').html(data.clientPhone);
@@ -123,6 +151,7 @@ function pendingClient() {
         }
     });
 }
+
 function completeTrip() {
     $.ajax({
         url: "ajax",
@@ -132,8 +161,10 @@ function completeTrip() {
         success: function (data) {
             if (data.message == null) {
                 $('#buttons_complete').css('display', 'none');
-                myMap.destroy();
-                listOrders = null;
+                if (myMap) {
+                    myMap.destroy();
+                }
+                listOrder = null;
             } else {
                 errorMessage(data.message);
             }
@@ -149,12 +180,14 @@ function errorMessage(message) {
 function cancelOrder() {
     $('#buttons_accept').css('display', 'none');
     myMap.destroy();
-    listOrders = null;
+    location.reload();
+    tripOrder = null;
 }
+
 function cancelCompleteOrder() {
     $('#buttons_complete').css('display', 'none');
     myMap.destroy();
-    listOrders = null;
+    tripOrder = null;
     $.ajax({
         url: "ajax",
         type: "POST",
@@ -164,13 +197,15 @@ function cancelCompleteOrder() {
             if (data.message == null) {
                 $('#buttons_complete').css('display', 'none');
                 myMap.destroy();
-                listOrders = null;
+                tripOrder = null;
+                statusOrder = '';
             } else {
                 errorMessage(data.message);
             }
         }
     });
 }
+
 
 
 function changeLocale(locale) {

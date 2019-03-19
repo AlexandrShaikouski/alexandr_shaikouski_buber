@@ -13,5 +13,5 @@ public interface TripOrderService {
     void updateTripOrder(TripOrder tripOrder) throws ServiceException;
     List<TripOrder> getByClientId(Integer clientId) throws ServiceException;
     List<TripOrder> getByDriverId(Integer driverId) throws ServiceException;
-    List<TripOrder> getByStausWaiting() throws ServiceException;
+    List<TripOrder> getByStaus(String status) throws ServiceException;
 }
