@@ -48,7 +48,7 @@ public class CommandCreateOrder implements Command {
             tripOrder = tripOrderService.createTripOrder(tripOrder);
 
             session.setAttribute("tripOrder",tripOrder);
-            session.setAttribute("statusOrder", resourceBundle.getString("client.page.carnotfound"));
+            session.setAttribute("statusDriver", resourceBundle.getString("client.page.carnotfound"));
             responseParameters.put("messageInfo",resourceBundle.getString("client.info.successorder"));
         } catch (ServiceException e) {
             responseParameters.put("message",e.getMessage());

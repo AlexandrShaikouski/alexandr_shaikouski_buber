@@ -1,5 +1,6 @@
 package com.alexshay.buber.command;
 
+import com.alexshay.buber.domain.OrderStatus;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.TripOrder;
 import com.alexshay.buber.domain.User;
@@ -33,11 +34,12 @@ public class CommandPendingDriver implements Command {
             if (client != null && client.getRole().equals(Role.CLIENT) && tripOrder != null){
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
                 tripOrder = tripOrderService.getById(tripOrder);
-                if(tripOrder.getDriverId() != 0){
+                if(tripOrder.getStatusOrder() == OrderStatus.IN_PROGRESS){
                     responseParameters.put("driverId", tripOrder.getDriverId());
-                    responseParameters.put("status_order", tripOrder.getStatusOrder().value());
-                    responseParameters.put("statusOrder", resourceBundle.getString("client.page.taxiarrived"));
-                    session.setAttribute("statusOrder", resourceBundle.getString("client.page.taxiarrived"));
+                    responseParameters.put("statusOrder", tripOrder.getStatusOrder().value().toUpperCase());
+                    responseParameters.put("statusDriver", resourceBundle.getString("client.page.taxiarrived"));
+                    session.setAttribute("statusDriver", resourceBundle.getString("client.page.taxiarrived"));
+                    session.setAttribute("tripOrder", tripOrder);
                 }
             }
 

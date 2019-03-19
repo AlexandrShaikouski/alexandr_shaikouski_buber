@@ -77,6 +77,14 @@
                                 <input name="first_name" required type="text" class="form-control" id="first_name"
                                        placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>">
                             </div>
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" required class="form-check-input">
+                                        <fmt:message key="all.page.agreeregister" bundle="${lang}"/>
+                                        <i class="input-helper"></i></label>
+                                </div>
+                            </div>
                             <div class="mt-3">
                                 <button name="button_register" type="button"
                                         onclick="valid(document.getElementById('form_register'))"

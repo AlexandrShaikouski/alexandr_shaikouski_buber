@@ -38,9 +38,11 @@ public class CommandProvider {
         commandMap.put("check_order_client", new CommandCheckOrderClient());
         commandMap.put("accept_order", new CommandAcceptOrder());
         commandMap.put("pending_client", new CommandPendingClient());
-        commandMap.put("complete_trip", new CommandCompleteTrip());
+        commandMap.put("complete_order_driver", new CommandCompleteOrderDriver());
+        commandMap.put("complete_order_client", new CommandCompleteOrderClient());
         commandMap.put("cancel_complete", new CommandCancelOrder());
         commandMap.put("pending_driver", new CommandPendingDriver());
+        commandMap.put("personal_data", new CommandShowPersonalData());
     }
 
     /**

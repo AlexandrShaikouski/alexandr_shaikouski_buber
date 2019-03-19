@@ -179,7 +179,7 @@
                 </div>
             </form>
             <form id="formCompleteTrip" action="">
-                <input type="hidden" name="command" value="complete_trip">
+                <input type="hidden" name="command" value="complete_order_driver">
                 <div id="buttons_complete" style="display: none" class="template-demo">
                     <div class="row">
                         <div class="col-12">

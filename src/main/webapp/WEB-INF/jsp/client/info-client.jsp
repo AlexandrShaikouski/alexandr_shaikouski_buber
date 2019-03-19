@@ -6,6 +6,7 @@
 <fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale" var="lang" scope="application"/>
+<c:set var="user" value="${sessionScope.user}"></c:set>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -113,32 +114,47 @@
             </ul>
         </nav>
         <div class="main-panel">
-            <c:choose>
-                <c:when test="${sessionScope.tripOrder == null}">
+            <div class="content-wrapper">
 
-                    <div id="map" class="content-wrapper">
+                <c:if test="${user ne null}">
+                <form method="POST" class="forms-sample" action="${pageContext.servletContext.contextPath}/buber"
+                      id="form_update">
 
+                    <input type="hidden" name="command" value="update_user">
+                    <div class="form-group">
+                        <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
+                        <input name="login" readonly type="text" class="form-control" id="login"
+                               placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
                     </div>
-                    <script>$(document).ready(function () {
-                        ymaps.ready(init);
-                    })</script>
-                </c:when>
-                <c:otherwise>
-                    <div class="content-wrapper">
-                        <h4><fmt:message key="client.page.orderstatus"
-                                         bundle="${lang}"/> ${sessionScope.tripOrder.id} </h4>
-                        <h4 id="status_order">${sessionScope.statusDriver}</h4>
-                        <c:if test="${sessionScope.tripOrder.statusOrder eq 'WAITING'}">
-                            <button id="button_cancel_complete" onclick="cancelCompleteOrder()"
-                                    class="btn btn-lg btn-gradient-light btn-fw"
-                                    type="button"
-                            ><fmt:message key="all.page.cancel"
-                                          bundle="${lang}"/></button>
-                        </c:if>
+                    <div class="form-group">
+                        <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
+                        <input name="email" required type="text" class="form-control" id="email"
+                               placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>"
+                                value="${user.email}">
                     </div>
-                </c:otherwise>
-            </c:choose>
+                    <div class="form-group">
+                        <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
+                        <input name="phone" required type="text" class="form-control" id="phone" value="+375"
+                               placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>" value="${user.phone}">
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
+                        <input name="first_name" required type="text" class="form-control" id="first_name"
+                               placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>" value="${user.firstName}">
+                    </div>
+                    <div class="template-demo">
+                        <button name="button_register" type="button"
+                                onclick="valid(document.getElementById('form_update'))"
+                                class="btn btn-gradient-primary btn-lg btn-fw">
+                            <fmt:message key="all.page.save" bundle="${lang}"/>
+                        </button>
+                        <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
+                    </div>
 
+
+                </form>
+                </c:if>
+            </div>
             <footer class="footer">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">
         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block"><fmt:message

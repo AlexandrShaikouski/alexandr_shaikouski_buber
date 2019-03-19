@@ -4,12 +4,12 @@
         var login_regex = /^[a-zA-Z0-9]{2,45}$/;
         var first_name_regex = /^[a-zA-Zа-яА-Я]{2,45}$/;
         var password_regex = /^[a-zA-Z0-9!@#$%^&*]{6,45}$/;
-        var login = form.login.value;
-        var password = form.passwordUser.value;
-        var repassword = form.repasswordUser.value;
-        var email = form.email.value;
-        var phone = form.phone.value;
-        var firstName = form.first_name.value;
+        var login = form.login != null?form.login.value:null;
+        var password = form.passwordUser != null?form.passwordUser.value:null;
+        var repassword = form.repasswordUser!= null?form.repasswordUser.value:null;
+        var email = form.email!= null?form.email.value:null;
+        var phone = form.phone != null?form.phone.value:null;
+        var firstName = form.first_name!= null?form.first_name.value:null;
         var counter = 0;
         if (!login_regex.test(login)) {
             $('#login').addClass('alert-danger');
@@ -19,7 +19,7 @@
             $('#login').removeClass('alert-danger');
         }
 
-        if (password != repassword) {
+        if (password && password != repassword) {
             $('#repasswordUser').addClass('alert-danger');
             counter = counter + 1;
         } else {

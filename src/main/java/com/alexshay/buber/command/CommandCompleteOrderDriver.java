@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class CommandCompleteTrip implements Command {
+public class CommandCompleteOrderDriver implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
         ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();

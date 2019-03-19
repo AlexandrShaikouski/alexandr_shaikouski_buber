@@ -1,56 +1,17 @@
-var driverId = null,
+var statusOrder = null,
     myMap,
+    INTERVAL_CHECK = 4000,
+    WAITING = "WAITING",
+    PENDING = "PENDING",
+    IN_PROGRESS = "IN-PROGRESS",
+    COMPLETE = "COMPLETE",
     price = null;
 
 $(document).ready(function () {
-    var interval = 4000;
-
-    function doCheckDriver() {
-        if (driverId == null) {
-            $.ajax({
-                url: "ajax",
-                type: "POST",
-                dataType: "json",
-                data: {command: 'check_order_client'},
-                success: function (data) {
-                    driverId = data.driverId;
-                    if (driverId) {
-                        $('#infoMessage').html(data.messageInfo);
-                        $('#modalInfoMessage').modal('show');
-                        $("#status_order").html(data.statusOrder);
-                        $('#button_cancel_complete').css('display', 'none');
-                    } else if (data.message) {
-                        location.reload();
-                        errorMessage(data.message);
-                    }
-                }
-            });
-        }
-    }
-    function pendingDriver() {
-        if (driverId) {
-            $.ajax({
-                url: "ajax",
-                type: "POST",
-                dataType: "json",
-                data: {command: 'pending_driver'},
-                success: function (data) {
-                    if (data.status_order == "in-progress") {
-                        $("#status_order").html(data.statusOrder);
-                    } else if(data.message){
-                        errorMessage(data.message);
-                    }
-                }
-            });
-        }
-    }
-
-    setInterval(doCheckDriver, interval);
-
-    setInterval(pendingDriver, interval);
+    setInterval(checkActionDriver, INTERVAL_CHECK);
 
     $("#use-bonus").change(function () {
-        if(price == null){
+        if (price == null) {
             price = parseFloat($("#price").html());
         }
 
@@ -62,7 +23,7 @@ $(document).ready(function () {
             factor = parseFloat(textTagFactor.split("(")[1].split(")")[0]);
         }
 
-        var newprice = (price*(1.0-factor)).toFixed(2);
+        var newprice = (price * (1.0 - factor)).toFixed(2);
         $('input[name=price]').val(newprice);
         $("#price").html(newprice);
     });
@@ -161,7 +122,7 @@ function ajaxOrder() {
             if (data.messageInfo) {
                 myMap.destroy();
                 location.reload();
-            }else if(data.message){
+            } else if (data.message) {
                 $("div#infoMessage").html(data.message);
                 $("#modalInfoMessage").modal("show");
             }
@@ -184,14 +145,74 @@ function cancelCompleteOrder() {
         data: {command: "cancel_complete"},
         success: function (data) {
             location.reload();
-            if(data.message){
+            if (data.message) {
                 errorMessage(data.message);
             }
         }
     });
 }
-function setDriverId(driverId) {
-    if (driverId){
-        this.driverId = driverId;
+
+function setStatusOrder(statusOrder) {
+    if (statusOrder) {
+        this.statusOrder = statusOrder;
+    }
+}
+function checkActionDriver() {
+    switch (statusOrder) {
+        case WAITING:
+            checkAjax("check_order_client", checkFindCar);
+            break;
+        case PENDING:
+            checkAjax("pending_driver",checkDroveUpCar);
+            break;
+        case IN_PROGRESS:
+            checkAjax('complete_order_client',checkCompleteTrip);
+            break;
+        default:checkAjax('complete_order_client',checkCompleteTrip);
+    }
+}
+
+function checkAjax(command, initFunc) {
+    $.ajax({
+        url: "ajax",
+        type: "POST",
+        dataType: "json",
+        data: {command: command},
+        success: function (data) {
+            initFunc(data);
+        }
+    });
+}
+
+function checkFindCar(data) {
+    if (data.driverId) {
+        $('#infoMessage').html(data.messageInfo);
+        $('#modalInfoMessage').modal('show');
+        $("#status_order").html(data.statusDriver);
+        $('#button_cancel_complete').css('display', 'none');
+        statusOrder = PENDING;
+    }
+    if (data.message) {
+        location.reload();
+        errorMessage(data.message);
+    }
+}
+
+function checkDroveUpCar(data) {
+    if (data.statusOrder === IN_PROGRESS) {
+        $("#status_order").html(data.statusDriver);
+        statusOrder = IN_PROGRESS;
+    }
+    if (data.message) {
+        errorMessage(data.message);
+    }
+}
+
+function checkCompleteTrip(data) {
+    if (data.statusOrder === COMPLETE) {
+        $('#status_order').html(data.messageInfo);
+    } else if (data.message) {
+        location.reload();
+        errorMessage(data.message);
     }
 }

@@ -1,13 +1,11 @@
 package com.alexshay.buber.command;
 
-import com.alexshay.buber.domain.Role;
-import com.alexshay.buber.domain.TripOrder;
-import com.alexshay.buber.domain.User;
-import com.alexshay.buber.util.LocaleBundle;
-import com.alexshay.buber.util.ResponseContent;
+import com.alexshay.buber.domain.*;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
 import com.alexshay.buber.service.exception.ServiceException;
+import com.alexshay.buber.util.LocaleBundle;
+import com.alexshay.buber.util.ResponseContent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class CommandCheckOrderClient implements Command {
+public class CommandCompleteOrderClient implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
         ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
@@ -33,26 +31,17 @@ public class CommandCheckOrderClient implements Command {
             if (client != null && client.getRole().equals(Role.CLIENT) && tripOrder != null){
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
                 tripOrder = tripOrderService.getById(tripOrder);
-                if(tripOrder != null && tripOrder.getDriverId() != 0){
-                    responseParameters.put("messageInfo", resourceBundle.getString("client.info.acceptorder"));
-                    responseParameters.put("driverId", tripOrder.getDriverId());
-                    responseParameters.put("statusDriver", resourceBundle.getString("client.page.carfound"));
-                    session.setAttribute("statusDriver", resourceBundle.getString("client.page.carfound"));
-                    session.setAttribute("tripOrder", tripOrder);
-                }else {
-                    responseParameters.put("messageInfo", resourceBundle.getString("all.error.ordercancel"));
-                    responseParameters.put("tripOrder", tripOrder);
-                    session.setAttribute("tripOrder", tripOrder);
+                if(tripOrder.getStatusOrder() == OrderStatus.COMPLETE){
+                    responseParameters.put("messageInfo", resourceBundle.getString("client.page.finishtrip"));
+                    responseParameters.put("statusOrder", OrderStatus.COMPLETE.value().toUpperCase());
+                    session.setAttribute("tripOrder", null);
                 }
             }
 
         }catch (ServiceException e){
-            session.setAttribute("tripOrder", null);
             responseParameters.put("message", e.getMessage());
         }
         responseContent.setResponseParameters(responseParameters);
         return responseContent;
     }
-
-
 }
