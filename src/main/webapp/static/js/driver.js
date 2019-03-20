@@ -164,7 +164,8 @@ function completeTrip() {
                 if (myMap) {
                     myMap.destroy();
                 }
-                listOrder = null;
+                location.reload();
+                tripOrder = null;
             } else {
                 errorMessage(data.message);
             }
@@ -199,6 +200,7 @@ function cancelCompleteOrder() {
                 myMap.destroy();
                 tripOrder = null;
                 statusOrder = '';
+                location.reload();
             } else {
                 errorMessage(data.message);
             }

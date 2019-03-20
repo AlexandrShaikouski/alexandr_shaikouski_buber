@@ -181,7 +181,6 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
-<script src="${pageContext.servletContext.contextPath}/static/js/client.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <script>
     $(document).ready(function () {
@@ -189,48 +188,6 @@
     });
 </script>
 <bub:infoMessage/>
-
-
-<div id="modalOrder" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <h3 class="modal-title text-center"><fmt:message key="client.footer.confirmorder" bundle="${lang}"/></h3>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.from" bundle="${lang}"/>:<p id="from"></p>
-            </div>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.to" bundle="${lang}"/>:<p id="to"></p></div>
-            <div class="modal-body"><fmt:message key="admin.infouser.order.price" bundle="${lang}"/>:<p id="price"></p>
-            </div>
-            <form id="formOrder" action="">
-                <c:if test="${not empty sessionScope.user.bonuses}">
-                    <div class="modal-body">
-                        <label for="use-bonus"><fmt:message key="client.footer.usebonus" bundle="${lang}"/></label>
-                        <select id="use-bonus" class="form-control" name="bonus_id">
-                            <option id="factor0" value="0"><fmt:message key="admin.infouser.ban.none"
-                                                                        bundle="${lang}"/></option>
-                            <c:forEach items="${sessionScope.user.bonuses}" var="bonus" varStatus="status">
-                                <option id="factor${bonus.id}" value="${bonus.id}">${bonus.name}(${bonus.factor})
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </c:if>
-                <div class="modal-footer">
-                    <input type="hidden" name="command" value="order">
-                    <input type="hidden" name="from" value="">
-                    <input type="hidden" name="to" value="">
-                    <input type="hidden" name="price" value="">
-                    <button class="btn btn-default" type="button" onclick="ajaxOrder()" data-dismiss="modal">
-                        <fmt:message
-                                key="all.page.confirm"
-                                bundle="${lang}"/></button>
-                    <button class="btn btn-default" type="button" data-dismiss="modal"><fmt:message
-                            key="all.page.cancel"
-                            bundle="${lang}"/></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

@@ -2,9 +2,7 @@ package com.alexshay.buber.command;
 
 import com.alexshay.buber.util.ResponseContent;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 public class CommandLogOut implements Command {
     @Override
@@ -12,9 +10,6 @@ public class CommandLogOut implements Command {
         ResponseContent responseContent = new ResponseContent();
         String servletPath = request.getRequestURL().toString();
         request.getSession().invalidate();
-        Cookie[] cookies = request.getCookies();
-        Arrays.stream(cookies).forEach(s->s.setMaxAge(0));
-        responseContent.setCookies(cookies);
         responseContent.setRouter(new Router(servletPath + "?command=main_page", Router.Type.REDIRECT));
         return responseContent;
     }

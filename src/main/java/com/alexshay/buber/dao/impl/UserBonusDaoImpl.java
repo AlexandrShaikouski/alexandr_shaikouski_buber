@@ -17,10 +17,10 @@ import java.util.Map;
 public class UserBonusDaoImpl extends AbstractJdbcDao<UserBonus, Integer> implements UserBonusDao {
     private static final String DELETE_QUERY = "DELETE FROM user_bonus WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE user_bonus " +
-            "SET bonus_id = ?, user_id = ?" +
+            "SET bonus_id = ?, user_id = ? " +
             "WHERE id = ?";
-    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM user_bonus" +
-            "WHER id = ?";
+    private static final String SELECT_QUERY_BY_ID = "SELECT * FROM user_bonus " +
+            "WHERE id = ?";
     private static final String SELECT_QUERY_ALL = "SELECT * FROM user_bonus";
     private static final String CREATE_QUERY = "INSERT INTO user_bonus " +
             "(bonus_id, user_id) " +

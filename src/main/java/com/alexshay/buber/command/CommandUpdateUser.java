@@ -24,15 +24,14 @@ public class CommandUpdateUser implements Command {
         String servletPath = request.getRequestURL().toString();
         String bonusIdStr = request.getParameter("bonus_id");
         String role = request.getParameter("role");
-        request.setAttribute("role",role);
+        request.setAttribute("role", role);
         int id = Integer.parseInt(request.getParameter("id"));
-
 
 
         List<Bonus> bonuses = new ArrayList<>();
         User userError = User.builder().build();
         try {
-            if("client".equals(role)){
+            if ("client".equals(role)) {
                 int bonusId = Integer.parseInt(bonusIdStr);
                 if (bonusId != -1) {
                     BonusService bonusService = ServiceFactory.getInstance().getBonusService();
@@ -48,17 +47,27 @@ public class CommandUpdateUser implements Command {
 
 
             userService.updateUser(userCheck);
-            if(role == null){
+            if (role == null) {
                 session.setAttribute("user", userService.getUserById(user.getId()));
             }
             responseContent.setRouter(new Router(servletPath + "?command=success_page", Router.Type.REDIRECT));
         } catch (ServiceException e) {
             request.setAttribute("user", userError);
             request.setAttribute("message", e.getMessage());
-            responseContent.setRouter(new Router("WEB-INF/jsp/admin/info-user.jsp", Router.Type.FORWARD));
+            switch (userError.getRole()) {
+                case CLIENT:
+                    responseContent.setRouter(new Router("WEB-INF/jsp/client/info-client.jsp", Router.Type.FORWARD));
+                    break;
+                case DRIVER:
+                    responseContent.setRouter(new Router("WEB-INF/jsp/driver/info-driver.jsp", Router.Type.FORWARD));
+                    break;
+                case ADMIN:
+                    responseContent.setRouter(new Router("WEB-INF/jsp/admin/info-user.jsp", Router.Type.FORWARD));
+                    break;
+            }
+
         }
         return responseContent;
-
 
 
     }

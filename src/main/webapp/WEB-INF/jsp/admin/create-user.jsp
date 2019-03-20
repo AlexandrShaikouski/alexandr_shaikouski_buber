@@ -74,7 +74,7 @@
 
                     </div>
                     <div class="template-demo">
-                        <button name="button_register" type="button" onclick="valid(document.getElementById('form'))"
+                        <button name="button_register" type="button" onclick="valid(document.getElementById('form'),'flag')"
                                 class="btn btn-gradient-primary mr-2 btn-fw"><fmt:message key="all.signin.create"
                                                                                           bundle="${lang}"/></button>
                         <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel"

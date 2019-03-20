@@ -50,7 +50,7 @@
                             <input type="hidden" name="role" value="client">
                             <input type="hidden" name="flag" value="client">
                             <div class="form-group">
-                                <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
+                                <label for="login"><fmt:message key="all.page.login" bundle="${lang}"/></label>
                                 <input name="login" required title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
@@ -80,14 +80,15 @@
                             <div class="mb-4">
                                 <div class="form-check">
                                     <label class="form-check-label text-muted">
-                                        <input type="checkbox" required class="form-check-input">
+                                        <input type="checkbox" name="acceptTerms" class="form-check-input">
+
                                         <fmt:message key="all.page.agreeregister" bundle="${lang}"/>
                                         <i class="input-helper"></i></label>
                                 </div>
                             </div>
                             <div class="mt-3">
                                 <button name="button_register" type="button"
-                                        onclick="valid(document.getElementById('form_register'))"
+                                        onclick="valid(document.getElementById('form_register'),'<fmt:message key="all.register.acceptterms" bundle="${lang}"/>')"
                                         class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">
                                     <fmt:message key="all.register.signup" bundle="${lang}"/>
                                 </button>
@@ -110,8 +111,8 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/misc.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
+<bub:infoMessage message="${message}"/>
 <c:if test="${message != null}">
-    <bub:infoMessage message="${message}"/>
     <button id="error-gid" style="display: none" type="button" data-toggle="modal" data-target="#modalInfoMessage"/>
     <script>$('#error-gid').trigger('click');</script>
 </c:if>

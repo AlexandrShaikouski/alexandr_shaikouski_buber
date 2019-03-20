@@ -82,10 +82,14 @@ public class BonusDaoImpl extends AbstractJdbcDao<Bonus, Integer> implements Bon
         return DELETE_QUERY;
     }
 
+    public String getSelectQueryByClientId(){
+        return SELECT_QUERY_BY_CLIENT_ID;
+    }
+
     @Override
     @AutoConnection
     public List<Bonus> getByClientId(int clientId) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_QUERY_BY_CLIENT_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(getSelectQueryByClientId())) {
             statement.setInt(1,clientId);
             ResultSet resultSet = statement.executeQuery();
             return parseResultSet(resultSet);

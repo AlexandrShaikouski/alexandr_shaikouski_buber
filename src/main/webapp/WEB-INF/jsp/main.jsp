@@ -98,8 +98,8 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/misc.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
+<bub:infoMessage message="${message}"/>
 <c:if test="${message != null}">
-    <bub:infoMessage message="${message}"/>
     <button id="error-gid" style="display: none" type="button" data-toggle="modal" data-target="#modalInfoMessage"/>
     <script>$('#error-gid').trigger('click');</script>
 </c:if>

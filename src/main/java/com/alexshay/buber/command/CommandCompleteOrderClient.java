@@ -3,6 +3,7 @@ package com.alexshay.buber.command;
 import com.alexshay.buber.domain.*;
 import com.alexshay.buber.service.ServiceFactory;
 import com.alexshay.buber.service.TripOrderService;
+import com.alexshay.buber.service.UserService;
 import com.alexshay.buber.service.exception.ServiceException;
 import com.alexshay.buber.util.LocaleBundle;
 import com.alexshay.buber.util.ResponseContent;
@@ -17,6 +18,7 @@ public class CommandCompleteOrderClient implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
         ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
+        UserService userService = ServiceFactory.getInstance().getUserService();
         ResponseContent responseContent = new ResponseContent();
         Map<String, Object> responseParameters = new HashMap<>();
         HttpSession session = request.getSession();
@@ -32,9 +34,11 @@ public class CommandCompleteOrderClient implements Command {
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
                 tripOrder = tripOrderService.getById(tripOrder);
                 if(tripOrder.getStatusOrder() == OrderStatus.COMPLETE){
+                    client = userService.getUserById(client.getId());
                     responseParameters.put("messageInfo", resourceBundle.getString("client.page.finishtrip"));
                     responseParameters.put("statusOrder", OrderStatus.COMPLETE.value().toUpperCase());
                     session.setAttribute("tripOrder", null);
+                    session.setAttribute("user", client);
                 }
             }
 

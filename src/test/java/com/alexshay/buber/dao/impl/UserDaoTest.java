@@ -1,7 +1,7 @@
 package com.alexshay.buber.dao.impl;
 
 import com.alexshay.buber.dao.AbstractJdbcDao;
-import com.alexshay.buber.dao.GenericDao;
+import com.alexshay.buber.dao.UserDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.User;
@@ -13,12 +13,13 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class UserDaoImplTest {
-    private AbstractJdbcDao<User, Integer> daoUser;
-    private GenericDao<User,Integer> genericDao;
-    private User user;
+public class UserDaoTest {
+    private AbstractJdbcDao<User, Integer> abstractJdbcDao;
+    private UserDao userDao;
+    private User userBuild;
     private static final String DELETE_QUERY = "DELETE FROM user_account WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE user_account " +
             "SET login = ?, password = ?, first_name = ?, last_name = ?, " +
@@ -45,14 +46,16 @@ public class UserDaoImplTest {
 
     @Before
     public void init() throws DaoException {
-        user = User.builder().
+        abstractJdbcDao = (AbstractJdbcDao) JdbcDaoFactory.getInstance().getTransactionalDao(User.class);
+        userDao = (UserDao) JdbcDaoFactory.getInstance().getDao(User.class);
+        userBuild = User.builder().
                 login("A").
                 password("871FF76E24362EFA16E7F39D65EE380ADE9129D969E895CE34E5DB54252604FB").
                 firstName("A").
-                lastName("Shaikouski").
-                email("sash_shay@mail.ruff").
-                phone("+373356182421").
-                location("53.8853376,27.5546112,12").
+                lastName("A").
+                email("A").
+                phone("A").
+                location("A").
                 registrationTime(new Date()).
                 role(Role.ADMIN).
                 status(UserStatus.OFF_LINE).
@@ -60,57 +63,68 @@ public class UserDaoImplTest {
                 build();
 
 
-        daoUser = (AbstractJdbcDao) JdbcDaoFactory.getInstance().getTransactionalDao(User.class);
-        genericDao = JdbcDaoFactory.getInstance().getDao(User.class);
+
     }
 
     @Test
-    public void AbstractJdbcDaoForUserTest() throws DaoException {
-        User user1 = null;
+    public void abstractJdbcDaoForUserTest() throws DaoException {
+        User userCheck = null;
         try {
-            user1 = genericDao.persist(user);
-            User user2 = genericDao.getByPK(user1.getId());
-            assertEquals(user1, user2);
-            user.setLogin("B");
-            genericDao.update(user1);
-            user2 = genericDao.getByPK(user2.getId());
-            assertEquals("B", user2.getLogin());
+            userCheck = userDao.persist(userBuild);
+            userBuild = userDao.getByPK(userCheck.getId());
+            assertEquals(userCheck, userBuild);
+            userCheck.setLogin("B");
+            userDao.update(userCheck);
+            userCheck = userDao.getByPK(userCheck.getId());
+            assertEquals("B", userCheck.getLogin());
+            userCheck = userDao.getByEmail("A");
+            assertNotNull(userCheck);
+            userCheck = userDao.getByLogin("B");
+            assertNotNull(userCheck);
+            userCheck = userDao.getByPhone("A");
+            assertNotNull(userCheck);
+            userCheck = userDao.getByRole(Role.ADMIN.value()).stream().
+                    filter(s -> s.getLogin().equals("B")).
+                    findFirst().orElse(null);
+            assertNotNull(userCheck);
         }finally {
-            if(user1 != null) {
-                genericDao.delete(user1);
+            if(userCheck != null) {
+                userDao.delete(userCheck);
             }
         }
     }
 
     @Test
     public void getSelectQueryAll() {
-        assertEquals(SELECT_QUERY_ALL,daoUser.getSelectQueryAll());
+        assertEquals(SELECT_QUERY_ALL,abstractJdbcDao.getSelectQueryAll());
     }
 
     @Test
     public void getSelectQueryById() {
-        assertEquals(SELECT_QUERY_BY_ID,daoUser.getSelectQueryById());
+        assertEquals(SELECT_QUERY_BY_ID,abstractJdbcDao.getSelectQueryById());
     }
 
     @Test
     public void getCreateQuery() {
-        assertEquals(CREATE_QUERY,daoUser.getCreateQuery());
+        assertEquals(CREATE_QUERY,abstractJdbcDao.getCreateQuery());
     }
 
     @Test
     public void getUpdateQuery() {
-        assertEquals(UPDATE_QUERY,daoUser.getUpdateQuery());
+        assertEquals(UPDATE_QUERY,abstractJdbcDao.getUpdateQuery());
     }
 
     @Test
     public void getDeleteQuery() {
-        assertEquals(DELETE_QUERY,daoUser.getDeleteQuery());
+        assertEquals(DELETE_QUERY,abstractJdbcDao.getDeleteQuery());
     }
+
+
 
     @After
     public void destroy(){
-        daoUser = null;
-        genericDao = null;
-        user = null;
+        abstractJdbcDao = null;
+        userDao = null;
+        userBuild = null;
     }
 }

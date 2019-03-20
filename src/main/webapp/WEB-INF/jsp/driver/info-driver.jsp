@@ -130,7 +130,8 @@
                         <div class="form-group">
                             <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
                             <input name="login" readonly type="text" class="form-control" id="login"
-                                   placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
+                                   placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>"
+                                   value="${user.login}">
                         </div>
                         <div class="form-group">
                             <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
@@ -141,12 +142,14 @@
                         <div class="form-group">
                             <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
                             <input name="phone" required type="text" class="form-control" id="phone"
-                                   placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>" value="${user.phone}">
+                                   placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>"
+                                   value="${user.phone}">
                         </div>
                         <div class="form-group">
                             <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
                             <input name="name" required type="text" class="form-control" id="first_name"
-                                   placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>" value="${user.firstName}">
+                                   placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>"
+                                   value="${user.firstName}">
                         </div>
                         <div class="template-demo">
                             <button name="button_register" type="button"
@@ -154,7 +157,8 @@
                                     class="btn btn-gradient-primary btn-lg btn-fw">
                                 <fmt:message key="all.page.save" bundle="${lang}"/>
                             </button>
-                            <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
+                            <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel"
+                                                                                           bundle="${lang}"/></button>
                         </div>
 
 
@@ -175,7 +179,6 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
-<script src="${pageContext.servletContext.contextPath}/static/js/driver.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <script>
     $(document).ready(function () {
@@ -183,6 +186,11 @@
     });
 </script>
 <bub:infoMessage/>
-
+<c:if test="${message != null}">
+    <script>
+        $('#infoMessage').html('${message}');
+        $('#modalInfoMessage').modal('show');
+    </script>
+</c:if>
 </body>
 </html>
