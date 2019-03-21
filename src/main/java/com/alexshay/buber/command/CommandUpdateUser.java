@@ -11,6 +11,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CommandUpdateUser implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
         ResponseContent responseContent = new ResponseContent();
+        BonusService bonusService = ServiceFactory.getInstance().getBonusService();
         UserService userService = ServiceFactory.getInstance().getUserService();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -26,15 +28,15 @@ public class CommandUpdateUser implements Command {
         String role = request.getParameter("role");
         request.setAttribute("role", role);
         int id = Integer.parseInt(request.getParameter("id"));
-
+        List<Bonus> listBonuses = Collections.emptyList();
 
         List<Bonus> bonuses = new ArrayList<>();
         User userError = User.builder().build();
         try {
+            listBonuses = bonusService.getAll();
             if ("client".equals(role)) {
                 int bonusId = Integer.parseInt(bonusIdStr);
                 if (bonusId != -1) {
-                    BonusService bonusService = ServiceFactory.getInstance().getBonusService();
                     Bonus bonus = bonusService.getById(bonusId);
                     bonuses.add(bonus);
                 }
@@ -52,9 +54,12 @@ public class CommandUpdateUser implements Command {
             }
             responseContent.setRouter(new Router(servletPath + "?command=success_page", Router.Type.REDIRECT));
         } catch (ServiceException e) {
+
+
             request.setAttribute("user", userError);
+            request.setAttribute("listBonuses", listBonuses);
             request.setAttribute("message", e.getMessage());
-            switch (userError.getRole()) {
+            switch (user.getRole()) {
                 case CLIENT:
                     responseContent.setRouter(new Router("WEB-INF/jsp/client/info-client.jsp", Router.Type.FORWARD));
                     break;
@@ -87,7 +92,7 @@ public class CommandUpdateUser implements Command {
                     return date == null ? DateUtils.addHours(new Date(), countTimeBan) : DateUtils.addMonths(date, countTimeBan);
                 case "day":
                     return date == null ? DateUtils.addDays(new Date(), countTimeBan) : DateUtils.addDays(date, countTimeBan);
-                case "admin.infouser.ban.week":
+                case "week":
                     return date == null ? DateUtils.addWeeks(new Date(), countTimeBan) : DateUtils.addWeeks(date, countTimeBan);
                 case "month":
                     return date == null ? DateUtils.addMonths(new Date(), countTimeBan) : DateUtils.addMonths(date, countTimeBan);

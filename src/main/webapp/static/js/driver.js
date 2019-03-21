@@ -1,6 +1,8 @@
 var tripOrder = null,
     statusOrder,
     INTERVAL = 5000,
+    lang = 'en',
+    costTrip,
     myMap;
 function setTripOrderStatus(statusOrder) {
     this.statusOrder = statusOrder;
@@ -28,7 +30,7 @@ $(document).ready(function () {
 });
 
 
-function init(fromx, to, price) {
+function init(ymaps, fromx, to, price) {
     var splitCoordinat,
         from = fromx;
 
@@ -70,7 +72,7 @@ function init(fromx, to, price) {
     });
     myMap.geoObjects.add(multiRoute);
     if (price) {
-        myMap.balloon.open([splitCoordinat[0], splitCoordinat[1]], '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>'), {
+        myMap.balloon.open([splitCoordinat[0], splitCoordinat[1]], '<span style="font-weight: bold; font-style: italic">'+ costTrip +': ' + price + ' р.</span>'), {
             closeButton: false
         }
     }
@@ -86,19 +88,22 @@ function checkOrder() {
             success: function (data) {
                 var listOrders = data.tripOrders;
                 if (listOrders) {
-                    tripOrder = listOrders[0];
+                    tripOrder = listOrders[getRandomArbitrary(listOrders.length -1)];
                     statusOrder = tripOrder.statusOrder;
                     showAcceptOrderPage(tripOrder);
                 } else if (data.message) {
                     errorMessage(data.message);
+                    location.reload();
                 }
             }
         });
     }
 }
-
+function getRandomArbitrary(max) {
+    return Math.random() * max ;
+}
 function showAcceptOrderPage(order) {
-    ymaps.ready(init(order.from, order.to, order.price));
+    createMapy(lang,order.from, order.to, order.price);
     $('input[name=trip_order_id]').val(order.id);
     $('input[name=client_id]').val(order.clientId);
     $('#buttons_accept').css('display', 'block');
@@ -119,7 +124,7 @@ function acceptOrder() {
                 if (myMap) {
                     myMap.destroy();
                 }
-                ymaps.ready(init(null, tripOrder.from, null));
+                createMapy(lang,null, tripOrder.from, null);
                 $('#buttons_pending').css('display', 'block');
             } else {
                 errorMessage(data.message);
@@ -141,7 +146,7 @@ function pendingClient() {
                 if (myMap) {
                     myMap.destroy();
                 }
-                ymaps.ready(init(tripOrder.from, tripOrder.to, tripOrder.price));
+                createMapy(lang, tripOrder.from, tripOrder.to, tripOrder.price);
                 $('#buttons_complete').css('display', 'block');
                 $('#clientName').html(data.clientName);
                 $('#clientPhone').html(data.clientPhone);
@@ -210,20 +215,34 @@ function cancelCompleteOrder() {
 
 
 
-function changeLocale(locale) {
-    // Получим ссылки на элементы с тегом 'head' и id 'language'.
+function createMapy(lang, fromx, to, price) {
     var head = document.getElementsByTagName('head')[0];
-    var language = locale;
-    script = document.createElement('script');
-    script.type = 'text/javascript';
-    // Запишем ссылку на JS API Яндекс.Карт с выбранным языком в атрибут 'src'.
-    script.src = 'https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&onload=init_' + language + '&lang=' + language +
-        '_RU&ns=ymaps_' + language;
-    // Добавим элемент 'script' на страницу.
-    head.appendChild(script);
-    // Использование пространства имен позволяет избежать пересечения названий функций
-    // и прочих программных компонентов.
-    window['init_' + language] = function () {
-        init(window['ymaps_' + language]);
+    var language = 'en';
+    if(lang){
+        language = lang;
     }
-};
+
+    if (myMap) {
+        myMap.destroy();
+    }
+    if( $('#map_script').length === 0){
+        script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.id = 'map_script';
+        script.src = 'https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&onload=init_' + language + '&lang=' + language +
+            '_RU&ns=ymaps_' + language;
+        head.appendChild(script);
+        window['init_' + language] = function () {
+            init(window['ymaps_' + language], fromx, to, price);
+        }
+    }else {
+        init(window['ymaps_' + language], fromx, to, price);
+    }
+
+
+
+}
+function setLocaleData(lang,costTrip){
+    this.lang = lang;
+    this.costTrip = costTrip;
+}

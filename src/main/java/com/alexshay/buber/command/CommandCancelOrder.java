@@ -24,8 +24,12 @@ public class CommandCancelOrder implements Command {
         session.setAttribute("tripOrder", null);
 
         try {
-            LOGGER.info(user.getLogin() + " cancel order.");
-            tripOrderService.deleteTripOrder(tripOrder);
+
+            if(tripOrder != null){
+                LOGGER.info(user.getLogin() + " cancel order.");
+                tripOrderService.deleteTripOrder(tripOrder);
+            }
+
             responseParameters.put("cancel", "cancel");
 
         } catch (ServiceException e) {

@@ -23,17 +23,16 @@ public class TripOrderValidator implements ValidatorTripOrder {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         String from = tripOrder.getFrom();
         String to = tripOrder.getTo();
-        Float price = tripOrder.getPrice();
+        float price = tripOrder.getPrice();
         OrderStatus status = tripOrder.getStatusOrder();
-        Integer driverId = tripOrder.getDriverId();
+        int driverId = tripOrder.getDriverId();
         Integer id = tripOrder.getId();
         Integer clientId = tripOrder.getClientId();
-        Integer bonusId = tripOrder.getBonusId();
+        int bonusId = tripOrder.getBonusId();
 
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
             GenericDao<Bonus, Integer> bonusDao = daoFactory.getDao(Bonus.class);
-            GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);
 
             if (from != null && !from.matches(REGEX_POINT_GEO)) {
                 throw new ServiceException(resourceBundle.getString("all.error.wrongorder"));

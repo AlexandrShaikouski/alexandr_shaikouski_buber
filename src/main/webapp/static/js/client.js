@@ -5,7 +5,11 @@ var statusOrder = null,
     PENDING = "PENDING",
     IN_PROGRESS = "IN-PROGRESS",
     COMPLETE = "COMPLETE",
-    price = null;
+    price = null,
+    script,
+    tripColculate,
+    distanceWord,
+    costTrip;
 
 $(document).ready(function () {
     setInterval(checkActionDriver, INTERVAL_CHECK);
@@ -28,89 +32,6 @@ $(document).ready(function () {
         $("#price").html(newprice);
     });
 });
-
-function init() {
-    var DELIVERY_TARIFF = 0.8,
-        MINIMUM_COST = 6,
-        routePanelControl = new ymaps.control.RoutePanel({
-            options: {
-                showHeader: true,
-                title: 'Расчёт поездки'
-            }
-        }),
-        zoomControl = new ymaps.control.ZoomControl({
-            options: {
-                size: 'small',
-                float: 'none',
-                position: {
-                    bottom: 145,
-                    right: 10
-                }
-            }
-        });
-    myMap = new ymaps.Map('map', {
-            center: [53.888, 27.555],
-            zoom: 9,
-            suppressMapOpenBlock: true,
-            suppressObsoleteBrowserNotifier: true,
-            controls: ['smallMapDefaultSet']
-        }
-        , {
-            restrictMapArea: [
-                [53.806, 27.3454],
-                [53.9838, 27.772]
-            ]
-        })
-    routePanelControl.routePanel.options.set({
-        types: {auto: true}
-    });
-
-    routePanelControl.routePanel.geolocate('from');
-
-    myMap.controls.add(routePanelControl).add(zoomControl);
-
-    routePanelControl.routePanel.getRouteAsync().then(function (route) {
-
-        route.model.setParams({results: 1}, true);
-
-        route.model.events.add('requestsuccess', function () {
-
-
-            var activeRoute = route.getActiveRoute();
-            var points = route.getWayPoints();
-            if (activeRoute) {
-                var length = activeRoute.properties.get("distance"),
-                    price = calculate(Math.round(length.value / 1000)).toFixed(2),
-                    balloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                        '<span>Расстояние: ' + length.text + '.</span><br/>' +
-                        '<span style="font-weight: bold; font-style: italic">Стоимость поездки: ' + price + ' р.</span>');
-                route.options.set('routeBalloonContentLayout', balloonContentLayout);
-                activeRoute.balloon.open();
-                sendToServer(points.get(1).properties.get("address"),
-                    points.get(0).properties.get("address"),
-                    points.get(1).properties.get("request"),
-                    points.get(0).properties.get("request"),
-                    price)
-            }
-        });
-
-    });
-
-    function calculate(routeLength) {
-        return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);
-    }
-}
-
-function sendToServer(fromAdress, toAdress, pointA, pointB, price) {
-    $('input[name=from]').val(pointA);
-    $('input[name=to]').val(pointB);
-    $('input[name=price]').val(price);
-    $('p#from').html(fromAdress);
-    $('p#to').html(toAdress);
-    $('p#price').html(price);
-
-    $('#modalOrder').modal("show");
-}
 
 function ajaxOrder() {
     $.ajax({
@@ -193,7 +114,6 @@ function checkFindCar(data) {
         statusOrder = PENDING;
     }
     if (data.message) {
-        location.reload();
         errorMessage(data.message);
     }
 }
@@ -215,4 +135,114 @@ function checkCompleteTrip(data) {
         location.reload();
         errorMessage(data.message);
     }
+}
+
+
+
+function createMapy(lang) {
+    var head = document.getElementsByTagName('head')[0];
+    var language = 'en';
+    if(lang){
+        language = lang;
+    }
+
+    if (myMap) {
+        myMap.destroy();
+    }
+    script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&onload=init_' + language + '&lang=' + language +
+        '_RU&ns=ymaps_' + language;
+    head.appendChild(script);
+    window['init_' + language] = function () {
+        init(window['ymaps_' + language]);
+    }
+}
+
+function init(ymaps) {
+    var DELIVERY_TARIFF = 0.8,
+        MINIMUM_COST = 6,
+        routePanelControl = new ymaps.control.RoutePanel({
+            options: {
+                showHeader: true,
+                title: tripColculate
+            }
+        }),
+        zoomControl = new ymaps.control.ZoomControl({
+            options: {
+                size: 'small',
+                float: 'none',
+                position: {
+                    bottom: 145,
+                    right: 10
+                }
+            }
+        });
+    myMap = new ymaps.Map('map', {
+            center: [53.888, 27.555],
+            zoom: 9,
+            suppressMapOpenBlock: true,
+            suppressObsoleteBrowserNotifier: true,
+            controls: ['smallMapDefaultSet']
+        }
+        , {
+            restrictMapArea: [
+                [53.806, 27.3454],
+                [53.9838, 27.772]
+            ]
+        });
+    routePanelControl.routePanel.options.set({
+        types: {auto: true}
+    });
+
+    routePanelControl.routePanel.geolocate('from');
+
+    myMap.controls.add(routePanelControl).add(zoomControl);
+
+    routePanelControl.routePanel.getRouteAsync().then(function (route) {
+
+        route.model.setParams({results: 1}, true);
+
+        route.model.events.add('requestsuccess', function () {
+
+
+            var activeRoute = route.getActiveRoute();
+            var points = route.getWayPoints();
+            if (activeRoute) {
+                var length = activeRoute.properties.get("distance"),
+                    price = calculate(Math.round(length.value / 1000)).toFixed(2),
+                    balloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                        '<span>' + distanceWord + ': ' + length.text + '.</span><br/>' +
+                        '<span style="font-weight: bold; font-style: italic">' + costTrip + ': ' + price + ' р.</span>');
+                route.options.set('routeBalloonContentLayout', balloonContentLayout);
+                activeRoute.balloon.open();
+                sendToServer(points.get(1).properties.get("address"),
+                    points.get(0).properties.get("address"),
+                    points.get(1).properties.get("request"),
+                    points.get(0).properties.get("request"),
+                    price)
+            }
+        });
+
+    });
+
+    function calculate(routeLength) {
+        return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);
+    }
+}
+
+function sendToServer(fromAdress, toAdress, pointA, pointB, price) {
+    $('input[name=from]').val(pointA);
+    $('input[name=to]').val(pointB);
+    $('input[name=price]').val(price);
+    $('p#from').html(fromAdress);
+    $('p#to').html(toAdress);
+    $('p#price').html(price);
+
+    $('#modalOrder').modal("show");
+}
+function setLocaleWordOnMap(tripColculate, distance, costTrip) {
+    this.tripColculate = tripColculate;
+    this.distanceWord = distance;
+    this.costTrip = costTrip;
 }

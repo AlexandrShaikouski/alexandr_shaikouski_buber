@@ -12,7 +12,6 @@ import com.alexshay.buber.util.ResponseContent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,15 +39,8 @@ public class CommandSignInUser implements Command {
                 case CLIENT:
                     tripOrders = tripOrderService.getByClientId(user.getId());
                     tripOrder = tripOrders.stream().
-                            filter(s -> s.getStatusOrder() != OrderStatus.COMPLETE && s.getStatusOrder() != OrderStatus.WAITING).
+                            filter(s -> s.getStatusOrder() != OrderStatus.COMPLETE).
                             findFirst().orElse(null);
-                    if(tripOrder != null){
-                        if (tripOrder.getStatusOrder() == OrderStatus.PENDING){
-                            session.setAttribute("statusDriver", resourceBundle.getString("client.page.carfound"));
-                        }else{
-                            session.setAttribute("statusDriver", resourceBundle.getString("client.page.taxiarrived"));
-                        }
-                    }
                     session.setAttribute("tripOrder", tripOrder);
                     break;
                 case DRIVER:

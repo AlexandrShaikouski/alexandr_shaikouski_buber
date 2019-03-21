@@ -15,8 +15,6 @@ public class TripOrderServiceImpl implements TripOrderService {
 
     @Override
     public TripOrder getById(TripOrder tripOrder) throws ServiceException {
-        ValidatorTripOrder validator = ValidationFactory.getInstance().getTripOrderValidator();
-        validator.validate(tripOrder);
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         try {
             GenericDao<TripOrder, Integer> tripOrderDao = daoFactory.getDao(TripOrder.class);

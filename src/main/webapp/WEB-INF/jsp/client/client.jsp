@@ -17,26 +17,24 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
-            type="text/javascript">
-    </script>
+
     <style type="text/css">
         @media only screen and (max-width: 600px) {
             #map {
                 padding: 0;
             }
 
-            footer {
+            footer,#signOut,#welcom {
                 display: none;
             }
         }</style>
 
 </head>
 <body>
-
+<input type="hidden" id="language" value="${sessionScope.locale}">
 <div class="container-scroller">
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-none d-sm-block align-items-center justify-content-center">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             <a class="navbar-brand brand-logo" href="${pageContext.servletContext.contextPath}"><img
                     src="${pageContext.servletContext.contextPath}/static/images/logo.png" alt="logo"/></a>
             <a class="navbar-brand brand-logo-mini" href="${pageContext.servletContext.contextPath}"><img
@@ -47,7 +45,7 @@
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item nav-profile dropdown">
 
-                    <div class="nav-profile-text">
+                    <div id ="welcom" class="nav-profile-text">
                         <p class="mb-1 text-black"><fmt:message key="all.page.hello"
                                                                 bundle="${lang}"/>, ${sessionScope.user.firstName}</p>
                     </div>
@@ -59,7 +57,7 @@
                         <input type="hidden" name="command" value="sign_out">
                         <button type="submit" class="btn dropdown-item">
                             <i class="mdi mdi-logout mr-2 text-primary"></i>
-                            <fmt:message key="all.page.signout" bundle="${lang}"/>
+                            <span id="signOut"><fmt:message key="all.page.signout" bundle="${lang}"/></span>
                         </button>
                     </form>
                 </li>
@@ -124,9 +122,11 @@
                     <div id="map" class="content-wrapper">
 
                     </div>
-                    <script>$(document).ready(function () {
-                        ymaps.ready(init);
-                    })</script>
+                    <script>
+                        $(document).ready(function () {
+                            createMapy('${sessionScope.locale}');
+                        })
+                    </script>
                 </c:when>
                 <c:otherwise>
                     <div class="content-wrapper text-center">
@@ -163,6 +163,9 @@
 <script>
     $(document).ready(function () {
         setStatusOrder("${sessionScope.tripOrder.statusOrder}");
+        setLocaleWordOnMap('<fmt:message key="client.map.tripcalculation" bundle="${lang}"/>',
+                            '<fmt:message key="client.map.distance" bundle="${lang}"/>',
+                            '<fmt:message key="client.map.costtrip" bundle="${lang}"/>');
     });
 </script>
 <bub:infoMessage/>

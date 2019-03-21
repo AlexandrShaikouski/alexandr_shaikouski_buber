@@ -25,7 +25,7 @@ public class LocaleBundle {
         return instance;
     }
     public void setLocaleResourceBundle(String locale){
-        localeResourceBundle = ResourceBundle.getBundle("locale", new Locale("locale","RU"));
+        localeResourceBundle = ResourceBundle.getBundle("locale", new Locale(locale,"RU"));
     }
 
     public ResourceBundle getLocaleResourceBundle(){

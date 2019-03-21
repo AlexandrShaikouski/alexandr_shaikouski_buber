@@ -21,35 +21,35 @@ public class CommandAcceptOrder implements Command {
         ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
         ResponseContent responseContent = new ResponseContent();
         String tripOrderIdStr = request.getParameter("trip_order_id");
-        String clientIdStr = request.getParameter("client_id");
         HttpSession session = request.getSession();
         Map<String, Object> responseParameters = new HashMap<>();
         User driver = (User) session.getAttribute("user");
+        TripOrder tripOrder = (TripOrder) session.getAttribute("tripOrder");
         try {
-            if (driver != null && tripOrderIdStr != null && clientIdStr != null) {
-                TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
-                TripOrder tripOrder = TripOrder.builder().
-                        id(Integer.parseInt(tripOrderIdStr)).
-                        statusOrder(OrderStatus.WAITING).
-                        clientId(Integer.parseInt(clientIdStr)).
-                        build();
-                tripOrder = tripOrderService.getById(tripOrder);
-                if(driver.getId() == tripOrder.getDriverId()  || (tripOrder != null && tripOrder.getDriverId() == 0)){
-                    tripOrder.setDriverId(driver.getId());
-                    tripOrder.setStatusOrder(OrderStatus.PENDING);
-                    session.setAttribute("tripOrder", tripOrder);
-                    tripOrderService.updateTripOrder(tripOrder);
-                    responseParameters.put("tripOrder", tripOrder);
-                    responseParameters.put("messageInfo", resourceBundle.getString("all.info.acceptorder"));
-                }else if(tripOrder == null){
-                    throw new ServiceException(resourceBundle.getString("all.error.ordercancel"));
-                }else {
-                    throw new ServiceException(resourceBundle.getString("all.error.acceptorder"));
+            if (tripOrder == null) {
+                if (driver != null && tripOrderIdStr != null) {
+                    TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
+                    tripOrder = TripOrder.builder().
+                            id(Integer.parseInt(tripOrderIdStr)).
+                            build();
+                    tripOrder = tripOrderService.getById(tripOrder);
+                    if (tripOrder != null) {
+                        tripOrder.setDriverId(driver.getId());
+                        tripOrder.setStatusOrder(OrderStatus.PENDING);
+                        session.setAttribute("tripOrder", tripOrder);
+                        tripOrderService.updateTripOrder(tripOrder);
+                        responseParameters.put("tripOrder", tripOrder);
+                        responseParameters.put("messageInfo", resourceBundle.getString("all.info.acceptorder"));
+                    } else {
+                        throw new ServiceException(resourceBundle.getString("all.error.ordercancel"));
+                    }
+
                 }
-
-
+            }else{
+                responseParameters.put("tripOrder", tripOrder);
+                responseParameters.put("messageInfo", resourceBundle.getString("all.info.acceptorder"));
             }
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             responseParameters.put("message", e.getMessage());
         }
         responseContent.setResponseParameters(responseParameters);

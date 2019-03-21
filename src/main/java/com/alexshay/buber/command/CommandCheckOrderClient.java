@@ -39,8 +39,8 @@ public class CommandCheckOrderClient implements Command {
                     responseParameters.put("statusDriver", resourceBundle.getString("client.page.carfound"));
                     session.setAttribute("statusDriver", resourceBundle.getString("client.page.carfound"));
                     session.setAttribute("tripOrder", tripOrder);
-                }else {
-                    responseParameters.put("messageInfo", resourceBundle.getString("all.error.ordercancel"));
+                }else if(tripOrder == null){
+                    responseParameters.put("message", resourceBundle.getString("all.error.ordercancel"));
                     responseParameters.put("tripOrder", tripOrder);
                     session.setAttribute("tripOrder", tripOrder);
                 }

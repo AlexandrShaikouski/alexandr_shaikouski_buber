@@ -28,7 +28,7 @@
                 padding: 0;
             }
 
-            footer {
+            footer,#signOut,#welcom {
                 display: none;
             }
         }</style>
@@ -37,7 +37,7 @@
 
 <div class="container-scroller">
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-none d-sm-block align-items-center justify-content-center">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             <a class="navbar-brand brand-logo" href="${pageContext.servletContext.contextPath}"><img
                     src="${pageContext.servletContext.contextPath}/static/images/logo.png" alt="logo"/></a>
             <a class="navbar-brand brand-logo-mini" href="${pageContext.servletContext.contextPath}"><img
@@ -48,7 +48,7 @@
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item nav-profile dropdown">
 
-                    <div class="nav-profile-text">
+                    <div id="welcom" class="nav-profile-text">
                         <p class="mb-1 text-black"><fmt:message key="all.page.hello"
                                                                 bundle="${lang}"/>, ${sessionScope.user.firstName}</p>
                     </div>
@@ -60,7 +60,7 @@
                         <input type="hidden" name="command" value="sign_out">
                         <button type="submit" class="btn dropdown-item">
                             <i class="mdi mdi-logout mr-2 text-primary"></i>
-                            <fmt:message key="all.page.signout" bundle="${lang}"/>
+                            <span id="signOut"><fmt:message key="all.page.signout" bundle="${lang}"/></span>
                         </button>
                     </form>
                 </li>
@@ -184,11 +184,6 @@
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
-<script>
-    $(document).ready(function () {
-        setTripOrder("${sessionScope.tripOrder}");
-    });
-</script>
 <bub:infoMessage/>
 
 </body>

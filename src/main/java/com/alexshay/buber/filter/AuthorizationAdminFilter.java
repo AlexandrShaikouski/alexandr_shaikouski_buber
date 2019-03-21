@@ -2,13 +2,10 @@ package com.alexshay.buber.filter;
 
 import com.alexshay.buber.domain.Role;
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.util.CookieFinder;
-import com.alexshay.buber.util.UserJWTKey;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,7 +17,7 @@ import java.io.IOException;
         DispatcherType.INCLUDE
 }, urlPatterns = "/WEB-INF/jsp/admin/*",
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
-public class GuardianPageAdminFilter implements Filter {
+public class AuthorizationAdminFilter implements Filter {
     private String indexPath;
 
     @Override
