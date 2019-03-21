@@ -22,10 +22,13 @@
     </script>
     <style type="text/css">
         @media only screen and (max-width: 600px) {
-            .content-wrapper {
+            .content-wrapper, #cardTable, #divTable {
                 padding: 0;
             }
-
+            table {
+                overflow-x: auto;
+                display: block;
+            }
             footer,#signOut,#welcom {
                 display: none;
             }
@@ -121,9 +124,9 @@
             <div class="content-wrapper">
                 <c:choose>
                     <c:when test="${not empty listOrders}">
-                        <div class="col-lg-12">
+                        <div id="divTable" class="col-lg-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div id="cardTable" class="card-body">
                                     <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
                                     <table class="table table-bordered table-dark text-center">
                                         <thead>

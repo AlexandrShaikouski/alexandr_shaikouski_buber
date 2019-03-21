@@ -19,10 +19,13 @@
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
     <style type="text/css">
         @media only screen and (max-width: 600px) {
-            .content-wrapper {
+            .content-wrapper, #cardTable, #divTable {
                 padding: 0;
             }
-
+            table {
+                overflow-x: auto;
+                display: block;
+            }
             footer,#signOut,#welcom {
                 display: none;
             }

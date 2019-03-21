@@ -8,10 +8,10 @@
 <c:import url="header.jsp"></c:import>
 <c:choose>
     <c:when test="${not empty listUsers}">
-        <div class="row">
+        <div id="divTable" class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div id="cardTable" class="card-body">
                         <table class="table table-bordered table-dark text-center">
                             <thead>
                             <tr>
