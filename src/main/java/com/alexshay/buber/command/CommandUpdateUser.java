@@ -111,7 +111,6 @@ public class CommandUpdateUser implements Command {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String firstName = request.getParameter("name");
-        String location = request.getParameter("location");
         String status = request.getParameter("user_status");
         String banTime = request.getParameter("ban_time");
         if (login != null) {
@@ -125,9 +124,6 @@ public class CommandUpdateUser implements Command {
         }
         if (firstName != null) {
             user.setFirstName(firstName);
-        }
-        if (location != null) {
-            user.setLocation(location);
         }
         if (status != null) {
             user.setStatus(UserStatus.fromValue(status));

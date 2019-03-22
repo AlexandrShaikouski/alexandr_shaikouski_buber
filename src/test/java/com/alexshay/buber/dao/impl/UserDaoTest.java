@@ -22,27 +22,29 @@ public class UserDaoTest {
     private User userBuild;
     private static final String DELETE_QUERY = "DELETE FROM user_account WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE user_account " +
-            "SET login = ?, password = ?, first_name = ?, last_name = ?, " +
-            "email = ?, phone = ?, registration_date = ?, location = ?, " +
+            "SET login = ?, password = ?, first_name = ?, " +
+            "email = ?, phone = ?, registration_date = ?, " +
             "status_ban = ?, role_id = ?, repassword_key = ?, status = ? " +
             "WHERE id = ?";
-    private static final String SELECT_QUERY_ALL = "SELECT user_account.id, user_account.login, user_account.password, " +
-            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
-            "user_account.registration_date, user_account.location, user_account.status_ban, " +
-            "role.name AS role, user_account.repassword_key, user_account.status " +
-            "FROM user_account " +
-            "INNER JOIN role ON user_account.role_id = role.id ";
     private static final String SELECT_QUERY_BY_ID = "SELECT user_account.id, user_account.login, user_account.password, " +
-            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
-            "user_account.registration_date, user_account.location, user_account.status_ban, " +
+            "user_account.first_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.status_ban, " +
             "role.name AS role, user_account.repassword_key, user_account.status " +
             "FROM user_account " +
             "INNER JOIN role ON user_account.role_id = role.id " +
             "WHERE user_account.id = ?";
+    private static final String SELECT_QUERY_ALL = "SELECT user_account.id, user_account.login, user_account.password, " +
+            "user_account.first_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.status_ban, " +
+            "role.name AS role, user_account.repassword_key, user_account.status " +
+            "FROM user_account " +
+            "INNER JOIN role ON user_account.role_id = role.id ";
+
+
     private static final String CREATE_QUERY = "INSERT INTO user_account " +
-            "(login, password, first_name, last_name, email, phone, registration_date, location, status_ban, " +
+            "(login, password, first_name, email, phone, registration_date, status_ban, " +
             "role_id, repassword_key, status) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Before
     public void init() throws DaoException {
@@ -52,10 +54,8 @@ public class UserDaoTest {
                 login("A").
                 password("871FF76E24362EFA16E7F39D65EE380ADE9129D969E895CE34E5DB54252604FB").
                 firstName("A").
-                lastName("A").
                 email("A").
                 phone("A").
-                location("A").
                 registrationTime(new Date()).
                 role(Role.ADMIN).
                 status(UserStatus.OFF_LINE).

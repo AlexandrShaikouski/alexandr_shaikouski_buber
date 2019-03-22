@@ -48,10 +48,8 @@ public class UserBonusDaoTest {
                 login("C").
                 password("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC").
                 firstName("C").
-                lastName("C").
                 email("C").
                 phone("C").
-                location("C").
                 registrationTime(new Date()).
                 role(Role.CLIENT).
                 status(UserStatus.OFF_LINE).

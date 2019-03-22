@@ -15,11 +15,9 @@ public class User implements Identified<Integer> {
     private String password;
     private String repasswordKey;
     private String firstName;
-    private String lastName;
     private String email;
     private String phone;
     private UserStatus status;
-    private String location;
     private Date registrationTime;
     private Date statusBan;
     private Role role;

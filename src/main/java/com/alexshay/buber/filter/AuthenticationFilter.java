@@ -31,13 +31,9 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        Cookie[] cookies = httpServletRequest.getCookies();
-
-
 
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
-        session.setAttribute("locale", CookieFinder.getValueByName("locale",cookies).orElse(null));
         if (user != null) {
             switch (user.getRole()) {
                 case ADMIN:

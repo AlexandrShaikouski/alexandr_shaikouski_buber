@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<c:set var="locale" value="${cookie['locale'].value}"/>
+<fmt:setLocale value="${locale ne null ? locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale"  var="lang" scope="application"/>
-<c:import url="header.jsp"></c:import>
+<c:import url="header.jsp"/>
 <c:choose>
     <c:when test="${not empty listUsers}">
 
@@ -59,6 +60,11 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script>
     </c:when>
     <c:otherwise>
         <h1 class="display1"><fmt:message key="admin.page.noresults" bundle="${lang}"/></h1>

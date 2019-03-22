@@ -3,11 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="bub" uri="bubertags" %>
 
-<c:set var="locale" value="${cookie.get('locale')}"/>
-<fmt:setLocale value="${not empty locale ? sessionScope.locale : 'en'}"/>
+<c:set var="locale" value="${cookie['locale'].value}"/>
+<fmt:setLocale value="${locale ne null ? locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale" var="lang" scope="application"/>
-
 
 <html lang="en">
 <head>

@@ -40,10 +40,8 @@ public class TripOrderDaoTest {
                 login("T").
                 password("871FF76E24362EFA16E7F39D65EE380ADE9129D969E895CE34E5DB54252604FB").
                 firstName("T").
-                lastName("Shaikouski").
                 email("sash_shay@mail.ruff").
                 phone("+373356182421").
-                location("53.8853376,27.5546112,12").
                 registrationTime(new Date()).
                 role(Role.CLIENT).
                 status(UserStatus.OFF_LINE).

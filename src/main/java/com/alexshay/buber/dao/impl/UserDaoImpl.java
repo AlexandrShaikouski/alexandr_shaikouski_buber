@@ -24,29 +24,29 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
     private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
     private static final String DELETE_QUERY = "DELETE FROM user_account WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE user_account " +
-            "SET login = ?, password = ?, first_name = ?, last_name = ?, " +
-            "email = ?, phone = ?, registration_date = ?, location = ?, " +
+            "SET login = ?, password = ?, first_name = ?, " +
+            "email = ?, phone = ?, registration_date = ?, " +
             "status_ban = ?, role_id = ?, repassword_key = ?, status = ? " +
             "WHERE id = ?";
     private static final String SELECT_QUERY_BY_ID = "SELECT user_account.id, user_account.login, user_account.password, " +
-            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
-            "user_account.registration_date, user_account.location, user_account.status_ban, " +
+            "user_account.first_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.status_ban, " +
             "role.name AS role, user_account.repassword_key, user_account.status " +
             "FROM user_account " +
             "INNER JOIN role ON user_account.role_id = role.id " +
             "WHERE user_account.id = ?";
     private static final String SELECT_QUERY_ALL = "SELECT user_account.id, user_account.login, user_account.password, " +
-            "user_account.first_name, user_account.last_name, user_account.email, user_account.phone, " +
-            "user_account.registration_date, user_account.location, user_account.status_ban, " +
+            "user_account.first_name, user_account.email, user_account.phone, " +
+            "user_account.registration_date, user_account.status_ban, " +
             "role.name AS role, user_account.repassword_key, user_account.status " +
             "FROM user_account " +
             "INNER JOIN role ON user_account.role_id = role.id ";
 
 
     private static final String CREATE_QUERY = "INSERT INTO user_account " +
-            "(login, password, first_name, last_name, email, phone, registration_date, location, status_ban, " +
+            "(login, password, first_name, email, phone, registration_date, status_ban, " +
             "role_id, repassword_key, status) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws SQLException {
@@ -59,11 +59,9 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
                     login(rs.getString("login")).
                     password(rs.getString("password")).
                     firstName(rs.getString("first_name")).
-                    lastName(rs.getString("last_name")).
                     email(rs.getString("email")).
                     phone(rs.getString("phone")).
                     registrationTime(new Date(rs.getLong("registration_date"))).
-                    location(rs.getString("location")).
                     statusBan(rs.getLong("status_ban") != 0 ?
                             new Date(rs.getLong("status_ban")) :
                             null).
@@ -87,11 +85,9 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
         statement.setString(++counter, object.getLogin());
         statement.setString(++counter, object.getPassword());
         statement.setString(++counter, object.getFirstName());
-        statement.setString(++counter, object.getLastName());
         statement.setString(++counter, object.getEmail());
         statement.setString(++counter, object.getPhone());
         statement.setLong(++counter, object.getRegistrationTime().getTime());
-        statement.setString(++counter, object.getLocation());
         if (object.getStatusBan() != null) {
             statement.setLong(++counter, object.getStatusBan().getTime());
         } else {
@@ -105,7 +101,7 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, User object) throws SQLException {
         prepareStatementForInsert(statement, object);
-        statement.setInt(13, object.getId());
+        statement.setInt(11, object.getId());
     }
 
     @Override

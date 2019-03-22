@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="${not empty sessionScope.locale ? sessionScope.locale : 'en'}"/>
+<c:set var="locale" value="${cookie['locale'].value}"/>
+<fmt:setLocale value="${locale ne null ? locale : 'en'}"/>
 <fmt:requestEncoding value="utf-8"/>
 <fmt:setBundle basename="locale"  var="lang" scope="application"/>
-<c:import url="header.jsp"></c:import>
+<c:import url="header.jsp"/>
 <div class="row flex-grow">
     <div class="col-lg-7 mx-auto text-white">
         <div class="row align-items-center d-flex flex-row">

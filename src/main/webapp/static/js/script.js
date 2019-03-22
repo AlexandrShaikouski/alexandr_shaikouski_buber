@@ -106,9 +106,7 @@ function localeChange(form) {
     form.localePage.value = 'ru';
     form.submit();
 }
-$(document).ready(function () {
-    $('#myTable').DataTable();
-});
+
 
 
 
