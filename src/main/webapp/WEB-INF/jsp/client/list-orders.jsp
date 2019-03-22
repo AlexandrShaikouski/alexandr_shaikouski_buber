@@ -16,6 +16,7 @@
           href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/simplePagination.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
             type="text/javascript">
@@ -184,6 +185,7 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/jquery.simplePagination.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <bub:infoMessage/>
 

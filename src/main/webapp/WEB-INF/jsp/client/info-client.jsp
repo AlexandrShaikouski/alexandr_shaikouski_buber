@@ -128,7 +128,7 @@
                     <input type="hidden" name="command" value="update_user">
                     <input type="hidden" name="id" value="${user.id}">
                     <div class="form-group">
-                        <label for="login"><h4><fmt:message key="all.page.login" bundle="${lang}"/></h4></label>
+                        <label for="login"><fmt:message key="all.page.login" bundle="${lang}"/></label>
                         <input name="login" readonly type="text" class="form-control" id="login"
                                placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
                     </div>

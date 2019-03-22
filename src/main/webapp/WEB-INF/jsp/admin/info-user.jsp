@@ -17,29 +17,26 @@
             <div class="col-md-4"><h4 class="text-secondary"><fmt:message key="admin.infouser.regdate" bundle="${lang}"/> : ${user.registrationTime}</h4></div>
         </div>
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-dark text-center">
-                        <thead>
-                        <tr>
-                            <th><fmt:message key="all.page.username" bundle="${lang}"/></th>
-                            <th><fmt:message key="all.page.emailadr" bundle="${lang}"/></th>
-                            <th><fmt:message key="all.page.numphone" bundle="${lang}"/></th>
-                            <th><fmt:message key="all.page.fname" bundle="${lang}"/></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr>
-                            <td><input name="login" type="hidden" value="${user.login}">${user.login}</td>
-                            <td><input name="email" type="text" value="${user.email}"></td>
-                            <td><input name="phone" type="text" value="${user.phone}"></td>
-                            <td><input name="name" type="text" value="${user.firstName}"></td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
+            <div class="form-group">
+                <label for="login"><fmt:message key="all.page.login" bundle="${lang}"/></label>
+                <input name="login" readonly type="text" class="form-control" id="login"
+                       placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>" value="${user.login}">
+            </div>
+            <div class="form-group">
+                <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
+                <input name="email" required type="text" class="form-control" id="email"
+                       placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>"
+                       value="${user.email}">
+            </div>
+            <div class="form-group">
+                <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
+                <input name="phone" required type="text" class="form-control" id="phone"
+                       placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>" value="${user.phone}">
+            </div>
+            <div class="form-group">
+                <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
+                <input name="name" required type="text" class="form-control" id="first_name"
+                       placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>" value="${user.firstName}">
             </div>
         </div>
         <br>
@@ -116,7 +113,7 @@
         </c:if>
 
         <div class="template-demo">
-            <button class="btn btn-gradient-primary btn-fw" type="submit"><fmt:message key="all.page.save"
+            <button class="btn btn-gradient-primary btn-fw" type="button" onclick="valid(document.getElementById('form'))"><fmt:message key="all.page.save"
                                                                                 bundle="${lang}"/></button>
             <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
         </div>

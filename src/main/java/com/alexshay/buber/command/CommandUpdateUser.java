@@ -1,6 +1,7 @@
 package com.alexshay.buber.command;
 
 import com.alexshay.buber.domain.*;
+import com.alexshay.buber.util.LocaleBundle;
 import com.alexshay.buber.util.ResponseContent;
 import com.alexshay.buber.service.BonusService;
 import com.alexshay.buber.service.ServiceFactory;
@@ -10,14 +11,12 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CommandUpdateUser implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
+
         ResponseContent responseContent = new ResponseContent();
         BonusService bonusService = ServiceFactory.getInstance().getBonusService();
         UserService userService = ServiceFactory.getInstance().getUserService();
@@ -102,7 +101,8 @@ public class CommandUpdateUser implements Command {
                     throw new IllegalArgumentException();
             }
         } else {
-            throw new ServiceException("Add count for ban. ");
+            ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
+            throw new ServiceException(resourceBundle.getString("admin.infouser.countbanerr"));
         }
     }
 
