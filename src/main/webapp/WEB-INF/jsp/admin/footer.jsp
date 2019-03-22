@@ -19,6 +19,7 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/datatables.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 
 <c:if test="${message != null}">

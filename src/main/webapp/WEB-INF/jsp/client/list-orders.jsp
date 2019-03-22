@@ -12,11 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Buber</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
     <link rel="stylesheet"
           href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/simplePagination.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/datatables.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
             type="text/javascript">
@@ -26,11 +27,13 @@
             .content-wrapper, #cardTable, #divTable {
                 padding: 0;
             }
+
             table {
                 overflow-x: auto;
                 display: block;
             }
-            footer,#signOut,#welcom {
+
+            footer, #signOut, #welcom {
                 display: none;
             }
         }</style>
@@ -128,8 +131,9 @@
                         <div id="divTable" class="col-lg-12">
                             <div class="card">
                                 <div id="cardTable" class="card-body">
-                                    <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                                    <table class="table table-bordered table-dark text-center">
+                                    <h4 class="card-title"><fmt:message key="admin.infouser.order.message"
+                                                                        bundle="${lang}"/></h4>
+                                    <table id="myTable" class="display text-center">
                                         <thead>
                                         <tr>
                                             <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
@@ -146,7 +150,8 @@
                                                 <td>${order.from}</td>
                                                 <td>${order.to}</td>
                                                 <td>${order.price}</td>
-                                                <td><fmt:formatDate value="${order.dateCreate}" pattern="HH:mm dd.MM.yyyy" /></td>
+                                                <td><fmt:formatDate value="${order.dateCreate}"
+                                                                    pattern="HH:mm dd.MM.yyyy"/></td>
 
                                             </tr>
 
@@ -164,7 +169,8 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder"
+                                                                      bundle="${lang}"/></h1>
                                 </div>
                             </div>
                         </div>
@@ -185,9 +191,8 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
-<script src="${pageContext.servletContext.contextPath}/static/js/jquery.simplePagination.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/datatables.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <bub:infoMessage/>
-
 </body>
 </html>

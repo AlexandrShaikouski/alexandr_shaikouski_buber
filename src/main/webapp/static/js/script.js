@@ -106,13 +106,8 @@ function localeChange(form) {
     form.localePage.value = 'ru';
     form.submit();
 }
-
-$(function() {
-    $('table').pagination({
-        items: 100,
-        itemsOnPage: 10,
-        cssStyle: 'compact-theme'
-    });
+$(document).ready(function () {
+    $('#myTable').DataTable();
 });
 
 

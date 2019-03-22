@@ -12,7 +12,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div id="cardTable" class="card-body">
-                        <table class="table table-bordered table-dark text-center">
+                        <table id="myTable" class="display text-center">
                             <thead>
                             <tr>
                                 <th>ID</th>

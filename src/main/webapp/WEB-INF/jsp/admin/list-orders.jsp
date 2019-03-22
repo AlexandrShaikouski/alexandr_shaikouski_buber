@@ -13,7 +13,7 @@
             <div id="divTable" class="col-lg-12">
                 <div class="card">
                     <div id="cardTable" class="card-body">
-                        <table class="table table-bordered table-dark text-center">
+                        <table id="myTable" class="display text-center">
                             <thead>
                             <tr>
                                 <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>

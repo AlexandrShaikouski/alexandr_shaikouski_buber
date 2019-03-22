@@ -124,7 +124,7 @@
                 <div class="card">
                     <div id="cardTable" class="card-body">
                         <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                        <table class="table table-bordered table-dark text-center">
+                        <table id="myTable" class="display text-center">
                             <thead>
                             <tr>
                                 <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>

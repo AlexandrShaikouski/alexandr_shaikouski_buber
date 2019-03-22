@@ -18,6 +18,7 @@
           href="${pageContext.servletContext.contextPath}/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/datatables.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
             type="text/javascript">
@@ -129,7 +130,7 @@
                             <div class="card">
                                 <div id="cardTable" class="card-body">
                                     <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                                    <table class="table table-bordered table-dark text-center">
+                                    <table id="myTable" class="display text-center">
                                         <thead>
                                         <tr>
                                             <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
@@ -186,6 +187,7 @@
 <script src="${pageContext.servletContext.contextPath}/static/vendors/js/vendor.bundle.addons.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/off-canvas.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/dashboard.js"></script>
+<script src="${pageContext.servletContext.contextPath}/static/js/datatables.js"></script>
 <script src="${pageContext.servletContext.contextPath}/static/js/script.js"></script>
 <bub:infoMessage/>
 
