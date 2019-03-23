@@ -118,8 +118,20 @@
         <div class="main-panel">
 
             <div id="map" class="content-wrapper">
-
-
+                <c:if test="${sessionScope.tripOrder eq null}">
+                    <div class="content-wrapper d-flex align-items-center text-center error-page bg-primary">
+                        <div class="row flex-grow">
+                            <div class="col-lg-7 mx-auto text-white">
+                                <div class="row align-items-center d-flex flex-row">
+                                    <div class="col-lg-12 error-page-divider text-lg-left pl-lg-4">
+                                        <h2><fmt:message key="all.page.hello" bundle="${lang}"/>, <fmt:message key="all.page.role.driver" bundle="${lang}"/></h2>
+                                        <h3 class="font-weight-light"><fmt:message key="driver.page.message" bundle="${lang}"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </div>
 
             <form id="formAcceptOrder" action="">

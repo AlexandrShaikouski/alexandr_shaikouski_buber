@@ -126,8 +126,10 @@
     </form>
     <c:choose>
         <c:when test="${not empty listOrders}">
-            <h4 class="card-title"><fmt:message key="admin.infouser.order.message"
-                                                bundle="${lang}"/></h4>
+            <div class="row"><div class="col-12">
+                <h4 class="card-title"><fmt:message key="admin.infouser.order.message"
+                                                    bundle="${lang}"/></h4>
+            </div></div>
             <table id="myTable" style="display: none" class="display">
                 <thead>
                 <tr>

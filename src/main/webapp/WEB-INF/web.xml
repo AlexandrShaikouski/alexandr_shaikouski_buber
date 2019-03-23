@@ -13,10 +13,10 @@
         <error-code>404</error-code>
         <location>/static/error/error-404.jsp</location>
     </error-page>
-    <!-- <error-page>
+     <error-page>
         <error-code>500</error-code>
         <location>/static/error/error-500.jsp</location>
-    </error-page>&ndash;&gt;-->
+    </error-page>
 
 
 </web-app>
