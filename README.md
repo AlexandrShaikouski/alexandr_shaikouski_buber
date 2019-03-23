@@ -9,7 +9,7 @@ There are 3 roles:
 3. Client (Login: client / Password: client)
 
 
-Registration is open only to customers, the administrator and the driver can only create an administrator.
+Registration is open only to clients, the administrator and the driver can only create an administrator.
 
 # Administrator
 Can create new users, distribute, delete bonuses and bans. See listings. In the lists, you can delete and view user information.
