@@ -119,7 +119,7 @@
 
             <div id="map" class="content-wrapper">
                 <c:if test="${sessionScope.tripOrder eq null}">
-                    <div class="content-wrapper d-flex align-items-center text-center error-page bg-primary">
+                    <div id="welcome_message" class="content-wrapper d-flex align-items-center text-center error-page bg-primary">
                         <div class="row flex-grow">
                             <div class="col-lg-7 mx-auto text-white">
                                 <div class="row align-items-center d-flex flex-row">

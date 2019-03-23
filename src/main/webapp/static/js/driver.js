@@ -103,12 +103,12 @@ function getRandomArbitrary(max) {
     return Math.random() * max ;
 }
 function showAcceptOrderPage(order) {
-
+    $('#welcome_message').remove();
     createMapy(lang,order.from, order.to, order.price);
     $('input[name=trip_order_id]').val(order.id);
     $('input[name=client_id]').val(order.clientId);
     $('#buttons_accept').css('display', 'block');
-    $('#welcome_message').remove();
+
 }
 
 function acceptOrder() {

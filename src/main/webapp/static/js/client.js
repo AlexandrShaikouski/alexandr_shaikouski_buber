@@ -78,18 +78,20 @@ function setStatusOrder(statusOrder) {
         this.statusOrder = statusOrder;
     }
 }
+
 function checkActionDriver() {
     switch (statusOrder) {
         case WAITING:
             checkAjax("check_order_client", checkFindCar);
             break;
         case PENDING:
-            checkAjax("pending_driver",checkDroveUpCar);
+            checkAjax("pending_driver", checkDroveUpCar);
             break;
         case IN_PROGRESS:
-            checkAjax('complete_order_client',checkCompleteTrip);
+            checkAjax('complete_order_client', checkCompleteTrip);
             break;
-        default:checkAjax('complete_order_client',checkCompleteTrip);
+        default:
+            checkAjax('complete_order_client', checkCompleteTrip);
     }
 }
 
@@ -138,11 +140,10 @@ function checkCompleteTrip(data) {
 }
 
 
-
 function createMapy(lang) {
     var head = document.getElementsByTagName('head')[0];
     var language = 'en';
-    if(lang){
+    if (lang) {
         language = lang;
     }
 
@@ -216,11 +217,30 @@ function init(ymaps) {
                         '<span style="font-weight: bold; font-style: italic">' + costTrip + ': ' + price + ' р.</span>');
                 route.options.set('routeBalloonContentLayout', balloonContentLayout);
                 activeRoute.balloon.open();
+                var from = points.get(1).properties.get("request"),
+                    to = points.get(0).properties.get("request"),
+                    regex = /^[0-9|.|,| ]+$/;
+
+                if(regex.test(from)){
+                    $('input[name=from]').val(from);
+                }else{
+                    ymaps.geocode(from).then(function func(res) {
+                        var firstGeoObject = res.geoObjects.get(0);
+                        $('input[name=from]').val(firstGeoObject.geometry.getCoordinates());
+                    });
+                }
+                if(regex.test(to)){
+                    $('input[name=to]').val(to);
+                }else{
+                    ymaps.geocode(to).then(function func(res) {
+                        var firstGeoObject = res.geoObjects.get(0);
+                        $('input[name=to]').val(firstGeoObject.geometry.getCoordinates());
+                    });
+                }
+
                 sendToServer(points.get(1).properties.get("address"),
                     points.get(0).properties.get("address"),
-                    points.get(1).properties.get("request"),
-                    points.get(0).properties.get("request"),
-                    price)
+                    price);
             }
         });
 
@@ -231,9 +251,7 @@ function init(ymaps) {
     }
 }
 
-function sendToServer(fromAdress, toAdress, pointA, pointB, price) {
-    $('input[name=from]').val(pointA);
-    $('input[name=to]').val(pointB);
+function sendToServer(fromAdress, toAdress, price) {
     $('input[name=price]').val(price);
     $('p#from').html(fromAdress);
     $('p#to').html(toAdress);
@@ -241,6 +259,7 @@ function sendToServer(fromAdress, toAdress, pointA, pointB, price) {
 
     $('#modalOrder').modal("show");
 }
+
 function setLocaleWordOnMap(tripColculate, distance, costTrip) {
     this.tripColculate = tripColculate;
     this.distanceWord = distance;
