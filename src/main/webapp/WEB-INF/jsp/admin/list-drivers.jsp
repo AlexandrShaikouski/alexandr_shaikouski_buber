@@ -62,7 +62,7 @@
         </div>
         <script>
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                langTable('${locale}');
             });
         </script>
     </c:when>

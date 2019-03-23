@@ -15,7 +15,9 @@
         <div class="row">
             <div class="col-md-4"><h2 class="text-black">Id : #${user.id}</h2></div>
             <div class="col-md-4"></div>
-            <div class="col-md-4"><h4 class="text-secondary"><fmt:message key="admin.infouser.regdate" bundle="${lang}"/> : ${user.registrationTime}</h4></div>
+            <div class="col-md-4"><h4 class="text-secondary"><fmt:message key="admin.infouser.regdate"
+                                                                          bundle="${lang}"/>
+                : ${user.registrationTime}</h4></div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
@@ -50,7 +52,8 @@
 
                     <div class="modal-header">
                         <h3 class="text-black"><fmt:message key="admin.infouser.ban.until"
-                                                            bundle="${lang}"/> <fmt:formatDate value="${user.statusBan}" pattern="HH:mm dd-MM-yyyy" /></h3>
+                                                            bundle="${lang}"/> <fmt:formatDate value="${user.statusBan}"
+                                                                                               pattern="HH:mm dd-MM-yyyy"/></h3>
                         <button class="close" type="button"
                                 onclick="confirmDelete(document.getElementById('form'),'delete_ban')"><fmt:message
                                 key="all.page.delete" bundle="${lang}"/></button>
@@ -114,62 +117,85 @@
         </c:if>
 
         <div class="template-demo">
-            <button class="btn btn-gradient-primary btn-fw" type="button" onclick="valid(document.getElementById('form'))"><fmt:message key="all.page.save"
-                                                                                bundle="${lang}"/></button>
-            <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel" bundle="${lang}"/></button>
+            <button class="btn btn-gradient-primary btn-fw" type="button"
+                    onclick="valid(document.getElementById('form'))"><fmt:message key="all.page.save"
+                                                                                  bundle="${lang}"/></button>
+            <button class="btn btn-light btn-fw" type="reset"><fmt:message key="all.page.cancel"
+                                                                           bundle="${lang}"/></button>
         </div>
     </form>
     <c:choose>
         <c:when test="${not empty listOrders}">
-            <div id="divTable" class="col-lg-12">
-                <div class="card">
-                    <div id="cardTable" class="card-body">
-                        <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                        <table id="myTable" class="display text-center">
-                            <thead>
-                            <tr>
-                                <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
-                                <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
-                                <th><fmt:message key="admin.infouser.order.price" bundle="${lang}"/></th>
-                                <c:choose>
-                                    <c:when test="${role eq 'client'}">
-                                        <th><fmt:message key="admin.infouser.order.driverid" bundle="${lang}"/></th>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <th><fmt:message key="admin.infouser.order.clientid" bundle="${lang}"/></th>
-                                    </c:otherwise>
-                                </c:choose>
-                            </tr>
-                            </thead>
+            <h4 class="card-title"><fmt:message key="admin.infouser.order.message"
+                                                bundle="${lang}"/></h4>
+            <table id="myTable" style="display: none" class="display">
+                <thead>
+                <tr>
+                    <th><fmt:message key="admin.infouser.order.from"
+                                     bundle="${lang}"/></th>
+                    <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
+                    <th><fmt:message key="admin.infouser.order.price"
+                                     bundle="${lang}"/></th>
+                    <th><fmt:message key="admin.infouser.order.register"
+                                     bundle="${lang}"/></th>
+                    <c:choose>
+                        <c:when test="${role eq 'client'}">
+                            <th><fmt:message key="all.page.role.driver" bundle="${lang}"/></th>
+                        </c:when>
+                        <c:otherwise>
+                            <th><fmt:message key="all.page.role.client" bundle="${lang}"/></th>
+                        </c:otherwise>
+                    </c:choose>
+                </tr>
+                </thead>
 
-                            <tbody>
+                <tbody>
+                <c:set var="count" value='${0}' scope="page"/>
+                <c:forEach items="${listOrders}" var="order" varStatus="status">
+                    <tr>
+                        <td id="cordinate${count}" class="cord" id="from${order.id}">${order.from}</td>
+                        <c:set var="count" value="${count + 1}" scope="page"/>
+                        <td id="cordinate${count}" class="cord" id="to${order.id}">${order.to}</td>
+                        <c:set var="count" value="${count + 1}" scope="page"/>
+                        <td>${order.price}</td>
+                        <td><fmt:formatDate value="${order.dateCreate}"
+                                            pattern="HH:mm dd.MM.yyyy"/></td>
+                        <c:choose>
+                            <c:when test="${role eq 'client'}">
+                                <td>
+                                    <form method="post" action="${pageContext.servletContext.contextPath}/buber">
+                                        <input name="role" type="hidden" value="client"/>
+                                        <input type="hidden" name="command" value="info_user"/>
+                                        <input type="hidden" name="id" value="${order.clientId}">
+                                        <button class="btn btn-link" type="submit"><fmt:message key="admin.lclient.info"
+                                                                                                bundle="${lang}"/></button>
+                                    </form>
+                                </td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <form method="post" action="${pageContext.servletContext.contextPath}/buber">
+                                        <input name="role" type="hidden" value="driver"/>
+                                        <input type="hidden" name="command" value="info_user"/>
+                                        <input type="hidden" name="id" value="${order.driverId}">
+                                        <button class="btn btn-link" type="submit"><fmt:message key="admin.lclient.info"
+                                                                                                bundle="${lang}"/></button>
+                                    </form>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
 
-                            <c:forEach items="${listOrders}" var="order" varStatus="status">
-                                <tr>
-                                    <td>${order.from}</td>
-                                    <td>${order.to}</td>
-                                    <td>${order.price}</td>
-                                    <c:choose>
-                                        <c:when test="${role eq 'client'}">
-                                            <td>${order.driverId}</td>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <td>${order.clientId}</td>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </tr>
+                </c:forEach>
 
-                            </c:forEach>
+                </tbody>
 
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
+            </table>
             <script>
                 $(document).ready(function () {
-                    $('#myTable').DataTable();
+                    ymaps.ready(function () {
+                        changeAddress('${listOrders.size()}', '${locale}');
+                    });
                 });
             </script>
         </c:when>
@@ -177,7 +203,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                        <h1 class="display1"><fmt:message key="admin.page.noresultsorder"
+                                                          bundle="${lang}"/></h1>
                     </div>
                 </div>
             </div>

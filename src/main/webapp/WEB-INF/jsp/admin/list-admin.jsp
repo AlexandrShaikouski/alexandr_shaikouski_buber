@@ -42,12 +42,12 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                langTable('${locale}');
+            });
+        </script>
     </c:when>
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable();
-        });
-    </script>
     <c:otherwise>
         <h1 class="display1"><fmt:message key="admin.page.noresults" bundle="${lang}"/>s</h1>
     </c:otherwise>

@@ -108,5 +108,34 @@ function localeChange(form) {
 }
 
 
+function changeAddress(size,lang) {
+
+    $('.cord').text(function (index, text) {
+        var geocod = ymaps.geocode([text]);
+        geocod.then(function func(res) {
+            var firstGeoObject = res.geoObjects.get(0);
+            $('#cordinate' + index).html(firstGeoObject.getAddressLine());
+        });
+    });
+
+    setTimeout(function () {
+        langTable(lang);
+        $('#myTable').css('display', 'block');
+    }, +size * 150);
+}
+
+function langTable(lang) {
+    if(lang === 'ru'){
+        $('#myTable').DataTable({
+            "language": {
+                "url": "http://cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json"
+            }
+        });
+    }else{
+        $('#myTable').DataTable();
+    }
+}
+
+
 
 

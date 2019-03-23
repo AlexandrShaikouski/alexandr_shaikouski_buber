@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/style.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/css/datatables.css">
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/images/favicon.png"/>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=ru_RU"
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=34223f99-cf9b-42e5-99f3-79fa5603abbb&lang=${locale ne null?locale:'en'}_RU"
             type="text/javascript">
     </script>
     <style type="text/css">
@@ -127,43 +127,47 @@
             <div class="content-wrapper">
                 <c:choose>
                     <c:when test="${not empty listOrders}">
-                        <div id="divTable" class="col-lg-12">
-                            <div class="card">
-                                <div id="cardTable" class="card-body">
-                                    <h4 class="card-title"><fmt:message key="admin.infouser.order.message" bundle="${lang}"/></h4>
-                                    <table id="myTable" class="display text-center">
-                                        <thead>
-                                        <tr>
-                                            <th><fmt:message key="admin.infouser.order.from" bundle="${lang}"/></th>
-                                            <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
-                                            <th><fmt:message key="admin.infouser.order.price" bundle="${lang}"/></th>
-                                            <th><fmt:message key="admin.infouser.order.register" bundle="${lang}"/></th>
-                                        </tr>
-                                        </thead>
+                        <div class="row"><div class="col-12">
+                        <h4 class="card-title"><fmt:message key="admin.infouser.order.message"
+                                                            bundle="${lang}"/></h4>
+                        </div></div>
+                        <table id="myTable" style="display: none" class="display">
+                            <thead>
+                            <tr>
+                                <th><fmt:message key="admin.infouser.order.from"
+                                                 bundle="${lang}"/></th>
+                                <th><fmt:message key="admin.infouser.order.to" bundle="${lang}"/></th>
+                                <th><fmt:message key="admin.infouser.order.price"
+                                                 bundle="${lang}"/></th>
+                                <th><fmt:message key="admin.infouser.order.register"
+                                                 bundle="${lang}"/></th>
+                            </tr>
+                            </thead>
 
-                                        <tbody>
+                            <tbody>
+                            <c:set var="count" value='${0}' scope="page"/>
+                            <c:forEach items="${listOrders}" var="order" varStatus="status">
+                                <tr>
+                                    <td id="cordinate${count}" class="cord" id="from${order.id}">${order.from}</td>
+                                    <c:set var="count" value="${count + 1}" scope="page"/>
+                                    <td id="cordinate${count}" class="cord" id="to${order.id}">${order.to}</td>
+                                    <c:set var="count" value="${count + 1}" scope="page"/>
+                                    <td>${order.price}</td>
+                                    <td><fmt:formatDate value="${order.dateCreate}"
+                                                        pattern="HH:mm dd.MM.yyyy"/></td>
 
-                                        <c:forEach items="${listOrders}" var="order" varStatus="status">
-                                            <tr>
-                                                <td>${order.from}</td>
-                                                <td>${order.to}</td>
-                                                <td>${order.price}</td>
-                                                <td><fmt:formatDate value="${order.dateCreate}" pattern="HH:mm dd.MM.yyyy" /></td>
+                                </tr>
 
-                                            </tr>
+                            </c:forEach>
 
-                                        </c:forEach>
+                            </tbody>
 
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-                            </div>
-                        </div>
+                        </table>
                         <script>
                             $(document).ready(function () {
-                                $('#myTable').DataTable();
+                                ymaps.ready(function () {
+                                    changeAddress('${listOrders.size()}','${locale}');
+                                });
                             });
                         </script>
                     </c:when>
@@ -171,7 +175,8 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder" bundle="${lang}"/></h1>
+                                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder"
+                                                                      bundle="${lang}"/></h1>
                                 </div>
                             </div>
                         </div>
