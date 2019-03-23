@@ -3,7 +3,7 @@ You can see the site here
  http://207.154.220.222:8181/buber/
 
 # Instruction
-There are 3 roles:
+There are three roles:
 1. Administrator (Login: admin / Password: admin1)
 2. Driver (Login: driver / Password: driver)
 3. Client (Login: client / Password: client)
