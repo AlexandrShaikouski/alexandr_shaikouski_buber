@@ -12,7 +12,7 @@ There are three characters in the program:
 Self-registration is only available for clients, to register as a driver you need to contact the administrator.
 
 # Administrator
-Can create new users, add, delete bonuses and bans for users. See listings. In the lists, you can delete and view user information.
+Can create new users, add, delete bonuses and bans for users. See lists of users, trips. In the lists, you can delete and view user information.
 
 # Driver
 Follows orders. When the order appears, he sees the path and cost of the order. Decides to accept it or not, if the driver accepted the order, he must necessarily complete it.
