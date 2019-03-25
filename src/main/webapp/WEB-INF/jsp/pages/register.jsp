@@ -29,7 +29,8 @@
             .screen-full{
                 padding: 0;
             }
-        }</style>
+        }
+    </style>
 </head>
 
 <body>
@@ -52,30 +53,30 @@
                             <input type="hidden" name="flag" value="client">
                             <div class="form-group">
                                 <label for="login"><fmt:message key="all.page.login" bundle="${lang}"/></label>
-                                <input name="login" required title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
+                                <input name="login" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.usernamerule" bundle="${lang}"/>" type="text" class="form-control" id="login" placeholder="<fmt:message key="all.page.username" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
                                 <label for="passwordUser"><fmt:message key="all.page.password" bundle="${lang}"/></label>
-                                <input name="passwordUser" required type="password" class="form-control" id="passwordUser"
+                                <input name="passwordUser" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.passwordrule" bundle="${lang}"/>" type="password" class="form-control" id="passwordUser"
                                        placeholder="<fmt:message key="all.page.password" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
                                 <label for="repasswordUser"><fmt:message key="all.page.repeatpas" bundle="${lang}"/></label>
-                                <input name="repasswordUser" required type="password" class="form-control" id="repasswordUser"
+                                <input name="repasswordUser" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.repasswordrule" bundle="${lang}"/>" type="password" class="form-control" id="repasswordUser"
                                        placeholder="<fmt:message key="all.page.repeatpas" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
                                 <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
-                                <input name="email" required type="text" class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
+                                <input name="email" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.emailrule" bundle="${lang}"/>" type="text" class="form-control" id="email" placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>">
                             </div>
                             <div class="form-group">
                                 <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
-                                <input name="phone" required type="text" class="form-control" id="phone" value="+375"
+                                <input name="phone" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.phonerule" bundle="${lang}"/>" type="text" class="form-control" id="phone" value="+375"
                                        placeholder="+375XXXXXXXXX">
                             </div>
                             <div class="form-group">
                                 <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
-                                <input name="first_name" required type="text" class="form-control" id="first_name"
+                                <input name="first_name" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.namerule" bundle="${lang}"/>" type="text" class="form-control" id="first_name"
                                        placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>">
                             </div>
                             <div class="mb-4">

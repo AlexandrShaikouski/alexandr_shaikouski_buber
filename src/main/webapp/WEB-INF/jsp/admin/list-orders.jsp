@@ -76,7 +76,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="display1"><fmt:message key="admin.page.noresultsorder"
+                    <h1 class="display1"><fmt:message key="admin.page.noresults"
                                                       bundle="${lang}"/></h1>
                 </div>
             </div>

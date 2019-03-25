@@ -10,7 +10,7 @@ function valid(form, flag) {
         counter = 0;
     if (!login_regex.test(login)) {
         $('#login').addClass('alert-danger');
-        $('#login');
+        $('#login').tooltip('show');
         counter = counter + 1;
     } else {
         $('#login').removeClass('alert-danger');
@@ -18,6 +18,7 @@ function valid(form, flag) {
 
     if (!email_regex.test(email)) {
         $('#email').addClass('alert-danger');
+        $('#email').tooltip('show');
         counter = counter + 1;
     } else {
         $('#email').removeClass('alert-danger');
@@ -25,12 +26,14 @@ function valid(form, flag) {
 
     if (!phone_regex.test(phone)) {
         $('#phone').addClass('alert-danger');
+        $('#phone').tooltip('show');
         counter = counter + 1;
     } else {
         $('#phone').removeClass('alert-danger');
     }
     if (!first_name_regex.test(firstName)) {
         $('#first_name').addClass('alert-danger');
+        $('#first_name').tooltip('show');
         counter = counter + 1;
     } else {
         $('#first_name').removeClass('alert-danger');
@@ -41,12 +44,14 @@ function valid(form, flag) {
             repassword = form.repasswordUser.value;
         if (password !== repassword) {
             $('#repasswordUser').addClass('alert-danger');
+            $('#repasswordUser').tooltip('show');
             counter = counter + 1;
         } else {
             $('#repasswordUser').removeClass('alert-danger');
         }
         if (!password_regex.test(password)) {
             $('#passwordUser').addClass('alert-danger');
+            $('#passwordUser').tooltip('show');
             $('#repasswordUser').addClass('alert-danger');
             counter = counter + 1;
         } else {
@@ -136,6 +141,8 @@ function langTable(lang) {
     }
 }
 
-
+$(document).ready(function () {
+    $('input').tooltip({ boundary: 'window', container: 'body' });
+});
 
 

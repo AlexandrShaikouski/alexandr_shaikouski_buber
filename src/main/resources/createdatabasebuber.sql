@@ -57,9 +57,9 @@ INSERT INTO user_account
 (login, password, first_name, email, phone, status, registration_date, role_id)
 VALUES ('admin', '8df79deb606c9a5955d4d7fbd93037c29f736659b06aef73a377626dcd404b41', 'Admin', 'admin@admin.ru',
 				'+375251111111', 'off-line', '0', '1'),
-			 ('driver', 'AE788F9D08032173D63F16A059685C9B0890F2FA1128C84859D508AAE58E9D02', 'Driver', 'driver@driver.ru',
+			 ('driver', 'ae788f9d08032173d63f16a059685c9b0890f2fa1128c84859d508aae58e9d02', 'Driver', 'driver@driver.ru',
 				'+375252222222', 'off-line', '0', '2'),
-			 ('client', 'A3FA61A1980CDDB31E03B803B03B43C7D1638ECE2620ABACEF41CD7BF75AB216', 'Client', 'client@client.ru',
+			 ('client', 'a3fa61a1980cddb31e03b803b03b43c7d1638ece2620abacef41cd7bf75ab216', 'Client', 'client@client.ru',
 				'+375253333333', 'off-line', '0', '3');
 	
 	

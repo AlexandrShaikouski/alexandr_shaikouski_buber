@@ -136,19 +136,19 @@
                         </div>
                         <div class="form-group">
                             <label for="email"><fmt:message key="all.page.emailadr" bundle="${lang}"/></label>
-                            <input name="email" required type="text" class="form-control" id="email"
+                            <input name="email"  data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.emailrule" bundle="${lang}"/>" type="text" class="form-control" id="email"
                                    placeholder="<fmt:message key="all.page.email" bundle="${lang}"/>"
                                    value="${user.email}">
                         </div>
                         <div class="form-group">
                             <label for="phone"><fmt:message key="all.page.numphone" bundle="${lang}"/></label>
-                            <input name="phone" required type="text" class="form-control" id="phone"
+                            <input name="phone" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.phonerule" bundle="${lang}"/>" type="text" class="form-control" id="phone"
                                    placeholder="<fmt:message key="all.page.numphone" bundle="${lang}"/>"
                                    value="${user.phone}">
                         </div>
                         <div class="form-group">
                             <label for="first_name"><fmt:message key="all.page.fname" bundle="${lang}"/></label>
-                            <input name="name" required type="text" class="form-control" id="first_name"
+                            <input name="name" data-toggle="tooltip" data-placement="bottom"  title="<fmt:message key="all.register.namerule" bundle="${lang}"/>" type="text" class="form-control" id="first_name"
                                    placeholder="<fmt:message key="all.page.fname" bundle="${lang}"/>"
                                    value="${user.firstName}">
                         </div>
