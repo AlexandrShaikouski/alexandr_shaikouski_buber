@@ -36,7 +36,7 @@ public interface UserService {
     void checkRepasswordKey(User user) throws ServiceException;
     void resetPassword(User user) throws ServiceException;
 
-    default String encryptPassword(String password) throws NoSuchAlgorithmException {
+    default String hashingPassword(String password) throws NoSuchAlgorithmException {
         byte[] hexHash = MessageDigest.getInstance("SHA-256").digest(password.getBytes(StandardCharsets.UTF_8));
         return IntStream.range(0, hexHash.length).mapToObj(i -> Integer.toHexString(0xff & hexHash[i]))
                 .map(s -> (s.length() == 1) ? "0" + s : s).collect(Collectors.joining());

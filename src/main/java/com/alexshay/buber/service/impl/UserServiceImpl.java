@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         ValidatorUser validator = ValidationFactory.getInstance().getUserValidator();
         try {
             GenericDao<User, Integer> userDao = daoFactory.getDao(User.class);
-            String password = encryptPassword(user.getPassword() + user.getLogin());
+            String password = hashingPassword(user.getPassword() + user.getLogin());
             validator.validate(user);
             user.setPassword(password);
             return userDao.persist(user);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             String login = user.getLogin();
             String password = user.getPassword();
             if(password.length() != 64){
-                user.setPassword(encryptPassword(password+login));
+                user.setPassword(hashingPassword(password+login));
             }
             authenticationValidator.validate(user);
             User userValid = userDao.getByLogin(login);
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
             user = userDao.getByEmail(user.getEmail());
-            user.setRepasswordKey(encryptPassword(repasswordKey));
+            user.setRepasswordKey(hashingPassword(repasswordKey));
             userDao.update(user);
             mailGenerator.sendMessage("Reset password", message, Arrays.asList(user.getEmail()));
 
@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
         DaoFactory daoFactory = FactoryProducer.getDaoFactory(DaoFactoryType.JDBC);
         ValidatorUser validatorRepassword = ValidationFactory.getInstance().getRepasswordKeyValidator();
         try {
-            user.setRepasswordKey(encryptPassword(user.getRepasswordKey()));
+            user.setRepasswordKey(hashingPassword(user.getRepasswordKey()));
             validatorRepassword.validate(user);
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
             user = userDao.getByEmail(user.getEmail());
@@ -212,7 +212,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserDao userDao = (UserDao) daoFactory.getDao(User.class);
             User userValid = userDao.getByEmail(user.getEmail());
-            userValid.setPassword(encryptPassword(user.getPassword() + userValid.getLogin()));
+            userValid.setPassword(hashingPassword(user.getPassword() + userValid.getLogin()));
             userDao.update(userValid);
         } catch (DaoException  e) {
             throw new ServiceException("Failed to get user DAO. ", e);
