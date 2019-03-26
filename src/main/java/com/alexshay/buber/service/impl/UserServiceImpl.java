@@ -5,7 +5,7 @@ import com.alexshay.buber.dao.UserBonusDao;
 import com.alexshay.buber.dao.exception.DaoException;
 import com.alexshay.buber.domain.*;
 import com.alexshay.buber.service.UserService;
-import com.alexshay.buber.service.email.MailGenerator;
+import com.alexshay.buber.service.mail.MailGenerator;
 import com.alexshay.buber.service.exception.ServiceException;
 import com.alexshay.buber.validation.ValidationFactory;
 import com.alexshay.buber.validation.ValidatorUser;

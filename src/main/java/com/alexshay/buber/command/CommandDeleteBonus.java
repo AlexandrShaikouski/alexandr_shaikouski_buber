@@ -22,8 +22,7 @@ public class CommandDeleteBonus implements Command {
         } catch (ServiceException e) {
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("/?command=info_user", Router.Type.FORWARD));
-        }finally {
-            return responseContent;
         }
+        return responseContent;
     }
 }

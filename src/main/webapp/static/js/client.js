@@ -65,9 +65,10 @@ function cancelCompleteOrder() {
         dataType: "json",
         data: {command: "cancel_complete"},
         success: function (data) {
-            location.reload();
             if (data.message) {
                 errorMessage(data.message);
+            }else {
+                location.reload();
             }
         }
     });
@@ -90,7 +91,7 @@ function checkActionDriver() {
         case IN_PROGRESS:
             checkAjax('complete_order_client', checkCompleteTrip);
             break;
-        default:
+        case COMPLETE:
             checkAjax('complete_order_client', checkCompleteTrip);
     }
 }
@@ -134,7 +135,7 @@ function checkCompleteTrip(data) {
     if (data.statusOrder === COMPLETE) {
         $('#status_order').html(data.messageInfo);
     } else if (data.message) {
-        location.reload();
+        $('#status_order').html(data.message);
         errorMessage(data.message);
     }
 }

@@ -10,7 +10,7 @@
     <uri>bubertags</uri>
     <tag>
         <name>infoMessage</name>
-        <tag-class>com.alexshay.buber.tag.InfoMessageTag</tag-class>
+        <tag-class>com.alexshay.buber.util.InfoMessageTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>message</name>

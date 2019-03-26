@@ -19,10 +19,6 @@ public class CommandCheckOrderDriver implements Command {
         Map<String, Object> responseParameters = new HashMap<>();
         HttpSession session = request.getSession();
         User driver = (User) session.getAttribute("user");
-        String locale = (String) session.getAttribute("locale");
-        if(locale != null){
-            responseParameters.put("locale",locale);
-        }
         try {
             if (driver != null && driver.getRole().equals(Role.DRIVER) && driver.getStatus().equals(UserStatus.ONLINE)){
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();

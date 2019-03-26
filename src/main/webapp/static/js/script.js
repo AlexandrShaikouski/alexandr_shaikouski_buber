@@ -21,7 +21,7 @@ function valid(form, flag) {
         $('#email').tooltip('show');
         counter = counter + 1;
     } else {
-        $('#email').removeClass('alert-danger');
+        $('#mail').removeClass('alert-danger');
     }
 
     if (!phone_regex.test(phone)) {

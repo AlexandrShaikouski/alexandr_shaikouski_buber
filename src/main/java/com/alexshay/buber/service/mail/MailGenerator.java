@@ -1,4 +1,4 @@
-package com.alexshay.buber.service.email;
+package com.alexshay.buber.service.mail;
 
 import com.alexshay.buber.service.exception.ServiceException;
 import com.alexshay.buber.util.LocaleBundle;

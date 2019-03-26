@@ -108,7 +108,7 @@ public class CommandUpdateUser implements Command {
 
     private User addUpdateUserFields(User user, HttpServletRequest request) throws ServiceException {
         String login = request.getParameter("login");
-        String email = request.getParameter("email");
+        String email = request.getParameter("mail");
         String phone = request.getParameter("phone");
         String firstName = request.getParameter("name");
         String status = request.getParameter("user_status");

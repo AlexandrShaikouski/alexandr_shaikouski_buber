@@ -21,8 +21,7 @@ public class CommandShowAllAdmin implements Command {
         } catch (ServiceException e) {
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("WEB-INF/jsp/admin/list-admin.jsp", Router.Type.FORWARD));
-        }finally {
-            return responseContent;
         }
+        return responseContent;
     }
 }

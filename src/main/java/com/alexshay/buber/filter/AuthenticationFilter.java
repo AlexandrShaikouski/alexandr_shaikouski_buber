@@ -1,15 +1,9 @@
 package com.alexshay.buber.filter;
 
 import com.alexshay.buber.domain.User;
-import com.alexshay.buber.service.ServiceFactory;
-import com.alexshay.buber.service.UserService;
-import com.alexshay.buber.service.exception.ServiceException;
-import com.alexshay.buber.util.CookieFinder;
-import com.alexshay.buber.util.UserJWTKey;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

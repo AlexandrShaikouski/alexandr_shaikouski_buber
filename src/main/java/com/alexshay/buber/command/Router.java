@@ -5,7 +5,7 @@ package com.alexshay.buber.command;
  */
 public class Router {
     private String route;
-    private Type type = Type.FORWARD;
+    private Type type;
 
     public enum Type {
         FORWARD, REDIRECT

@@ -152,7 +152,7 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             return getUser(email, statement);
         } catch (SQLException e) {
-            throw new DaoException("Not getting info by email from DB", e);
+            throw new DaoException("Not getting info by mail from DB", e);
         }
     }
 
@@ -163,7 +163,7 @@ public class UserDaoImpl extends AbstractJdbcDao<User, Integer> implements UserD
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             return getUser(phone, statement);
         } catch (SQLException e) {
-            throw new DaoException("Not getting info by email from DB", e);
+            throw new DaoException("Not getting info by mail from DB", e);
         }
     }
 

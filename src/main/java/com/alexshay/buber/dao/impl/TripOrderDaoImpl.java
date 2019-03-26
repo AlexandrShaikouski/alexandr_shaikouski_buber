@@ -127,7 +127,7 @@ public class TripOrderDaoImpl extends AbstractJdbcDao<TripOrder, Integer> implem
             List<TripOrder> parseRes = parseResultSet(resultSet);
             return parseRes;
         } catch (SQLException e) {
-            throw new DaoException("Not getting info by email from DB", e);
+            throw new DaoException("Not getting info by mail from DB", e);
         }
     }
 }

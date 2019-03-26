@@ -25,11 +25,7 @@ public class CommandPendingDriver implements Command {
         HttpSession session = request.getSession();
         TripOrder tripOrder = (TripOrder) session.getAttribute("tripOrder");
         User client = (User) session.getAttribute("user");
-        String locale = (String) session.getAttribute("locale");
 
-        if(locale != null){
-            responseParameters.put("locale",locale);
-        }
         try {
             if (client != null && client.getRole().equals(Role.CLIENT) && tripOrder != null){
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();

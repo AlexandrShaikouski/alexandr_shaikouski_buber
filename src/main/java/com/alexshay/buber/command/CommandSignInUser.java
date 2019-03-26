@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 public class CommandSignInUser implements Command {
     @Override
     public ResponseContent execute(HttpServletRequest request) {
-        ResourceBundle resourceBundle = LocaleBundle.getInstance().getLocaleResourceBundle();
         ResponseContent responseContent = new ResponseContent();
         String servletPath = request.getRequestURL().toString();
         UserService userService = ServiceFactory.getInstance().getUserService();

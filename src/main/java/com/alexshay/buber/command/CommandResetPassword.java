@@ -11,7 +11,7 @@ public class CommandResetPassword implements Command {
         ResponseContent responseContent = new ResponseContent();
         ResetPassword resetPassword = new ResetPassword();
         String reset = request.getParameter("reset");
-        String email = request.getParameter("email");
+        String email = request.getParameter("mail");
         if (reset == null){
             responseContent.setRouter(new Router("/WEB-INF/jsp/pages/reset-password.jsp", Router.Type.FORWARD));
             return responseContent;
@@ -27,7 +27,7 @@ public class CommandResetPassword implements Command {
             }
 
         } catch (ServiceException e) {
-            request.setAttribute("email",email);
+            request.setAttribute("mail",email);
             request.setAttribute("reset", reset.equals("send_key")?null:reset.equals("check_key")?"send_key":reset);
             request.setAttribute("message", e.getMessage());
             responseContent.setRouter(new Router("/WEB-INF/jsp/pages/reset-password.jsp", Router.Type.FORWARD));

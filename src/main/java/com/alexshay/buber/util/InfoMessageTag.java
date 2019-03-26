@@ -1,6 +1,5 @@
-package com.alexshay.buber.tag;
+package com.alexshay.buber.util;
 
-import com.alexshay.buber.util.LocaleBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

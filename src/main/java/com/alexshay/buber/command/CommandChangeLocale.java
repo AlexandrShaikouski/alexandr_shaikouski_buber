@@ -15,8 +15,6 @@ public class CommandChangeLocale implements Command {
         ResponseContent responseContent = new ResponseContent();
         String servletPath = request.getRequestURL().toString();
         String locale = request.getParameter("localePage");
-        HttpSession session = request.getSession();
-        session.setAttribute("locale",locale);
         Cookie localeCookie = new Cookie("locale",locale);
         responseContent.setCookies(new Cookie[]{localeCookie});
 

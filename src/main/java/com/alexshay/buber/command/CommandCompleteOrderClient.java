@@ -24,21 +24,27 @@ public class CommandCompleteOrderClient implements Command {
         HttpSession session = request.getSession();
         TripOrder tripOrder = (TripOrder) session.getAttribute("tripOrder");
         User client = (User) session.getAttribute("user");
-        String locale = (String) session.getAttribute("locale");
 
-        if(locale != null){
-            responseParameters.put("locale",locale);
-        }
         try {
-            if (client != null && client.getRole().equals(Role.CLIENT) && tripOrder != null){
+            if(tripOrder != null) {
                 TripOrderService tripOrderService = ServiceFactory.getInstance().getTripOrderService();
-                tripOrder = tripOrderService.getById(tripOrder);
-                if(tripOrder.getStatusOrder() == OrderStatus.COMPLETE){
-                    client = userService.getUserById(client.getId());
-                    responseParameters.put("messageInfo", resourceBundle.getString("client.page.finishtrip"));
-                    responseParameters.put("statusOrder", OrderStatus.COMPLETE.value().toUpperCase());
+                TripOrder tripOrderValid = tripOrderService.getById(tripOrder);
+                if (tripOrderValid == null) {
                     session.setAttribute("tripOrder", null);
                     session.setAttribute("user", client);
+                    responseParameters.put("message", resourceBundle.getString("client.page.canceldriver"));
+                    responseContent.setResponseParameters(responseParameters);
+                    return responseContent;
+                }
+
+                if (client != null && client.getRole().equals(Role.CLIENT)) {
+                    if (tripOrderValid.getStatusOrder() == OrderStatus.COMPLETE) {
+                        client = userService.getUserById(client.getId());
+                        responseParameters.put("messageInfo", resourceBundle.getString("client.page.finishtrip"));
+                        responseParameters.put("statusOrder", OrderStatus.COMPLETE.value().toUpperCase());
+                        session.setAttribute("tripOrder", null);
+                        session.setAttribute("user", client);
+                    }
                 }
             }
 
