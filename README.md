@@ -1,6 +1,4 @@
 # Buber
-You can see the site here 
- http://207.154.220.222:8181/buber/
 
 # Instruction
 There are three characters in the program:
